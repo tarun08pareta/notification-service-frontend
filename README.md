@@ -1,27 +1,46 @@
-# NotificationPortal
+# Enterprise Notification Dashboard (Frontend)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.7.
+A responsive, high-performance administrative console built with **Angular 16+** and **TypeScript**. This dashboard serves as the control center for the **Centralized Notification & Alerting Engine**, allowing system administrators to securely monitor delivery metrics, inspect failure logs, and configure platform rate limits in real-time.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🖥️ Core Dashboard Features
 
-## Code scaffolding
+* **Real-time Analytics Dashboard:** Utilizes responsive charts and status metrics to provide instant insights into notification success, failure, and pending queues.
+* **Reactive Logging Panel:** Implements an advanced, searchable datatable using **RxJS Observables** to display real-time delivery logs, complete with detailed error messages for troubleshooting failed SMS/Emails.
+* **Dynamic Configuration Manager:** A dedicated administrative interface that sends instant payload configurations to the Spring Boot backend to modify user rate limits dynamically (e.g., maximum OTPs allowed per minute).
+* **Secure JWT Session Management:** Integrated with **Angular Route Guards** and automated **HTTP Interceptors** that securely attach JWT Bearer tokens to all outgoing backend API calls, preventing unauthorized administrative access.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🛠️ Architecture & Best Practices
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* **Unsubscription Management:** Strict handling of RxJS subscriptions to eliminate any possibility of frontend memory leaks during heavy data streaming.
+* **Component-Service Decoupling:** Complete separation of concerns where components only display the UI state, and all HTTP communications and state logic are handled via dedicated Angular Services.
+* **Clean State Handling:** Built using modern Angular state practices to avoid page flickers or unnecessary re-renders when data updates.
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 📂 Directory Structure
 
-## Running end-to-end tests
+```text
+notification-frontend/
+├── src/
+│   ├── app/
+│   │   ├── components/            # Layouts: Dashboard, LogTable, ConfigForm
+│   │   ├── services/              # NotificationService, AuthService (API calls)
+│   │   ├── interceptors/          # AuthInterceptor (Attaches JWT to backend calls)
+│   │   ├── guards/                # AuthGuard (Secures admin routing)
+│   │   └── app-routing.module.ts  # Standard Angular Routing setup
+│   ├── assets/                    # Shared images, styles, and branding
+│   └── environments/              # Environment configurations (dev/prod target endpoints)
+└── package.json
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## ⚡ Development Setup
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Run `npm install` to set up all node modules and dependencies.
+2. Ensure your backend target URLs are correctly mapped in `src/environments/environment.ts`.
+3. Launch the development server using `ng serve` and access the panel locally at `http://localhost:4200/`.
