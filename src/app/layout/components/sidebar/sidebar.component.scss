@@ -1,0 +1,14 @@
+.sidebar-nav {
+  padding-top: 8px;
+  
+  .active-link {
+    background-color: var(--mat-sys-surface-variant);
+    color: var(--mat-sys-primary);
+    font-weight: 500;
+    border-right: 3px solid var(--mat-sys-primary);
+    
+    mat-icon {
+      color: var(--mat-sys-primary);
+    }
+  }
+}
