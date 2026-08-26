@@ -1,14 +1,33 @@
 .sidebar-nav {
-  padding-top: 8px;
-  
-  .active-link {
-    background-color: var(--mat-sys-surface-variant);
-    color: var(--mat-sys-primary);
-    font-weight: 500;
-    border-right: 3px solid var(--mat-sys-primary);
+  padding-top: var(--app-spacing-sm);
+
+  .mdc-list-item {
+    margin: 4px var(--app-spacing-sm);
+    border-radius: var(--app-radius-lg);
+    color: var(--app-on-surface-variant);
+    font-family: var(--app-font-family-primary);
     
-    mat-icon {
-      color: var(--mat-sys-primary);
+    .mat-icon {
+      color: var(--app-outline);
+    }
+    
+    &:hover {
+      background-color: var(--app-surface-hover);
+      color: var(--app-on-surface);
+      
+      .mat-icon {
+        color: var(--app-on-surface);
+      }
+    }
+  }
+
+  .active-link {
+    background-color: var(--app-primary-container) !important;
+    color: var(--app-on-primary-container) !important;
+    font-weight: 500;
+    
+    .mat-icon {
+      color: var(--app-on-primary-container) !important;
     }
   }
 }

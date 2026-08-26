@@ -1,0 +1,13 @@
+.app-custom-card {
+  margin-bottom: var(--app-spacing-md);
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--app-spacing-md);
+}
+
+.app-card-content {
+  /* Padding is handled globally by _components.scss, but can tweak here if needed */
+}

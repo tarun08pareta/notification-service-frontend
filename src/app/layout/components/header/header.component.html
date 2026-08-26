@@ -1,23 +1,23 @@
-<mat-toolbar color="primary" class="app-header">
+<mat-toolbar class="h-[64px] bg-app-surface text-app-on-surface border-b border-app-border px-lg flex items-center shadow-none">
   <button mat-icon-button (click)="toggleSidebar()" aria-label="Toggle sidebar">
     <mat-icon>menu</mat-icon>
   </button>
   
-  <span class="brand-logo">
+  <span class="flex items-center gap-sm text-app-primary">
     <mat-icon>notifications_active</mat-icon>
-    <span class="app-name">Notification Engine</span>
+    <span class="font-semibold text-[18px] text-app-on-surface">Notification Engine</span>
   </span>
 
-  <span class="spacer"></span>
+  <span class="flex-1"></span>
 
-  <button mat-icon-button (click)="themeService.toggleTheme()" aria-label="Toggle theme" style="margin-right: 8px;">
+  <button mat-icon-button (click)="themeService.toggleTheme()" aria-label="Toggle theme" class="mr-2">
     <mat-icon>{{ themeService.currentTheme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
   </button>
 
   <ng-container *ngIf="authService.currentUser() as user">
-    <div class="user-info">
-      <span class="user-name">{{ user.name }}</span>
-      <span class="user-role">| {{ user.roles[0] }}</span>
+    <div class="flex flex-col items-end mr-sm">
+      <span class="text-[14px] font-medium leading-tight">{{ user.name }}</span>
+      <span class="text-[12px] text-app-on-surface-variant uppercase font-technical">{{ user.roles[0] }}</span>
     </div>
 
     <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">

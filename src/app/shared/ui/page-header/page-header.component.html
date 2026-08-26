@@ -1,0 +1,9 @@
+<div class="page-header-container">
+  <div class="page-header-titles">
+    <h1 class="headline-lg">{{ title }}</h1>
+    <p *ngIf="description" class="body-md description">{{ description }}</p>
+  </div>
+  <div class="page-header-actions">
+    <ng-content></ng-content>
+  </div>
+</div>

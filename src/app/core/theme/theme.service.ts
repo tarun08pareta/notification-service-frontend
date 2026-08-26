@@ -6,7 +6,7 @@ export type Theme = 'light' | 'dark';
   providedIn: 'root'
 })
 export class ThemeService {
-  private readonly THEME_KEY = 'app_theme';
+  private readonly THEME_KEY = 'notification_engine_theme';
 
   private currentThemeSignal = signal<Theme>(this.getStoredTheme());
 

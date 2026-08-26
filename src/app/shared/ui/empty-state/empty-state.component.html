@@ -1,0 +1,11 @@
+<div class="empty-state-container">
+  <div class="icon-container">
+    <mat-icon class="empty-icon">{{ icon }}</mat-icon>
+  </div>
+  <h3 class="title-lg">{{ title }}</h3>
+  <p class="body-md description">{{ description }}</p>
+  
+  <div class="actions" *ngIf="hasAction">
+    <ng-content></ng-content>
+  </div>
+</div>

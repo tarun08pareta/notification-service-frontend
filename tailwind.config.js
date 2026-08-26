@@ -1,0 +1,71 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}",
+  ],
+  darkMode: ['class', '.dark-theme'],
+  corePlugins: {
+    preflight: false,
+  },
+  theme: {
+    extend: {
+      colors: {
+        app: {
+          primary: 'var(--app-primary)',
+          'primary-hover': 'var(--app-primary-hover)',
+          'primary-active': 'var(--app-primary-active)',
+          'on-primary': 'var(--app-on-primary)',
+          'primary-container': 'var(--app-primary-container)',
+          'on-primary-container': 'var(--app-on-primary-container)',
+          secondary: 'var(--app-secondary)',
+          'on-secondary': 'var(--app-on-secondary)',
+          'secondary-container': 'var(--app-secondary-container)',
+          'on-secondary-container': 'var(--app-on-secondary-container)',
+          background: 'var(--app-background)',
+          'on-background': 'var(--app-on-background)',
+          surface: 'var(--app-surface)',
+          'surface-dim': 'var(--app-surface-dim)',
+          'surface-variant': 'var(--app-surface-variant)',
+          'on-surface': 'var(--app-on-surface)',
+          'on-surface-variant': 'var(--app-on-surface-variant)',
+          'surface-elevated': 'var(--app-surface-elevated)',
+          'surface-hover': 'var(--app-surface-hover)',
+          border: 'var(--app-border)',
+          divider: 'var(--app-divider)',
+          outline: 'var(--app-outline)',
+          'outline-variant': 'var(--app-outline-variant)',
+          success: 'var(--app-success)',
+          'on-success': 'var(--app-on-success)',
+          warning: 'var(--app-warning)',
+          'on-warning': 'var(--app-on-warning)',
+          error: 'var(--app-error)',
+          'on-error': 'var(--app-on-error)',
+          'error-container': 'var(--app-error-container)',
+          'on-error-container': 'var(--app-on-error-container)',
+          info: 'var(--app-info)',
+          'on-info': 'var(--app-on-info)',
+        },
+      },
+      fontFamily: {
+        primary: 'var(--app-font-family-primary)',
+        technical: 'var(--app-font-family-technical)',
+      },
+      spacing: {
+        xs: 'var(--app-spacing-xs)',
+        sm: 'var(--app-spacing-sm)',
+        md: 'var(--app-spacing-md)',
+        lg: 'var(--app-spacing-lg)',
+        xl: 'var(--app-spacing-xl)',
+        '2xl': 'var(--app-spacing-2xl)',
+      },
+      borderRadius: {
+        sm: 'var(--app-radius-sm)',
+        md: 'var(--app-radius-md)',
+        lg: 'var(--app-radius-lg)',
+        xl: 'var(--app-radius-xl)',
+        full: 'var(--app-radius-full)',
+      }
+    },
+  },
+  plugins: [],
+}

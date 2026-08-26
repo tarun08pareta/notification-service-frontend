@@ -1,0 +1,138 @@
+/* Component Overrides for Angular Material to match Stitch Design */
+
+/* Cards */
+mat-card.mat-mdc-card {
+  background-color: var(--app-surface);
+  color: var(--app-on-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-lg);
+  box-shadow: none !important; /* Level 1: no shadow */
+  padding: var(--app-spacing-md);
+  
+  &.elevated-card {
+    background-color: var(--app-surface-elevated);
+    box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* Buttons */
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-unelevated-button, .mat-mdc-outlined-button {
+  border-radius: var(--app-radius-lg) !important;
+  font-family: var(--app-font-family-primary) !important;
+  font-weight: 500 !important;
+}
+
+/* Primary Button */
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-filled-button-container-color: var(--app-primary) !important;
+  --mdc-filled-button-label-text-color: var(--app-on-primary) !important;
+  
+  &:hover {
+    --mdc-filled-button-container-color: var(--app-primary-hover) !important;
+  }
+}
+
+/* Secondary Button */
+.mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-outline-color: var(--app-primary) !important;
+  --mdc-outlined-button-label-text-color: var(--app-primary) !important;
+  border-width: 1px !important;
+}
+
+/* Inputs & Forms */
+.mat-mdc-form-field {
+  width: 100%;
+}
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: var(--app-radius-lg) !important;
+  --mdc-outlined-text-field-outline-color: var(--app-border) !important;
+  --mdc-outlined-text-field-focus-outline-color: var(--app-primary) !important;
+  background-color: var(--app-surface) !important;
+}
+
+/* Input Focus Glow (ring) */
+.mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline {
+  box-shadow: 0 0 0 2px rgba(53, 37, 205, 0.2); /* 2px semi-transparent Indigo glow */
+}
+
+.dark-theme .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline {
+  box-shadow: 0 0 0 2px rgba(195, 192, 255, 0.2); /* lighter glow in dark mode */
+}
+
+/* Tables */
+table.mat-mdc-table {
+  background-color: transparent !important;
+  border-collapse: collapse;
+  
+  th.mat-mdc-header-cell {
+    background-color: var(--app-surface-hover) !important;
+    color: var(--app-on-surface-variant) !important;
+    font-family: var(--app-font-family-technical) !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--app-border) !important;
+  }
+  
+  td.mat-mdc-cell {
+    color: var(--app-on-surface) !important;
+    border-bottom: 1px solid var(--app-border) !important;
+  }
+  
+  tr.mat-mdc-row:hover {
+    background-color: var(--app-surface-hover) !important;
+  }
+}
+
+/* Status Chips */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: var(--app-radius-full);
+  font-family: var(--app-font-family-technical);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 16px;
+  gap: 4px;
+
+  &.success {
+    background-color: rgba(16, 185, 129, 0.1); /* 10% emerald */
+    color: var(--app-success);
+  }
+  &.warning {
+    background-color: rgba(245, 158, 11, 0.1); /* 10% amber */
+    color: var(--app-warning);
+  }
+  &.error {
+    background-color: rgba(186, 26, 26, 0.1); /* 10% rose */
+    color: var(--app-error);
+  }
+  &.info {
+    background-color: rgba(14, 165, 233, 0.1); /* 10% sky */
+    color: var(--app-info);
+  }
+}
+
+.dark-theme {
+  .status-chip {
+    &.success {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399; /* Lighter emerald */
+    }
+    &.warning {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #fbbf24; /* Lighter amber */
+    }
+    &.error {
+      background-color: rgba(255, 180, 171, 0.2);
+      color: var(--app-error); /* already light in dark theme */
+    }
+    &.info {
+      background-color: rgba(14, 165, 233, 0.2);
+      color: #38bdf8; /* Lighter sky */
+    }
+  }
+}

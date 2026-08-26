@@ -1,0 +1,59 @@
+/* Layout & Spacing */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.main-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--app-spacing-lg);
+}
+
+.fluid-container {
+  width: 100%;
+  max-width: var(--app-spacing-container-max, 1440px);
+  margin: 0 auto;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.align-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
+
+.gap-xs { gap: var(--app-spacing-xs); }
+.gap-sm { gap: var(--app-spacing-sm); }
+.gap-md { gap: var(--app-spacing-md); }
+.gap-lg { gap: var(--app-spacing-lg); }
+
+.mt-md { margin-top: var(--app-spacing-md); }
+.mb-md { margin-bottom: var(--app-spacing-md); }
+.mt-lg { margin-top: var(--app-spacing-lg); }
+.mb-lg { margin-bottom: var(--app-spacing-lg); }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .main-content {
+    padding: var(--app-spacing-md);
+  }
+}

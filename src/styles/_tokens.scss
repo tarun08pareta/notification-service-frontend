@@ -1,0 +1,93 @@
+:root {
+  /* Brand */
+  --app-primary: #3525cd;
+  --app-primary-hover: #3323cc;
+  --app-primary-active: #2b1ea8;
+  --app-on-primary: #ffffff;
+  --app-primary-container: #4f46e5;
+  --app-on-primary-container: #dad7ff;
+
+  --app-secondary: #006591;
+  --app-on-secondary: #ffffff;
+  --app-secondary-container: #39b8fd;
+  --app-on-secondary-container: #004666;
+
+  /* Backgrounds & Surfaces (Light Theme) */
+  --app-background: #fcf8ff;
+  --app-on-background: #1b1b24;
+
+  --app-surface: #ffffff;
+  --app-surface-dim: #dcd8e5;
+  --app-surface-variant: #e4e1ee;
+  --app-on-surface: #1b1b24;
+  --app-on-surface-variant: #464555;
+  
+  --app-surface-elevated: #ffffff;
+  --app-surface-hover: #f3f4f6;
+
+  /* Borders */
+  --app-border: #e5e7eb;
+  --app-divider: #e4e1ee;
+  --app-outline: #777587;
+  --app-outline-variant: #c7c4d8;
+
+  /* Semantic / Status (Emerald, Amber, Rose, Sky) */
+  --app-success: #10b981; /* Emerald */
+  --app-on-success: #ffffff;
+  --app-warning: #f59e0b; /* Amber */
+  --app-on-warning: #ffffff;
+  --app-error: #ba1a1a;   /* Rose / Error */
+  --app-on-error: #ffffff;
+  --app-error-container: #ffdad6;
+  --app-on-error-container: #93000a;
+  --app-info: #0ea5e9;    /* Sky */
+  --app-on-info: #ffffff;
+
+  /* Typography Fonts */
+  --app-font-family-primary: 'Inter', sans-serif;
+  --app-font-family-technical: 'Geist', monospace;
+
+  /* Spacing Scale */
+  --app-spacing-base: 4px;
+  --app-spacing-xs: 4px;
+  --app-spacing-sm: 8px;
+  --app-spacing-md: 16px;
+  --app-spacing-lg: 24px;
+  --app-spacing-xl: 32px;
+  --app-spacing-2xl: 48px;
+
+  /* Border Radius */
+  --app-radius-sm: 0.125rem; /* 2px */
+  --app-radius-md: 0.25rem;  /* 4px base */
+  --app-radius-lg: 0.375rem; /* 6px soft */
+  --app-radius-xl: 0.5rem;   /* 8px large containers */
+  --app-radius-full: 9999px; /* pill */
+}
+
+/* Dark Theme Overrides */
+.dark-theme {
+  --app-primary: #c3c0ff;
+  --app-primary-hover: #dad7ff;
+  --app-on-primary: #0f0069;
+  
+  --app-background: #0f172a;
+  --app-on-background: #f8fafc;
+  
+  --app-surface: #1e293b;
+  --app-surface-variant: #334155;
+  --app-on-surface: #f1f5f9;
+  --app-on-surface-variant: #cbd5e1;
+  
+  --app-surface-elevated: #273449;
+  --app-surface-hover: #334155;
+  
+  --app-border: #334155;
+  --app-divider: #334155;
+  --app-outline: #64748b;
+  --app-outline-variant: #475569;
+
+  --app-error: #ffb4ab;
+  --app-on-error: #690005;
+  --app-error-container: #93000a;
+  --app-on-error-container: #ffdad6;
+}
