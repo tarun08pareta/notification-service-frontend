@@ -6,7 +6,7 @@
     border-radius: var(--app-radius-lg);
     color: var(--app-on-surface-variant);
     font-family: var(--app-font-family-primary);
-    
+    width: 90%;
     .mat-icon {
       color: var(--app-outline);
     }
@@ -23,11 +23,13 @@
 
   .active-link {
     background-color: var(--app-primary-container) !important;
-    color: var(--app-on-primary-container) !important;
+    color: #ffffff !important;
     font-weight: 500;
-    
+    div{
+      color: #ffffff !important;
+    }
     .mat-icon {
-      color: var(--app-on-primary-container) !important;
+      color: #ffffff !important;
     }
   }
 }

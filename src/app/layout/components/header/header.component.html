@@ -1,10 +1,10 @@
-<mat-toolbar class="h-[64px] bg-app-surface text-app-on-surface border-b border-app-border px-lg flex items-center shadow-none">
+<div class="h-[64px] bg-app-surface text-app-on-surface border-b border-app-border px-lg flex items-center shadow-none">
   <button mat-icon-button (click)="toggleSidebar()" aria-label="Toggle sidebar">
     <mat-icon>menu</mat-icon>
   </button>
   
   <span class="flex items-center gap-sm text-app-primary">
-    <mat-icon>notifications_active</mat-icon>
+    <img class="w-9 h-9" src="small-logo.png" alt="">
     <span class="font-semibold text-[18px] text-app-on-surface">Notification Engine</span>
   </span>
 
@@ -17,7 +17,7 @@
   <ng-container *ngIf="authService.currentUser() as user">
     <div class="flex flex-col items-end mr-sm">
       <span class="text-[14px] font-medium leading-tight">{{ user.name }}</span>
-      <span class="text-[12px] text-app-on-surface-variant uppercase font-technical">{{ user.roles[0] }}</span>
+      <!-- <span class="text-[12px] text-app-on-surface-variant uppercase font-technical">{{ user.roles[0] }}</span> -->
     </div>
 
     <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
@@ -34,4 +34,4 @@
       </button>
     </mat-menu>
   </ng-container>
-</mat-toolbar>
+</div>

@@ -1,4 +1,19 @@
 <mat-nav-list class="sidebar-nav">
+  <div id="profile" class="space-y-3 flex flex-col">
+      <img
+          class="w-20 h-40 md:w-40 rounded-full mx-auto block dark:hidden"
+          src="notification-logo.png"
+          alt="Company name"
+        />
+
+        <!-- Dark mode wali image (Light mode me chhip jayegi) -->
+        <img
+          class="w-20 h-40 md:w-40 rounded-full mx-auto hidden dark:block"
+          src="notification-dark-logo.png"
+          alt="Company name"
+        />
+    
+  </div>
   <ng-container *ngFor="let item of navigationService.navigationItems()">
     <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link">
       <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>

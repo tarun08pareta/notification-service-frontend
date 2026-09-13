@@ -51,6 +51,7 @@ body {
   font-family: var(--app-font-family-primary);
   background-color: var(--app-background);
   color: var(--app-on-background);
+  overflow: hidden;
 }
 
 // Global utility classes for auth layout

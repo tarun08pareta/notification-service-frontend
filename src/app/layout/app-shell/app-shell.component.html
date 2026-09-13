@@ -1,20 +1,35 @@
-<div class="flex flex-col h-screen overflow-hidden">
-  <app-header (toggleSidebarEvent)="sidenav.toggle()"></app-header>
-  
-  <mat-sidenav-container class="flex-1 bg-transparent">
-    <mat-sidenav 
-      #sidenav 
-      [mode]="isMobile ? 'over' : 'side'"
-      [opened]="!isMobile"
-      class="w-[240px] bg-app-surface border-r border-app-border">
-      <app-sidebar></app-sidebar>
-    </mat-sidenav>
+<div class="flex h-screen overflow-hidden bg-app-background">
+  <!-- Mobile Backdrop -->
+  <div 
+    *ngIf="isMobile && isSidebarOpen"
+    (click)="toggleSidebar()"
+    class="fixed inset-0 bg-black/50 z-30 lg:hidden">
+  </div>
+
+  <!-- Sidebar -->
+  <aside 
+    class="bg-app-surface border-app-border flex-shrink-0 transition-all duration-300 ease-in-out z-40 overflow-y-auto overflow-x-hidden"
+    [ngClass]="{
+      'fixed inset-y-0 left-0 h-full w-[180px] border-r': isMobile,
+      'static h-full': !isMobile,
+      'w-[270px] border-r': !isMobile && isSidebarOpen,
+      'w-0 border-r-0 hidden': !isMobile && !isSidebarOpen,
+      'translate-x-0': isMobile && isSidebarOpen,
+      '-translate-x-full': isMobile && !isSidebarOpen
+    }">
+    <app-sidebar class="h-full block w-full"></app-sidebar>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden min-w-0">
+    <app-header (toggleSidebarEvent)="toggleSidebar()" class="shrink-0 bg-app-surface"></app-header>
     
-    <mat-sidenav-content class="flex flex-col h-full">
-      <main class="flex-1 overflow-y-auto p-md sm:p-lg bg-app-background">
+    <div class="flex-1 overflow-y-auto flex flex-col bg-app-background">
+      <main class="flex-1 p-md sm:p-lg">
         <router-outlet></router-outlet>
       </main>
-      <app-footer></app-footer>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      
+      <app-footer class="shrink-0"></app-footer>
+    </div>
+  </div>
 </div>
