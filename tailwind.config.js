@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{html,ts}",
   ],
-  darkMode: ['class', '.dark-theme'],
+  darkMode: ['selector', '.dark-theme'],
   corePlugins: {
     preflight: false,
   },
