@@ -5,12 +5,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideStore, Store } from '@ngrx/store';
 
 import { routes } from './app.routes';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { loaderInterceptor } from './core/interceptors/loader.interceptor';
-import { loaderReducer } from './core/store/loader/loader.reducer';
-import { authReducer } from './core/store/auth/auth.reducer';
-import { AuthStorageService } from './core/auth/auth-storage.service';
-import { restoreAuth } from './core/store/auth/auth.actions';
+import { authInterceptor } from './core/common/interceptors/auth.interceptor';
+import { loaderInterceptor } from './core/common/interceptors/loader.interceptor';
+import { loaderReducer } from './core/common/store/loader/loader.reducer';
+import { authReducer } from './core/common/store/auth/auth.reducer';
+import { AuthStorageService } from './core/common/auth/auth-storage.service';
+import { restoreAuth } from './core/common/store/auth/auth.actions';
 
 export function initializeAuth(store: Store, authStorage: AuthStorageService) {
   return () => {

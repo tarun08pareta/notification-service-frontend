@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Store } from '@ngrx/store';
-import { selectIsLoading } from '../../../core/store/loader/loader.selectors';
+import { selectIsLoading } from '../../../core/common/store/loader/loader.selectors';
 import { Observable } from 'rxjs';
 
 @Component({

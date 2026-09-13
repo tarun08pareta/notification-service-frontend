@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GlobalLoaderComponent } from './global-loader.component';
 import { provideStore } from '@ngrx/store';
-import { loaderReducer } from '../../../core/store/loader/loader.reducer';
+import { loaderReducer } from '../../../core/common/store/loader/loader.reducer';
 
 describe('GlobalLoaderComponent', () => {
   let component: GlobalLoaderComponent;

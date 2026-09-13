@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientsComponent } from './clients.component';
+import { ApiTokensComponent } from './api-tokens.component';
 
-describe('ClientsComponent', () => {
-  let component: ClientsComponent;
-  let fixture: ComponentFixture<ClientsComponent>;
+describe('ApiTokensComponent', () => {
+  let component: ApiTokensComponent;
+  let fixture: ComponentFixture<ApiTokensComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClientsComponent]
+      imports: [ApiTokensComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClientsComponent);
+    fixture = TestBed.createComponent(ApiTokensComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
