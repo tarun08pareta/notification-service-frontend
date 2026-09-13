@@ -1,14 +1,18 @@
 <mat-nav-list class="sidebar-nav">
   <div id="profile" class="space-y-3 flex flex-col">
-    <img
-      src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-      alt="Avatar user" class="w-10 md:w-16 rounded-full mx-auto" />
-    <div>
-      <h2 class="font-medium text-xs md:text-sm text-center text-teal-500">
-        Eduard Pantazi
-      </h2>
-      <p class="text-xs text-gray-500 text-center">Administrator</p>
-    </div>
+      <img
+          class="w-20 h-40 md:w-40 rounded-full mx-auto block dark:hidden"
+          src="notification-logo.png"
+          alt="Company name"
+        />
+
+        <!-- Dark mode wali image (Light mode me chhip jayegi) -->
+        <img
+          class="w-20 h-40 md:w-40 rounded-full mx-auto hidden dark:block"
+          src="notification-dark-logo.png"
+          alt="Company name"
+        />
+    
   </div>
   <ng-container *ngFor="let item of navigationService.navigationItems()">
     <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link">
