@@ -1,0 +1,16 @@
+// Ambient glow
+.cta-bg-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(99,102,241,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 0%,   rgba(53,37,205,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-headline-accent {
+  background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 50%, #7dd3fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

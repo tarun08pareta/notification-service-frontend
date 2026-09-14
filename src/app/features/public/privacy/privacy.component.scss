@@ -1,0 +1,59 @@
+// Identical to terms.component.scss — reuses the shared legal layout pattern
+.legal-page { background: var(--app-background); }
+
+.legal-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px 96px;
+}
+
+.legal-header { margin-bottom: 48px; }
+
+.page-eyebrow {
+  display: block;
+  color: var(--app-primary);
+  margin: 0 0 16px;
+  :global(.dark-theme) & { color: #c3c0ff; }
+}
+
+.legal-headline {
+  color: var(--app-on-surface);
+  margin: 0 0 12px;
+}
+
+.legal-meta {
+  color: var(--app-on-surface-variant);
+  margin: 0;
+}
+
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.legal-section-title {
+  color: var(--app-on-surface);
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--app-border);
+
+  :global(.dark-theme) & { border-bottom-color: rgba(255,255,255,0.07); }
+}
+
+.legal-text {
+  color: var(--app-on-surface-variant);
+  margin: 0;
+  line-height: 1.75;
+}
+
+.legal-link {
+  color: var(--app-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s;
+
+  :global(.dark-theme) & { color: #c3c0ff; }
+
+  &:hover { opacity: 0.75; }
+}

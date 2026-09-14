@@ -1,0 +1,25 @@
+<section class="py-24 bg-app-background transition-colors duration-200" aria-labelledby="features-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+    <div class="text-center max-w-[640px] mx-auto mb-16">
+      <p class="text-app-primary dark:text-[#c3c0ff] mb-3 text-sm font-semibold tracking-wide uppercase">Core Capabilities</p>
+      <h2 id="features-heading" class="text-app-on-surface mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">Built for reliable delivery.</h2>
+      <p class="text-app-on-surface-variant m-0 text-lg">
+        Your application sends the notification. The engine handles the complexity.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 max-[540px]:grid-cols-1 min-[541px]:max-md:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5" role="list">
+      <article
+        *ngFor="let feature of features"
+        class="p-7 bg-app-surface dark:bg-[#0f1524] border border-app-border dark:border-white/10 rounded-xl transition-all duration-200 hover:border-app-primary dark:hover:border-[#c3c0ff]/30 hover:shadow-[0_0_0_1px_rgba(53,37,205,0.12),0_6px_24px_rgba(53,37,205,0.08)] dark:hover:shadow-[0_0_0_1px_rgba(195,192,255,0.1),0_6px_24px_rgba(195,192,255,0.06)] hover:-translate-y-0.5"
+        role="listitem"
+        [attr.aria-label]="feature.title">
+        <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-app-primary/10 dark:bg-[#c3c0ff]/10 mb-5" aria-hidden="true">
+          <span class="material-icons text-[22px] text-app-primary dark:text-[#c3c0ff]">{{ feature.icon }}</span>
+        </div>
+        <h3 class="m-0 mb-2.5 text-lg font-semibold text-app-on-surface font-primary">{{ feature.title }}</h3>
+        <p class="m-0 text-sm leading-relaxed text-app-on-surface-variant font-primary">{{ feature.description }}</p>
+      </article>
+    </div>
+  </div>
+</section>

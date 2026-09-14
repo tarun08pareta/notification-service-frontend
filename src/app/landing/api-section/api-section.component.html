@@ -1,0 +1,85 @@
+<section class="py-24 bg-app-background border-t border-app-border dark:border-white/5 transition-colors duration-200" aria-labelledby="api-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+
+    <!-- Header -->
+    <div class="text-center max-w-[680px] mx-auto mb-14">
+      <p class="text-app-primary dark:text-[#c3c0ff] mb-3 text-sm font-semibold tracking-wide uppercase">Developer Experience</p>
+      <h2 id="api-heading" class="text-app-on-surface m-0 text-3xl sm:text-4xl font-bold font-primary leading-tight">One simple API. Everything else is handled for you.</h2>
+    </div>
+
+    <!-- Two-column: code panel + description -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-9 lg:gap-12 items-start">
+
+      <!-- ── Code panel ── -->
+      <div class="bg-[#0d1117] border border-white/10 rounded-xl overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.35)]" aria-label="Example API request">
+        <!-- Panel header -->
+        <div class="flex items-center gap-2.5 px-4 py-3 bg-[#161b22] border-b border-white/10">
+          <div class="flex gap-1.5 shrink-0" aria-hidden="true">
+            <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+          </div>
+          <span class="flex-1 text-[#6b7280] text-xs tracking-wider uppercase font-technical">Request</span>
+          <button
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-md text-[#9ca3af] hover:text-[#e2e8f0] text-xs font-medium font-primary cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-[#6366f1] focus-visible:outline-offset-2"
+            type="button"
+            (click)="copyCode()"
+            [attr.aria-label]="copied() ? 'Copied to clipboard' : 'Copy request to clipboard'">
+            <span class="material-icons text-[14px]">{{ copied() ? 'check' : 'content_copy' }}</span>
+            {{ copied() ? 'Copied' : 'Copy' }}
+          </button>
+        </div>
+
+        <!-- Request -->
+        <div class="p-5 overflow-x-auto">
+          <pre class="m-0 font-technical text-[13px] leading-relaxed text-[#e2e8f0] whitespace-pre" aria-label="POST /api/v1/notifications request body"><code><span class="text-[#f472b6] font-bold">POST</span> <span class="text-[#93c5fd]">/api/v1/notifications</span>
+<span class="text-[#94a3b8]">Content-Type:</span> <span class="text-[#a5b4fc]">application/json</span>
+<span class="text-[#94a3b8]">Authorization:</span> <span class="text-[#a5b4fc]">Bearer &lt;token&gt;</span>
+
+<span class="text-[#e2e8f0]">&#x7B;</span>
+  <span class="text-[#7dd3fc]">"channel"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"EMAIL"</span><span class="text-[#94a3b8]">,</span>
+  <span class="text-[#7dd3fc]">"recipient"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"user&#64;example.com"</span><span class="text-[#94a3b8]">,</span>
+  <span class="text-[#7dd3fc]">"template"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"WELCOME"</span><span class="text-[#94a3b8]">,</span>
+  <span class="text-[#7dd3fc]">"variables"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#e2e8f0]">&#x7B;</span>
+    <span class="text-[#7dd3fc]">"name"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"Tarun"</span>
+  <span class="text-[#e2e8f0]">&#x7D;</span>
+<span class="text-[#e2e8f0]">&#x7D;</span></code></pre>
+        </div>
+
+        <!-- Response -->
+        <div class="border-t border-white/5">
+          <div class="flex items-center justify-between px-5 py-2.5 bg-[#111827]">
+            <span class="text-xs font-bold font-technical text-[#34d399] tracking-wide">201 Created</span>
+            <span class="text-[11px] text-[#4b5563] tracking-wider uppercase font-technical">Response</span>
+          </div>
+          <div class="px-5 pb-5 pt-3 overflow-x-auto">
+            <pre class="m-0 font-technical text-[13px] leading-relaxed text-[#e2e8f0] whitespace-pre" aria-label="201 Created response"><code><span class="text-[#e2e8f0]">&#x7B;</span>
+  <span class="text-[#7dd3fc]">"id"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"notif_x7m9k3p"</span><span class="text-[#94a3b8]">,</span>
+  <span class="text-[#7dd3fc]">"status"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"QUEUED"</span><span class="text-[#94a3b8]">,</span>
+  <span class="text-[#7dd3fc]">"channel"</span><span class="text-[#94a3b8]">:</span> <span class="text-[#86efac]">"EMAIL"</span>
+<span class="text-[#e2e8f0]">&#x7D;</span></code></pre>
+          </div>
+        </div>
+      </div><!-- /code-panel -->
+
+      <!-- ── Description ── -->
+      <div class="py-2">
+        <p class="text-app-on-surface m-0 mb-4 text-xl font-semibold font-primary leading-snug">
+          Your application only needs to know one endpoint.
+        </p>
+        <p class="text-app-on-surface-variant m-0 mb-8 text-lg leading-relaxed font-primary">
+          Submit a notification request and the engine handles everything behind it — validation,
+          routing, retries, fallback, and delivery tracking.
+        </p>
+
+        <ul class="flex flex-col gap-3 m-0 p-0 list-none" aria-label="What the engine handles">
+          <li *ngFor="let f of features" class="flex items-center gap-2.5 text-sm font-medium text-app-on-surface font-primary">
+            <span class="material-icons text-[18px] text-app-success shrink-0" aria-hidden="true">check_circle</span>
+            <span>{{ f }}</span>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- /api-layout -->
+  </div>
+</section>

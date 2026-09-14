@@ -1,0 +1,43 @@
+<section class="py-24 bg-app-background border-t border-app-border dark:border-white/5 transition-colors duration-200" aria-labelledby="hiw-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+
+    <div class="text-center max-w-[680px] mx-auto mb-16">
+      <p class="text-app-primary dark:text-[#c3c0ff] mb-3 text-sm font-semibold tracking-wide uppercase">The Flow</p>
+      <h2 id="hiw-heading" class="text-app-on-surface mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">From API request to delivered notification.</h2>
+      <p class="text-app-on-surface-variant m-0 text-lg">
+        Every notification follows a reliable, observable pipeline — from submission to delivery.
+      </p>
+    </div>
+
+    <!-- Desktop: horizontal timeline -->
+    <ol class="hidden lg:grid grid-cols-6 gap-0 relative m-0 p-0 list-none" aria-label="Six step notification delivery pipeline">
+      <li *ngFor="let step of steps; let last = last" class="relative flex flex-col items-center text-center px-3">
+        <div class="step-connector" *ngIf="!last" aria-hidden="true"></div>
+        <div class="relative z-10 flex items-center justify-center w-11 h-11 rounded-full bg-app-primary/10 border-2 border-app-primary/20 dark:bg-[#c3c0ff]/10 dark:border-[#c3c0ff]/20 mb-3" aria-hidden="true">
+          <span class="material-icons text-[20px] text-app-primary dark:text-[#c3c0ff]">{{ step.icon }}</span>
+        </div>
+        <div class="mb-2 text-app-primary dark:text-[#c3c0ff] font-technical text-sm font-semibold tracking-wider" aria-hidden="true">{{ step.number }}</div>
+        <h3 class="m-0 mb-2 text-[15px] font-semibold text-app-on-surface font-primary">{{ step.title }}</h3>
+        <p class="m-0 text-[13px] leading-relaxed text-app-on-surface-variant font-primary">{{ step.description }}</p>
+      </li>
+    </ol>
+
+    <!-- Mobile/Tablet: vertical timeline -->
+    <ol class="flex lg:hidden flex-col gap-0 m-0 p-0 list-none" aria-label="Six step notification delivery pipeline">
+      <li *ngFor="let step of steps; let last = last" class="flex gap-5">
+        <div class="flex flex-col items-center shrink-0">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-app-primary/10 border-2 border-app-primary/20 dark:bg-[#c3c0ff]/10 dark:border-[#c3c0ff]/20 shrink-0" aria-hidden="true">
+            <span class="material-icons text-[20px] text-app-primary dark:text-[#c3c0ff]">{{ step.icon }}</span>
+          </div>
+          <div class="w-[2px] flex-1 min-h-[24px] bg-app-primary/20 dark:bg-[#c3c0ff]/15 my-1.5" *ngIf="!last" aria-hidden="true"></div>
+        </div>
+        <div class="pb-8">
+          <div class="mb-1 text-app-primary dark:text-[#c3c0ff] font-technical text-sm font-semibold tracking-wider">{{ step.number }}</div>
+          <h3 class="m-0 mb-2 text-base font-semibold text-app-on-surface font-primary">{{ step.title }}</h3>
+          <p class="m-0 text-[14px] leading-relaxed text-app-on-surface-variant font-primary">{{ step.description }}</p>
+        </div>
+      </li>
+    </ol>
+
+  </div>
+</section>

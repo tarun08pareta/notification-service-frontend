@@ -1,0 +1,21 @@
+// ── Status indicator (kept for complex box-shadow pulse animation) ─────────────
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &--active {
+    background: var(--app-success);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+    animation: status-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes status-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+  50%       { box-shadow: 0 0 0 6px rgba(16,185,129,0.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot--active { animation: none; }
+}

@@ -1,0 +1,178 @@
+// ── Contact page ──────────────────────────────────────────────────────────────
+.contact-page { background: var(--app-background); }
+
+.contact-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px 96px;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.contact-header {
+  max-width: 680px;
+  margin-bottom: 64px;
+}
+
+.page-eyebrow {
+  display: block;
+  color: var(--app-primary);
+  margin: 0 0 16px;
+  :global(.dark-theme) & { color: #c3c0ff; }
+}
+
+.contact-headline { color: var(--app-on-surface); margin: 0 0 16px; }
+.contact-lead     { color: var(--app-on-surface-variant); margin: 0; line-height: 1.65; }
+
+// ── Two-column layout ─────────────────────────────────────────────────────────
+.contact-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 64px;
+  align-items: start;
+
+  @media (max-width: 900px) { grid-template-columns: 1fr; gap: 48px; }
+}
+
+// ── Info column ───────────────────────────────────────────────────────────────
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.contact-channel {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.channel-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(53,37,205,0.08);
+  flex-shrink: 0;
+
+  :global(.dark-theme) & { background: rgba(195,192,255,0.08); }
+}
+
+.channel-icon {
+  font-size: 20px;
+  color: var(--app-primary);
+  :global(.dark-theme) & { color: #c3c0ff; }
+}
+
+.channel-title { color: var(--app-on-surface); margin: 0 0 4px; }
+.channel-desc  { color: var(--app-on-surface-variant); margin: 0 0 6px; font-size: 13px; }
+
+.channel-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--app-primary);
+  text-decoration: none;
+  transition: opacity 0.15s;
+
+  :global(.dark-theme) & { color: #c3c0ff; }
+
+  &:hover { opacity: 0.75; }
+}
+
+// ── Form ─────────────────────────────────────────────────────────────────────
+.contact-form-wrap {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 36px;
+
+  :global(.dark-theme) & {
+    background: #0f1524;
+    border-color: rgba(255,255,255,0.08);
+  }
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 540px) { grid-template-columns: 1fr; }
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+.form-label {
+  color: var(--app-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--app-background);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  font-size: 14px;
+  font-family: var(--app-font-family-primary);
+  color: var(--app-on-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+
+  :global(.dark-theme) & {
+    background: #0b0f19;
+    border-color: rgba(255,255,255,0.1);
+    color: #e2e8f0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px rgba(53,37,205,0.12);
+
+    :global(.dark-theme) & {
+      border-color: #c3c0ff;
+      box-shadow: 0 0 0 3px rgba(195,192,255,0.1);
+    }
+  }
+
+  &::placeholder { color: var(--app-on-surface-variant); opacity: 0.6; }
+}
+
+.form-select { appearance: none; cursor: pointer; }
+.form-textarea { resize: vertical; min-height: 120px; }
+
+.contact-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--app-primary);
+  color: var(--app-on-primary);
+  border: none;
+  border-radius: var(--app-radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--app-font-family-primary);
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+
+  .material-icons { font-size: 18px; }
+
+  &:hover {
+    background: var(--app-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(53,37,205,0.25);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--app-primary);
+    outline-offset: 3px;
+  }
+}

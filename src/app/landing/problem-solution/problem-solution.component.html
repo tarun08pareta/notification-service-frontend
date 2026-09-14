@@ -1,0 +1,52 @@
+<section class="py-24 bg-app-surface-variant dark:bg-[#0d1117] transition-colors duration-200" aria-labelledby="ps-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+    <div class="text-center max-w-[680px] mx-auto mb-14">
+      <p class="text-app-primary dark:text-[#6366f1] mb-3 text-sm font-semibold tracking-wide uppercase">The Problem</p>
+      <h2 id="ps-heading" class="text-app-on-surface dark:text-[#f8fafc] mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">
+        Stop building notification infrastructure<br class="hidden sm:inline" /> in every service.
+      </h2>
+      <p class="text-app-on-surface-variant dark:text-[#94a3b8] m-0 text-lg">
+        Every service that sends notifications ends up re-implementing the same delivery
+        complexity independently — until something fails.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+      <!-- Without -->
+      <div class="bg-app-surface dark:bg-[#141b2d] rounded-xl p-8 border border-app-error/20" aria-labelledby="without-heading">
+        <div class="flex items-center gap-2.5 mb-1.5">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-[13px] font-bold shrink-0 bg-app-error/15 text-app-error" aria-hidden="true">✕</span>
+          <h3 id="without-heading" class="m-0 text-base font-semibold text-app-on-surface dark:text-[#f1f5f9] font-primary">Without a centralized engine</h3>
+        </div>
+        <p class="m-0 mb-6 text-[13px] text-app-on-surface-variant dark:text-[#64748b] font-primary">Each service handles everything independently</p>
+        <ul class="flex flex-col gap-3 m-0 p-0 list-none" aria-label="Problems when each service handles notifications">
+          <li *ngFor="let p of problems" class="flex items-start gap-2.5 text-sm leading-relaxed font-primary text-app-on-surface-variant dark:text-[#94a3b8]">
+            <span class="mt-px text-base shrink-0 material-icons text-app-error" aria-hidden="true">close</span>
+            <span>{{ p.text }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- With -->
+      <div class="relative overflow-hidden bg-app-surface dark:bg-[#141b2d] rounded-xl p-8 border border-app-primary/30" aria-labelledby="with-heading">
+        <!-- Glow -->
+        <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,rgba(99,102,241,0.06)_0%,transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top_left,rgba(99,102,241,0.1)_0%,transparent_60%)]"></div>
+
+        <div class="relative flex items-center gap-2.5 mb-1.5">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-[13px] font-bold shrink-0 bg-app-primary/15 text-app-primary dark:text-[#a5b4fc]" aria-hidden="true">✓</span>
+          <h3 id="with-heading" class="m-0 text-base font-semibold text-app-on-surface dark:text-[#f1f5f9] font-primary">With one notification API</h3>
+        </div>
+        <p class="relative m-0 mb-6 text-[13px] text-app-on-surface-variant dark:text-[#64748b] font-primary">One engine handles everything for every service</p>
+        <ul class="relative flex flex-col gap-3 m-0 p-0 list-none" aria-label="Benefits of the centralized notification engine">
+          <li *ngFor="let s of solutions" class="flex items-start gap-2.5 text-sm leading-relaxed font-primary text-app-on-surface dark:text-[#cbd5e1]">
+            <span class="mt-px text-base shrink-0 material-icons text-app-primary dark:text-[#6366f1]" aria-hidden="true">check</span>
+            <span>{{ s.text }}</span>
+          </li>
+        </ul>
+        <div class="relative mt-6 px-4 py-2.5 bg-app-primary/10 border border-app-primary/20 rounded-md" aria-hidden="true">
+          <span class="text-[11px] tracking-wider text-app-primary dark:text-[#a5b4fc] font-technical">Your service → One API → Engine → Delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

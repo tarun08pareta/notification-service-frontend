@@ -1,0 +1,147 @@
+<section class="relative flex items-center min-h-[calc(100vh-64px)] overflow-hidden bg-app-background" aria-labelledby="hero-headline">
+  <!-- Background decorative grid -->
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <!-- Ambient glow -->
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="relative z-10 w-full max-w-[1280px] mx-auto px-5 md:px-6 py-12 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <!-- ── Left: Copy ── -->
+    <div>
+      <div class="inline-flex items-center gap-1.5 py-1.5 pl-2 pr-3 mb-6 border rounded-full text-xs font-semibold font-technical tracking-wide uppercase border-app-primary/25 bg-app-primary/5 text-app-primary dark:border-[#c3c0ff]/20 dark:bg-[#c3c0ff]/10 dark:text-[#c3c0ff]" aria-label="Platform category">
+        <span class="material-icons text-[14px]">hub</span>
+        Notification Infrastructure
+      </div>
+
+      <h1 id="hero-headline" class="mb-6 font-primary text-4xl sm:text-5xl md:text-[clamp(2.2rem,4vw,3.5rem)] font-bold leading-[1.12] tracking-tight text-app-on-surface">
+        One API.<br />
+        Multiple Providers.<br />
+        <span class="headline-gradient">Reliable Notifications.</span>
+      </h1>
+
+      <p class="mb-9 max-w-[520px] text-[17px] leading-relaxed text-app-on-surface-variant">
+        Send Email and SMS through a single notification API while the engine handles
+        routing, retries, fallback, idempotency, and delivery tracking.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-3 mb-9">
+        <a routerLink="/signup" class="inline-flex items-center gap-1.5 px-6 py-3.5 bg-app-primary text-app-on-primary rounded-lg text-[15px] font-semibold font-primary no-underline transition-all hover:bg-app-primary-hover hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(53,37,205,0.32)] focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" id="hero-get-started" aria-label="Create a free account">
+          Get Started
+          <span class="material-icons text-[18px]">arrow_forward</span>
+        </a>
+        <button class="inline-flex items-center gap-1.5 px-5 py-3.5 bg-transparent border border-app-border text-app-on-surface rounded-lg text-[15px] font-semibold font-primary cursor-pointer transition-all hover:border-app-primary hover:text-app-primary hover:bg-app-primary/5 focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToApi()" id="hero-explore-api" aria-label="View the API documentation section">
+          <span class="material-icons text-[18px]">code</span>
+          Explore API
+        </button>
+      </div>
+
+      <ul class="flex flex-wrap items-center gap-5 m-0 p-0 list-none" aria-label="Key capabilities">
+        <li class="flex items-center gap-1.5 text-[13px] font-medium text-app-on-surface-variant">
+          <span class="material-icons text-base text-app-success">check_circle</span>
+          Provider fallback
+        </li>
+        <li class="flex items-center gap-1.5 text-[13px] font-medium text-app-on-surface-variant">
+          <span class="material-icons text-base text-app-success">check_circle</span>
+          Auto retry
+        </li>
+        <li class="flex items-center gap-1.5 text-[13px] font-medium text-app-on-surface-variant">
+          <span class="material-icons text-base text-app-success">check_circle</span>
+          Delivery tracking
+        </li>
+        <li class="flex items-center gap-1.5 text-[13px] font-medium text-app-on-surface-variant">
+          <span class="material-icons text-base text-app-success">check_circle</span>
+          Idempotency
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── Right: Architecture diagram ── -->
+    <div class="hero-diagram" role="img" aria-label="Architecture: Your Application sends a request to the Notification API, which flows into the Notification Engine for routing, retries, and fallback, then routes to Email or SMS providers.">
+
+      <!-- Node: Your Application -->
+      <div class="arch-row">
+        <div class="arch-node node-app">
+          <span class="material-icons arch-icon">code</span>
+          <div class="arch-node-text">
+            <span class="arch-node-title">Your Application</span>
+            <span class="arch-node-sub">Client service</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector 1 (labelled) -->
+      <div class="arch-connector" aria-hidden="true">
+        <div class="conn-label code-text">POST /api/v1/notifications</div>
+        <div class="conn-line">
+          <div class="conn-pulse"></div>
+        </div>
+        <span class="conn-arrow material-icons">arrow_downward</span>
+      </div>
+
+      <!-- Node: Notification API -->
+      <div class="arch-row">
+        <div class="arch-node node-api">
+          <span class="material-icons arch-icon">api</span>
+          <div class="arch-node-text">
+            <span class="arch-node-title">Notification API</span>
+            <span class="arch-node-sub">Unified entry point</span>
+          </div>
+          <span class="arch-badge">201 QUEUED</span>
+        </div>
+      </div>
+
+      <!-- Connector 2 -->
+      <div class="arch-connector" aria-hidden="true">
+        <div class="conn-line">
+          <div class="conn-pulse" style="animation-delay: 0.6s"></div>
+        </div>
+        <span class="conn-arrow material-icons">arrow_downward</span>
+      </div>
+
+      <!-- Node: Engine -->
+      <div class="arch-row">
+        <div class="arch-node node-engine">
+          <div class="engine-header">
+            <span class="material-icons arch-icon">hub</span>
+            <div class="arch-node-text">
+              <span class="arch-node-title">Notification Engine</span>
+              <span class="arch-node-sub">Orchestration layer</span>
+            </div>
+          </div>
+          <div class="engine-tags">
+            <span class="engine-tag">Routing</span>
+            <span class="engine-tag">Retry</span>
+            <span class="engine-tag">Fallback</span>
+            <span class="engine-tag">Tracking</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T-split to providers -->
+      <div class="arch-tsplit" aria-hidden="true">
+        <div class="tsplit-v-left"></div>
+        <div class="tsplit-v-right"></div>
+      </div>
+
+      <!-- Providers row -->
+      <div class="arch-providers" aria-hidden="true">
+        <div class="arch-node node-provider">
+          <span class="material-icons arch-icon">email</span>
+          <div class="arch-node-text">
+            <span class="arch-node-title">Email</span>
+            <span class="arch-node-sub">Provider</span>
+          </div>
+          <span class="provider-dot dot-active"></span>
+        </div>
+        <div class="arch-node node-provider">
+          <span class="material-icons arch-icon">sms</span>
+          <div class="arch-node-text">
+            <span class="arch-node-title">SMS</span>
+            <span class="arch-node-sub">Provider</span>
+          </div>
+          <span class="provider-dot dot-active"></span>
+        </div>
+      </div>
+
+    </div><!-- /hero-diagram -->
+  </div><!-- /hero-container -->
+</section>

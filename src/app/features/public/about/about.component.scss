@@ -1,0 +1,169 @@
+// ── Shared variables ──────────────────────────────────────────────────────────
+// All public page SCSS shares these patterns and refers to existing design tokens.
+
+// ── About hero ────────────────────────────────────────────────────────────────
+.about-page { background: var(--app-background); }
+
+.about-hero {
+  padding: 96px 0 72px;
+  background: var(--app-background);
+  border-bottom: 1px solid var(--app-border);
+
+  :global(.dark-theme) & { border-bottom-color: rgba(255,255,255,0.06); }
+}
+
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-eyebrow {
+  color: var(--app-primary);
+  margin: 0 0 16px;
+  display: block;
+  :global(.dark-theme) & { color: #c3c0ff; }
+}
+
+.about-headline {
+  color: var(--app-on-surface);
+  margin: 0 0 24px;
+  max-width: 700px;
+}
+
+.about-lead {
+  color: var(--app-on-surface-variant);
+  margin: 0;
+  max-width: 680px;
+  line-height: 1.7;
+}
+
+// ── Generic section ───────────────────────────────────────────────────────────
+.about-section {
+  padding: 80px 0;
+
+  &--alt {
+    background: var(--app-surface);
+    border-top: 1px solid var(--app-border);
+    border-bottom: 1px solid var(--app-border);
+
+    :global(.dark-theme) & {
+      background: #0f1524;
+      border-color: rgba(255,255,255,0.06);
+    }
+  }
+}
+
+// ── Two-column layout ─────────────────────────────────────────────────────────
+.about-two-col {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+
+  @media (max-width: 700px) { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.about-col-left h2 { color: var(--app-on-surface); margin: 0; }
+
+.about-text {
+  color: var(--app-on-surface-variant);
+  margin: 0 0 20px;
+  line-height: 1.7;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+// ── Section title ─────────────────────────────────────────────────────────────
+.about-section-title {
+  color: var(--app-on-surface);
+  margin: 0 0 40px;
+}
+
+// ── Values grid ───────────────────────────────────────────────────────────────
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+.value-card {
+  padding: 28px;
+  background: var(--app-background);
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  :global(.dark-theme) & {
+    background: #0a0e1a;
+    border-color: rgba(255,255,255,0.07);
+  }
+
+  &:hover {
+    border-color: var(--app-primary);
+    box-shadow: 0 4px 20px rgba(53,37,205,0.08);
+  }
+}
+
+.value-icon {
+  font-size: 24px;
+  color: var(--app-primary);
+  display: block;
+  margin-bottom: 16px;
+
+  :global(.dark-theme) & { color: #c3c0ff; }
+}
+
+.value-title { color: var(--app-on-surface); margin: 0 0 10px; }
+.value-desc  { color: var(--app-on-surface-variant); margin: 0; line-height: 1.6; font-size: 14px; }
+
+// ── CTA strip ─────────────────────────────────────────────────────────────────
+.about-cta {
+  padding: 80px 0;
+  text-align: center;
+  background: var(--app-background);
+}
+
+.about-cta-inner { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+.about-cta-title { color: var(--app-on-surface); margin: 0; }
+
+.about-cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-primary-lg {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 28px;
+  background: var(--app-primary);
+  color: var(--app-on-primary);
+  border-radius: var(--app-radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--app-font-family-primary);
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover { background: var(--app-primary-hover); transform: translateY(-1px); }
+}
+
+.btn-ghost-lg {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 24px;
+  color: var(--app-on-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--app-font-family-primary);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover { border-color: var(--app-primary); color: var(--app-primary); }
+}
