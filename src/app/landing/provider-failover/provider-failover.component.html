@@ -1,0 +1,57 @@
+<section class="py-24 bg-app-background transition-colors duration-200" aria-labelledby="failover-heading">
+  <div class="flex flex-col items-center max-w-[900px] mx-auto px-6">
+
+    <div class="text-center max-w-[640px] mb-14">
+      <p class="text-app-primary dark:text-[#6366f1] mb-3 text-sm font-semibold tracking-wide uppercase">Provider Resilience</p>
+      <h2 id="failover-heading" class="text-app-on-surface dark:text-[#f8fafc] mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">
+        When providers fail, your application&nbsp;shouldn't.
+      </h2>
+      <p class="text-app-on-surface-variant dark:text-[#94a3b8] m-0 mb-4 text-lg">
+        The engine automatically retries transient failures and falls back to the next eligible
+        provider — without any change required in your application.
+      </p>
+      <p class="text-[#4b5563] m-0 text-sm font-medium" aria-label="Conceptual illustration note">
+        ⚡ Conceptual architecture illustration
+      </p>
+    </div>
+
+    <!-- Animated flow visualization -->
+    <div class="failover-viz" role="img" aria-label="Provider failover flow: Notification routes to Provider A which fails, triggers retry, then falls back to Provider B which succeeds.">
+      <div
+        *ngFor="let step of steps; let i = index; let last = last"
+        class="viz-step-wrap">
+
+        <div
+          class="viz-node"
+          [class.viz-node--active]="isActive(step)"
+          [class.viz-node--current]="isCurrent(step)"
+          [class.viz-node--failure]="step.statusClass === 'failure' && isCurrent(step)"
+          [class.viz-node--success]="step.statusClass === 'success' && isActive(step)">
+
+          <div class="viz-node-top">
+            <span class="viz-icon material-icons">{{ step.icon }}</span>
+            <div class="viz-node-text">
+              <span class="viz-label">{{ step.label }}</span>
+              <span class="viz-sublabel" *ngIf="step.sublabel">{{ step.sublabel }}</span>
+            </div>
+          </div>
+
+          <div
+            class="viz-status"
+            [class]="'viz-status--' + step.statusClass"
+            *ngIf="isActive(step)">
+            {{ step.displayStatus }}
+          </div>
+        </div>
+
+        <!-- Connector arrow between steps -->
+        <div class="viz-connector" *ngIf="!last" aria-hidden="true">
+          <div class="viz-conn-line" [class.viz-conn-line--active]="isActive(step)"></div>
+          <span class="viz-conn-arrow material-icons" [class.viz-conn-arrow--active]="isActive(step)">arrow_downward</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,151 @@
+// ── Visualization ─────────────────────────────────────────────────────────────
+.failover-viz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+// ── Step wrapper ─────────────────────────────────────────────────────────────
+.viz-step-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+// ── Node ─────────────────────────────────────────────────────────────────────
+.viz-node {
+  width: 100%;
+  max-width: 360px;
+  background: #1e2433;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px 18px;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+
+  :global(.dark-theme) & {
+    background: #141b2d;
+    border-color: rgba(255,255,255,0.07);
+  }
+
+  &--active {
+    border-color: rgba(99,102,241,0.3);
+    background: #1a2038;
+  }
+
+  &--current {
+    border-color: rgba(99,102,241,0.5);
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.15), 0 4px 20px rgba(99,102,241,0.12);
+    animation: node-pulse 0.4s ease-out;
+  }
+
+  &--failure {
+    border-color: rgba(239,68,68,0.5) !important;
+    box-shadow: 0 0 0 1px rgba(239,68,68,0.12), 0 4px 20px rgba(239,68,68,0.08) !important;
+    background: #1e1420 !important;
+  }
+
+  &--success {
+    border-color: rgba(16,185,129,0.5) !important;
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.12), 0 4px 20px rgba(16,185,129,0.08) !important;
+    background: #141e1a !important;
+  }
+}
+
+@keyframes node-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+.viz-node-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viz-icon {
+  font-size: 20px;
+  color: #64748b;
+  transition: color 0.3s;
+  flex-shrink: 0;
+
+  .viz-node--active &  { color: #6366f1; }
+  .viz-node--failure & { color: #f87171; }
+  .viz-node--success & { color: #34d399; }
+}
+
+.viz-node-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #cbd5e1;
+  font-family: var(--app-font-family-primary);
+}
+
+.viz-sublabel {
+  font-size: 11px;
+  color: #64748b;
+  font-family: var(--app-font-family-technical);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// ── Status badge ─────────────────────────────────────────────────────────────
+.viz-status {
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--app-font-family-technical);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-block;
+
+  &--info    { background: rgba(14,165,233,0.12);  color: #38bdf8; }
+  &--routing { background: rgba(99,102,241,0.12);  color: #a5b4fc; }
+  &--failure { background: rgba(239,68,68,0.12);   color: #f87171; }
+  &--retry   { background: rgba(245,158,11,0.12);  color: #fbbf24; }
+  &--success { background: rgba(16,185,129,0.12);  color: #34d399; }
+}
+
+// ── Connector between nodes ───────────────────────────────────────────────────
+.viz-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.viz-conn-line {
+  width: 2px;
+  height: 20px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  transition: background 0.3s;
+
+  &--active { background: rgba(99,102,241,0.4); }
+}
+
+.viz-conn-arrow {
+  font-size: 16px;
+  color: rgba(255,255,255,0.12);
+  transition: color 0.3s;
+
+  &--active { color: rgba(99,102,241,0.5); }
+}
+
+// ── Reduced-motion ────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .viz-node--current { animation: none; }
+}

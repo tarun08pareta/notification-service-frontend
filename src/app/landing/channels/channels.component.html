@@ -1,0 +1,75 @@
+<section class="py-24 bg-app-background border-t border-app-border dark:border-white/5 transition-colors duration-200" aria-labelledby="channels-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+
+    <div class="text-center max-w-[680px] mx-auto mb-14">
+      <p class="text-app-primary dark:text-[#c3c0ff] mb-3 text-sm font-semibold tracking-wide uppercase">Supported Channels</p>
+      <h2 id="channels-heading" class="text-app-on-surface mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">
+        Connect once. Deliver through the channels you need.
+      </h2>
+      <p class="text-app-on-surface-variant m-0 text-lg">
+        Currently supporting Email and SMS, with a provider-agnostic architecture designed
+        for future channel extensibility.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-9">
+
+      <!-- EMAIL -->
+      <article class="flex flex-col gap-5 p-8 bg-app-surface dark:bg-[#0f1524] border border-app-border dark:border-white/10 rounded-xl relative overflow-hidden transition-all duration-200 hover:border-app-primary dark:hover:border-[#c3c0ff]/40 hover:shadow-[0_4px_24px_rgba(53,37,205,0.1)] dark:hover:shadow-[0_4px_24px_rgba(195,192,255,0.06)]" aria-labelledby="channel-email">
+        <div class="inline-flex items-center justify-center w-[52px] h-[52px] rounded-xl shrink-0 bg-[#6366f1]/10" aria-hidden="true">
+          <span class="material-icons text-[26px] text-[#6366f1]">email</span>
+        </div>
+        <div class="flex-1">
+          <h3 id="channel-email" class="text-app-on-surface m-0 mb-2.5 text-xl font-semibold font-primary">Email</h3>
+          <p class="text-app-on-surface-variant m-0 mb-4 text-base leading-relaxed font-primary">
+            Reliable transactional email delivery through configurable provider integrations.
+            Route, retry, and fall back across providers automatically.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Provider routing</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Auto retry</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Fallback</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Templates</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 mt-auto" aria-label="Status: currently supported">
+          <span class="status-dot status-dot--active" aria-hidden="true"></span>
+          <span class="text-app-success text-[11px] tracking-wider uppercase font-technical">Active</span>
+        </div>
+      </article>
+
+      <!-- SMS -->
+      <article class="flex flex-col gap-5 p-8 bg-app-surface dark:bg-[#0f1524] border border-app-border dark:border-white/10 rounded-xl relative overflow-hidden transition-all duration-200 hover:border-app-primary dark:hover:border-[#c3c0ff]/40 hover:shadow-[0_4px_24px_rgba(53,37,205,0.1)] dark:hover:shadow-[0_4px_24px_rgba(195,192,255,0.06)]" aria-labelledby="channel-sms">
+        <div class="inline-flex items-center justify-center w-[52px] h-[52px] rounded-xl shrink-0 bg-[#0ea5e9]/10" aria-hidden="true">
+          <span class="material-icons text-[26px] text-[#0ea5e9]">sms</span>
+        </div>
+        <div class="flex-1">
+          <h3 id="channel-sms" class="text-app-on-surface m-0 mb-2.5 text-xl font-semibold font-primary">SMS</h3>
+          <p class="text-app-on-surface-variant m-0 mb-4 text-base leading-relaxed font-primary">
+            Provider-independent SMS orchestration with routing, retries, and fallback.
+            Your application uses one API regardless of which SMS provider is active.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Provider routing</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Auto retry</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Fallback</span>
+            <span class="px-2.5 py-1 rounded-full bg-app-primary/10 dark:bg-[#c3c0ff]/10 text-app-primary dark:text-[#c3c0ff] text-[11px] font-semibold font-technical tracking-wider uppercase">Delivery tracking</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 mt-auto" aria-label="Status: currently supported">
+          <span class="status-dot status-dot--active" aria-hidden="true"></span>
+          <span class="text-app-success text-[11px] tracking-wider uppercase font-technical">Active</span>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Future channels note -->
+    <p class="flex items-center justify-center gap-2 text-center text-app-on-surface-variant m-0 text-sm font-primary" aria-label="Note about future channels">
+      <span class="material-icons text-[14px]" aria-hidden="true">schedule</span>
+      Additional channels (Push, WhatsApp, Slack) are not currently supported —
+      the provider-agnostic architecture is designed to accommodate them in the future.
+    </p>
+
+  </div>
+</section>

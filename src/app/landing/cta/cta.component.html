@@ -1,0 +1,32 @@
+<section class="relative py-24 px-6 text-center overflow-hidden bg-[#0a0e1a] border-t border-[#6366f1]/15 transition-colors duration-200 dark:bg-[#07090f]" aria-labelledby="cta-heading">
+  <div class="cta-bg-glow" aria-hidden="true"></div>
+  <div class="relative max-w-[680px] mx-auto flex flex-col items-center gap-5">
+
+    <div class="inline-flex items-center gap-1.5 py-1.5 pr-3 pl-2 rounded-full border border-[#6366f1]/25 bg-[#6366f1]/10 text-[#a5b4fc] text-xs font-semibold font-technical tracking-wider uppercase" aria-hidden="true">
+      <span class="material-icons text-[14px]">bolt</span>
+      Get started in minutes
+    </div>
+
+    <h2 id="cta-heading" class="m-0 font-primary text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.15] tracking-tight text-[#f8fafc]">
+      Build notifications once.<br />
+      <span class="cta-headline-accent">Deliver them reliably.</span>
+    </h2>
+
+    <p class="m-0 text-[#94a3b8] max-w-[560px] leading-relaxed text-lg font-primary">
+      Stop spreading provider-specific delivery logic across your application.
+      Use one notification API and let the engine handle the complexity.
+    </p>
+
+    <div class="flex items-center justify-center gap-3 flex-wrap mt-2">
+      <a routerLink="/signup" class="inline-flex items-center gap-2 px-7 py-3.5 bg-[#6366f1] hover:bg-[#4f46e5] text-white rounded-lg text-[15px] font-semibold font-primary no-underline transition-all duration-150 hover:-translate-y-[2px] hover:shadow-[0_6px_24px_rgba(99,102,241,0.35)] focus-visible:outline-2 focus-visible:outline-[#818cf8] focus-visible:outline-offset-[3px]" id="final-get-started" aria-label="Create your account and get started">
+        Get Started
+        <span class="material-icons text-[18px]">arrow_forward</span>
+      </a>
+      <button class="inline-flex items-center gap-2 px-6 py-3.5 bg-white/5 hover:bg-white/10 text-[#e2e8f0] border border-white/10 hover:border-white/20 rounded-lg text-[15px] font-semibold font-primary cursor-pointer transition-all duration-150 hover:-translate-y-[1px] focus-visible:outline-2 focus-visible:outline-[#818cf8] focus-visible:outline-offset-[3px]" type="button" (click)="scrollToApi()" id="final-explore-api" aria-label="View API documentation section">
+        <span class="material-icons text-[18px]">code</span>
+        Explore API
+      </button>
+    </div>
+
+  </div>
+</section>

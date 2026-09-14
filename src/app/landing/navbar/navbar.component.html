@@ -1,0 +1,69 @@
+<nav class="sticky top-0 z-[100] bg-app-background/90 dark:bg-[#0b0f19]/90 backdrop-blur-md border-b border-app-border dark:border-white/10 transition-colors duration-200" role="navigation" aria-label="Main navigation" aria-label="Public website navigation">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+
+    <!-- ── Logo ── -->
+    <a routerLink="/" class="flex items-center shrink-0" aria-label="Notification Engine — go to homepage">
+      <img class="h-[34px] block dark:hidden" src="notification-logo.png" alt="Notification Engine" />
+      <img class="h-[34px] hidden dark:block" src="notification-dark-logo.png" alt="Notification Engine" />
+    </a>
+
+    <!-- ── Desktop nav links ── -->
+    <ul class="hidden md:flex items-center gap-1 flex-1 m-0 p-0 list-none" role="list">
+      <li>
+        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('product')">Product</button>
+      </li>
+      <li>
+        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('how-it-works')">How It Works</button>
+      </li>
+      <li>
+        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('developers')">Developers</button>
+      </li>
+      <li>
+        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('features')">Pricing</button>
+      </li>
+      <li>
+        <a class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" routerLink="/about" id="nav-about">About</a>
+      </li>
+    </ul>
+
+    <!-- ── Right actions ── -->
+    <div class="flex items-center gap-2 ml-auto">
+      <!-- theme toggle -->
+      <button
+        class="flex items-center justify-center w-9 h-9 bg-transparent rounded-md text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"
+        type="button"
+        (click)="themeService.toggleTheme()"
+        [attr.aria-label]="themeService.currentTheme() === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
+        <span class="material-icons text-[18px]">{{ themeService.currentTheme() === 'light' ? 'dark_mode' : 'light_mode' }}</span>
+      </button>
+
+      <!-- Login (hidden on small mobile) -->
+      <a routerLink="/login" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-medium font-primary text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2 whitespace-nowrap" id="nav-login">Login</a>
+
+      <!-- Get Started -->
+      <a routerLink="/signup" class="hidden min-[380px]:inline-flex items-center justify-center px-4 py-2 text-sm font-medium font-primary bg-app-primary text-app-on-primary hover:bg-app-primary-hover hover:-translate-y-[1px] hover:shadow-[0_4px_14px_rgba(53,37,205,0.3)] rounded-lg transition-all focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2 whitespace-nowrap" id="nav-get-started">Get Started</a>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="md:hidden flex items-center justify-center w-9 h-9 bg-transparent rounded-md text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"
+        type="button"
+        (click)="toggleMobileMenu()"
+        [attr.aria-expanded]="mobileMenuOpen()"
+        aria-label="Toggle mobile navigation menu">
+        <span class="material-icons text-[18px]">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Mobile menu ── -->
+  <div class="flex flex-col gap-0.5 px-4 pb-5 pt-3 bg-app-surface dark:bg-[#0b0f19] border-t border-app-border dark:border-white/10" *ngIf="mobileMenuOpen()" role="menu" aria-label="Mobile navigation">
+    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('product')">Product</button>
+    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('how-it-works')">How It Works</button>
+    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('developers')">Developers</button>
+    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('features')">Pricing</button>
+    <div class="h-px bg-app-border dark:bg-white/10 my-2" role="separator"></div>
+    <a routerLink="/about"  class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" (click)="closeMenu()" id="mobile-about">About</a>
+    <a routerLink="/login"  class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" (click)="closeMenu()">Login</a>
+    <a routerLink="/signup" class="block mt-1 px-5 py-3 bg-app-primary text-app-on-primary text-center rounded-lg font-semibold text-[15px] font-primary hover:bg-app-primary-hover hover:-translate-y-[1px] transition-all focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"  (click)="closeMenu()">Get Started</a>
+  </div>
+</nav>

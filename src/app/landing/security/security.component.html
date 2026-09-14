@@ -1,0 +1,28 @@
+<section class="py-24 bg-app-background border-t border-app-border dark:border-white/5 transition-colors duration-200" aria-labelledby="security-heading">
+  <div class="max-w-[1280px] mx-auto px-6">
+
+    <div class="text-center max-w-[640px] mx-auto mb-16">
+      <p class="text-app-primary dark:text-[#c3c0ff] mb-3 text-sm font-semibold tracking-wide uppercase">Security</p>
+      <h2 id="security-heading" class="text-app-on-surface mb-4 text-3xl sm:text-4xl font-bold font-primary leading-tight">Built for secure programmatic access.</h2>
+      <p class="text-app-on-surface-variant m-0 text-lg">
+        Every layer of the platform is designed with authentication, authorisation,
+        and safe credential handling in mind.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 max-[540px]:grid-cols-1 min-[541px]:max-[960px]:grid-cols-2 min-[961px]:grid-cols-3 gap-5" role="list">
+      <article
+        *ngFor="let f of features"
+        class="p-6 bg-app-surface dark:bg-[#0f1524] border border-app-border dark:border-white/10 rounded-xl transition-all duration-200 hover:border-app-primary dark:hover:border-[#c3c0ff]/40 hover:shadow-[0_4px_20px_rgba(53,37,205,0.08)] dark:hover:shadow-[0_4px_20px_rgba(195,192,255,0.05)]"
+        role="listitem"
+        [attr.aria-label]="f.title">
+        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-app-primary/10 dark:bg-[#c3c0ff]/10 mb-4" aria-hidden="true">
+          <span class="material-icons text-[20px] text-app-primary dark:text-[#c3c0ff]">{{ f.icon }}</span>
+        </div>
+        <h3 class="m-0 mb-2 text-base font-semibold text-app-on-surface font-primary">{{ f.title }}</h3>
+        <p class="m-0 text-[13px] leading-relaxed text-app-on-surface-variant font-primary">{{ f.description }}</p>
+      </article>
+    </div>
+
+  </div>
+</section>
