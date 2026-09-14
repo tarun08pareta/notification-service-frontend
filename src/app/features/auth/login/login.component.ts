@@ -9,6 +9,13 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/common/auth/auth.service';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,6 +23,12 @@ import { AuthService } from '../../../core/common/auth/auth.service';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
