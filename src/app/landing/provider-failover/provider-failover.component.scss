@@ -1,4 +1,4 @@
-// ── Visualization ─────────────────────────────────────────────────────────────
+// ── Visualization container ───────────────────────────────────────────────────
 .failover-viz {
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   max-width: 400px;
 }
 
-// ── Step wrapper ─────────────────────────────────────────────────────────────
+// ── Step wrapper ──────────────────────────────────────────────────────────────
 .viz-step-wrap {
   display: flex;
   flex-direction: column;
@@ -20,38 +20,69 @@
 .viz-node {
   width: 100%;
   max-width: 360px;
-  background: #1e2433;
-  border: 1px solid rgba(255,255,255,0.08);
+  // ── LIGHT MODE (default) ──
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 14px 18px;
   transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
 
+  // ── DARK MODE ──
   :global(.dark-theme) & {
     background: #141b2d;
     border-color: rgba(255,255,255,0.07);
   }
 
+  // Active (already processed steps)
   &--active {
-    border-color: rgba(99,102,241,0.3);
-    background: #1a2038;
+    // Light
+    border-color: rgba(99,102,241,0.25);
+    background: #f8f9ff;
+    // Dark
+    :global(.dark-theme) & {
+      background: #1a2038;
+      border-color: rgba(99,102,241,0.3);
+    }
   }
 
+  // Currently animated step
   &--current {
+    // Light
     border-color: rgba(99,102,241,0.5);
-    box-shadow: 0 0 0 1px rgba(99,102,241,0.15), 0 4px 20px rgba(99,102,241,0.12);
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.12), 0 4px 20px rgba(99,102,241,0.10);
     animation: node-pulse 0.4s ease-out;
+    // Dark
+    :global(.dark-theme) & {
+      box-shadow: 0 0 0 1px rgba(99,102,241,0.15), 0 4px 20px rgba(99,102,241,0.12);
+    }
   }
 
+  // Failure state
   &--failure {
-    border-color: rgba(239,68,68,0.5) !important;
-    box-shadow: 0 0 0 1px rgba(239,68,68,0.12), 0 4px 20px rgba(239,68,68,0.08) !important;
-    background: #1e1420 !important;
+    // Light
+    border-color: rgba(239,68,68,0.45) !important;
+    background: #fff5f5 !important;
+    box-shadow: 0 0 0 1px rgba(239,68,68,0.10), 0 4px 20px rgba(239,68,68,0.06) !important;
+    // Dark
+    :global(.dark-theme) & {
+      background: #1e1420 !important;
+      border-color: rgba(239,68,68,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(239,68,68,0.12), 0 4px 20px rgba(239,68,68,0.08) !important;
+    }
   }
 
+  // Success state
   &--success {
-    border-color: rgba(16,185,129,0.5) !important;
-    box-shadow: 0 0 0 1px rgba(16,185,129,0.12), 0 4px 20px rgba(16,185,129,0.08) !important;
-    background: #141e1a !important;
+    // Light
+    border-color: rgba(16,185,129,0.45) !important;
+    background: #f0fdf8 !important;
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.10), 0 4px 20px rgba(16,185,129,0.06) !important;
+    // Dark
+    :global(.dark-theme) & {
+      background: #141e1a !important;
+      border-color: rgba(16,185,129,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(16,185,129,0.12), 0 4px 20px rgba(16,185,129,0.08) !important;
+    }
   }
 }
 
@@ -67,17 +98,32 @@
   gap: 12px;
 }
 
+// ── Icon ─────────────────────────────────────────────────────────────────────
 .viz-icon {
   font-size: 20px;
-  color: #64748b;
+  // Light
+  color: #94a3b8;
   transition: color 0.3s;
   flex-shrink: 0;
 
-  .viz-node--active &  { color: #6366f1; }
-  .viz-node--failure & { color: #f87171; }
-  .viz-node--success & { color: #34d399; }
+  .viz-node--active &  {
+    color: #6366f1;
+    :global(.dark-theme) .viz-node--active & { color: #818cf8; }
+  }
+  .viz-node--failure & {
+    color: #ef4444;
+    :global(.dark-theme) .viz-node--failure & { color: #f87171; }
+  }
+  .viz-node--success & {
+    color: #10b981;
+    :global(.dark-theme) .viz-node--success & { color: #34d399; }
+  }
+
+  // Dark base
+  :global(.dark-theme) & { color: #64748b; }
 }
 
+// ── Text ─────────────────────────────────────────────────────────────────────
 .viz-node-text {
   display: flex;
   flex-direction: column;
@@ -87,16 +133,22 @@
 .viz-label {
   font-size: 14px;
   font-weight: 600;
-  color: #cbd5e1;
   font-family: var(--app-font-family-primary);
+  // Light
+  color: #1e293b;
+  // Dark
+  :global(.dark-theme) & { color: #cbd5e1; }
 }
 
 .viz-sublabel {
   font-size: 11px;
-  color: #64748b;
   font-family: var(--app-font-family-technical);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  // Light
+  color: #94a3b8;
+  // Dark
+  :global(.dark-theme) & { color: #64748b; }
 }
 
 // ── Status badge ─────────────────────────────────────────────────────────────
@@ -111,14 +163,22 @@
   text-transform: uppercase;
   display: inline-block;
 
-  &--info    { background: rgba(14,165,233,0.12);  color: #38bdf8; }
-  &--routing { background: rgba(99,102,241,0.12);  color: #a5b4fc; }
-  &--failure { background: rgba(239,68,68,0.12);   color: #f87171; }
-  &--retry   { background: rgba(245,158,11,0.12);  color: #fbbf24; }
-  &--success { background: rgba(16,185,129,0.12);  color: #34d399; }
+  // Light mode badge colors (slightly more saturated backgrounds)
+  &--info    { background: rgba(14,165,233,0.10);  color: #0284c7; }
+  &--routing { background: rgba(99,102,241,0.10);  color: #4f46e5; }
+  &--failure { background: rgba(239,68,68,0.10);   color: #dc2626; }
+  &--retry   { background: rgba(245,158,11,0.10);  color: #d97706; }
+  &--success { background: rgba(16,185,129,0.10);  color: #059669; }
+
+  // Dark mode badge colors
+  :global(.dark-theme) &--info    { background: rgba(14,165,233,0.12);  color: #38bdf8; }
+  :global(.dark-theme) &--routing { background: rgba(99,102,241,0.12);  color: #a5b4fc; }
+  :global(.dark-theme) &--failure { background: rgba(239,68,68,0.12);   color: #f87171; }
+  :global(.dark-theme) &--retry   { background: rgba(245,158,11,0.12);  color: #fbbf24; }
+  :global(.dark-theme) &--success { background: rgba(16,185,129,0.12);  color: #34d399; }
 }
 
-// ── Connector between nodes ───────────────────────────────────────────────────
+// ── Connector between nodes ────────────────────────────────────────────────────
 .viz-connector {
   display: flex;
   flex-direction: column;
@@ -130,22 +190,39 @@
 .viz-conn-line {
   width: 2px;
   height: 20px;
-  background: rgba(255,255,255,0.08);
   border-radius: 2px;
   transition: background 0.3s;
+  // Light
+  background: #e2e8f0;
+  // Dark
+  :global(.dark-theme) & { background: rgba(255,255,255,0.08); }
 
-  &--active { background: rgba(99,102,241,0.4); }
+  &--active {
+    // Light
+    background: rgba(99,102,241,0.35);
+    // Dark
+    :global(.dark-theme) & { background: rgba(99,102,241,0.4); }
+  }
 }
 
 .viz-conn-arrow {
   font-size: 16px;
-  color: rgba(255,255,255,0.12);
   transition: color 0.3s;
+  // Light
+  color: #cbd5e1;
+  // Dark
+  :global(.dark-theme) & { color: rgba(255,255,255,0.12); }
 
-  &--active { color: rgba(99,102,241,0.5); }
+  &--active {
+    // Light
+    color: rgba(99,102,241,0.5);
+    // Dark
+    :global(.dark-theme) & { color: rgba(99,102,241,0.5); }
+  }
 }
 
-// ── Reduced-motion ────────────────────────────────────────────────────────────
+// ── Reduced-motion ─────────────────────────────────────────────────────────────
 @media (prefers-reduced-motion: reduce) {
   .viz-node--current { animation: none; }
 }
+

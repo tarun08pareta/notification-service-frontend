@@ -1,69 +1,208 @@
-<nav class="sticky top-0 z-[100] bg-app-background/90 dark:bg-[#0b0f19]/90 backdrop-blur-md border-b border-app-border dark:border-white/10 transition-colors duration-200" role="navigation" aria-label="Main navigation" aria-label="Public website navigation">
-  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
-
+<nav
+  class="sticky top-0 z-[100] bg-white dark:bg-[#0b0f19] border-b border-gray-100 dark:border-white/10 transition-colors duration-200"
+  role="navigation"
+  aria-label="Main navigation"
+  aria-label="Public website navigation"
+>
+  <div
+    class="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between relative"
+  >
     <!-- ── Logo ── -->
-    <a routerLink="/" class="flex items-center shrink-0" aria-label="Notification Engine — go to homepage">
-      <img class="h-[34px] block dark:hidden" src="notification-logo.png" alt="Notification Engine" />
-      <img class="h-[34px] hidden dark:block" src="notification-dark-logo.png" alt="Notification Engine" />
+    <a
+      routerLink="/"
+      class="flex items-center gap-2 shrink-0 no-underline"
+      aria-label="Notification Engine — go to homepage"
+    >
+      <img class="h-[36px]" src="small-logo.png" alt="Notification Engine" />
+      <span
+        class="text-[19px] font-bold text-gray-900 dark:text-white font-primary tracking-tight hidden sm:block"
+        >Notification<span class="text-app-primary">Engine</span></span
+      >
     </a>
 
     <!-- ── Desktop nav links ── -->
-    <ul class="hidden md:flex items-center gap-1 flex-1 m-0 p-0 list-none" role="list">
-      <li>
-        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('product')">Product</button>
+    <ul
+      class="hidden  lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 m-0 p-0 list-none h-full"
+      role="list"
+    >
+      <li class="h-full flex items-center no-underline">
+        <a
+          routerLink="/"
+          [routerLinkActiveOptions]="{exact: true}"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute  after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >Home</a
+        >
       </li>
-      <li>
-        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('how-it-works')">How It Works</button>
+      <li class="h-full flex items-center">
+        <a
+          routerLink="/features"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >Features</a
+        >
       </li>
-      <li>
-        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('developers')">Developers</button>
+      
+      <li class="h-full flex items-center">
+        <a
+          routerLink="/pricing"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >Pricing</a
+        >
       </li>
-      <li>
-        <button class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" (click)="scrollToSection('features')">Pricing</button>
+      <!-- <li class="h-full flex items-center">
+        <a
+          routerLink="/docs"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >Docs</a
+        >
+      </li> -->
+      <li class="h-full flex items-center">
+        <a
+          routerLink="/about"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >About</a
+        >
       </li>
-      <li>
-        <a class="inline-flex items-center px-3 py-2 text-sm font-medium font-primary text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" routerLink="/about" id="nav-about">About</a>
+      <li class="h-full flex items-center">
+        <a
+          routerLink="/contact"
+          routerLinkActive="font-semibold text-app-primary relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-app-primary after:rounded-t-full"
+          class="inline-flex items-center px-4 h-full text-[14px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >Contact</a
+        >
       </li>
     </ul>
 
     <!-- ── Right actions ── -->
-    <div class="flex items-center gap-2 ml-auto">
+    <div class="flex items-center gap-3 shrink-0 ml-auto lg:ml-0">
       <!-- theme toggle -->
       <button
-        class="flex items-center justify-center w-9 h-9 bg-transparent rounded-md text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"
-        type="button"
+        mat-icon-button
         (click)="themeService.toggleTheme()"
-        [attr.aria-label]="themeService.currentTheme() === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
-        <span class="material-icons text-[18px]">{{ themeService.currentTheme() === 'light' ? 'dark_mode' : 'light_mode' }}</span>
+        aria-label="Toggle theme"
+        class="mr-2"
+      >
+        <mat-icon>{{
+          themeService.currentTheme() === "light" ? "dark_mode" : "light_mode"
+        }}</mat-icon>
       </button>
 
-      <!-- Login (hidden on small mobile) -->
-      <a routerLink="/login" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-medium font-primary text-app-on-surface hover:bg-app-surface-hover rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2 whitespace-nowrap" id="nav-login">Login</a>
+      <!-- Vertical divider -->
+      <div
+        class="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1"
+      ></div>
 
       <!-- Get Started -->
-      <a routerLink="/signup" class="hidden min-[380px]:inline-flex items-center justify-center px-4 py-2 text-sm font-medium font-primary bg-app-primary text-app-on-primary hover:bg-app-primary-hover hover:-translate-y-[1px] hover:shadow-[0_4px_14px_rgba(53,37,205,0.3)] rounded-lg transition-all focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2 whitespace-nowrap" id="nav-get-started">Get Started</a>
+      <a
+        routerLink="/login"
+        class="hidden min-[380px]:inline-flex items-center justify-center gap-2 px-5 py-2 text-[14px] font-semibold font-primary bg-[#0052FF] text-white hover:bg-blue-700 rounded-lg transition-all whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-[1px]"
+      >
+        Login In
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M14 5l7 7m0 0l-7 7m7-7H3"
+          />
+        </svg>
+      </a>
 
       <!-- Mobile hamburger -->
       <button
-        class="md:hidden flex items-center justify-center w-9 h-9 bg-transparent rounded-md text-app-on-surface-variant hover:text-app-on-surface hover:bg-app-surface-hover transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"
+        class="lg:hidden flex items-center justify-center w-9 h-9 bg-transparent rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-app-primary"
         type="button"
         (click)="toggleMobileMenu()"
         [attr.aria-expanded]="mobileMenuOpen()"
-        aria-label="Toggle mobile navigation menu">
-        <span class="material-icons text-[18px]">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
+        aria-label="Toggle mobile navigation menu"
+      >
+        <span class="material-icons text-[18px]">{{
+          mobileMenuOpen() ? "close" : "menu"
+        }}</span>
       </button>
     </div>
   </div>
 
   <!-- ── Mobile menu ── -->
-  <div class="flex flex-col gap-0.5 px-4 pb-5 pt-3 bg-app-surface dark:bg-[#0b0f19] border-t border-app-border dark:border-white/10" *ngIf="mobileMenuOpen()" role="menu" aria-label="Mobile navigation">
-    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('product')">Product</button>
-    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('how-it-works')">How It Works</button>
-    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('developers')">Developers</button>
-    <button class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" type="button" role="menuitem" (click)="scrollToSection('features')">Pricing</button>
-    <div class="h-px bg-app-border dark:bg-white/10 my-2" role="separator"></div>
-    <a routerLink="/about"  class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" (click)="closeMenu()" id="mobile-about">About</a>
-    <a routerLink="/login"  class="block w-full px-4 py-3 text-[15px] font-medium font-primary text-app-on-surface bg-transparent hover:bg-app-surface-hover rounded-md text-left transition-colors focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2" (click)="closeMenu()">Login</a>
-    <a routerLink="/signup" class="block mt-1 px-5 py-3 bg-app-primary text-app-on-primary text-center rounded-lg font-semibold text-[15px] font-primary hover:bg-app-primary-hover hover:-translate-y-[1px] transition-all focus-visible:outline-2 focus-visible:outline-app-primary focus-visible:outline-offset-2"  (click)="closeMenu()">Get Started</a>
+  <div
+    class="flex flex-col gap-1 px-4 pb-5 pt-3 bg-white dark:bg-[#0b0f19] border-t border-gray-100 dark:border-white/10"
+    *ngIf="mobileMenuOpen()"
+    role="menu"
+    aria-label="Mobile navigation"
+  >
+    <a
+      routerLink="/"
+      class="block w-full px-4 py-2.5 text-[15px] font-semibold font-primary text-app-primary bg-blue-50 dark:bg-blue-900/20 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Home</a
+    >
+    <a
+      routerLink="/"
+      fragment="features"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Features</a
+    >
+    <!-- <a
+      routerLink="/"
+      fragment="use-cases"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Use Cases</a
+    > -->
+    <a
+      routerLink="/pricing"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Pricing</a
+    >
+    <!-- <a
+      routerLink="/docs"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Docs</a
+    > -->
+    <a
+      routerLink="/about"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >About</a
+    >
+    <a
+      routerLink="/contact"
+      class="block w-full px-4 py-2.5 text-[15px] font-medium font-primary text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-md text-left transition-colors"
+      role="menuitem"
+      (click)="closeMenu()"
+      >Contact</a
+    >
+    <div class="h-px bg-gray-100 dark:bg-white/10 my-2" role="separator"></div>
+    <a
+      routerLink="/login"
+      class="block w-full px-4 py-2.5 text-[15px] font-semibold font-primary text-app-primary border border-blue-200 dark:border-blue-800 rounded-md text-center transition-colors mb-2"
+      (click)="closeMenu()"
+      >Sign In</a
+    >
+    <a
+      routerLink="/signup"
+      class="block w-full px-4 py-2.5 bg-[#0052FF] text-white text-center rounded-md font-semibold text-[15px] font-primary hover:bg-blue-700 transition-colors"
+      (click)="closeMenu()"
+      >Get Started</a
+    >
   </div>
 </nav>

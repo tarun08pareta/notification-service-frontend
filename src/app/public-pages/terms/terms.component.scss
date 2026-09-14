@@ -1,4 +1,7 @@
-// Identical to terms.component.scss — reuses the shared legal layout pattern
+// Shared legal page styles (used by Terms and Privacy)
+:host {
+  display: block;
+}
 .legal-page { background: var(--app-background); }
 
 .legal-container {

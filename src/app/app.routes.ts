@@ -10,41 +10,10 @@ export const routes: Routes = [
   // PUBLIC WEBSITE
   // ══════════════════════════════════════════════════════════════
 
-  // Root: Landing Page (exact match only so /user/... still resolves below)
   {
     path: '',
-    pathMatch: 'full',
-    loadComponent: () =>
-      import('./landing/landing-page.component').then(m => m.LandingPageComponent)
-  },
-
-  // Public pages via shared public layout (navbar + footer wrapper)
-  {
-    path: '',
-    loadComponent: () =>
-      import('./layout/public-layout/public-layout.component').then(m => m.PublicLayoutComponent),
-    children: [
-      {
-        path: 'about',
-        loadComponent: () =>
-          import('./features/public/about/about.component').then(m => m.AboutComponent)
-      },
-      {
-        path: 'terms',
-        loadComponent: () =>
-          import('./features/public/terms/terms.component').then(m => m.TermsComponent)
-      },
-      {
-        path: 'privacy',
-        loadComponent: () =>
-          import('./features/public/privacy/privacy.component').then(m => m.PrivacyComponent)
-      },
-      {
-        path: 'contact',
-        loadComponent: () =>
-          import('./features/public/contact/contact.component').then(m => m.ContactComponent)
-      }
-    ]
+    loadChildren: () =>
+      import('./layout/public-layout/public-layout.routes').then((m) => m.PUBLIC_LAYOUT_ROUTES),
   },
 
   // ══════════════════════════════════════════════════════════════
