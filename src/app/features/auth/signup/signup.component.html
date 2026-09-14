@@ -1,62 +1,116 @@
-<div class="auth-card">
-  <div class="auth-card-header">
-    <div class="brand-logo-container">
-      <mat-icon color="primary" class="large-icon">notifications_active</mat-icon>
+<div class="flex min-h-screen w-full overflow-hidden">
+  <!-- Left Panel: Signup Form -->
+  <div class="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 bg-white dark:bg-slate-900 overflow-y-auto">
+    <div class="w-full max-w-md">
+      <!-- Logo -->
+      <div class="flex items-center gap-2 mb-8">
+        <img src="small-logo.png" alt="Logo" class="w-10 h-10 object-contain" />
+        <span class="text-xl font-semibold text-slate-900 dark:text-white">
+          Notification<span class="text-blue-600 dark:text-blue-400">Engine</span>
+        </span>
+      </div>
+
+      <!-- Welcome Heading -->
+      <h1 class="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Create Account 👋</h1>
+      <p class="text-slate-500 dark:text-slate-400 mb-6">Sign up to get started with NotificationEngine</p>
+
+      <!-- Alert / Error message -->
+      @if (errorMessage) {
+        <div
+          class="mb-6 p-4 text-sm text-red-600 bg-red-50 rounded-lg border border-red-100 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20 font-medium animate-[shake_0.5s_ease-in-out]"
+        >
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- Form -->
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-1">
+        <!-- Full Name field -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="name" type="text" placeholder="John Doe">
+          @if (signupForm.get('name')?.hasError('required')) {
+            <mat-error>Name is required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Email Address field -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Email Address</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="name@example.com">
+          @if (signupForm.get('email')?.hasError('required')) {
+            <mat-error>Email is required</mat-error>
+          }
+          @if (signupForm.get('email')?.hasError('email')) {
+            <mat-error>Please enter a valid email</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          @if (signupForm.get('password')?.hasError('required')) {
+            <mat-error>Password is required</mat-error>
+          }
+          @if (signupForm.get('password')?.hasError('minlength')) {
+            <mat-error>Password must be at least 8 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Confirm Password field -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'">
+          <button type="button" mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide confirm password'">
+            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          @if (signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Submit Button -->
+        <button
+          class="mt-4 w-full h-[48px] rounded-full shadow-md"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="signupForm.invalid || isLoading"
+        >
+          @if (!isLoading) {
+            <span>Sign Up →</span>
+          }
+          @if (isLoading) {
+            <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+          }
+        </button>
+
+        <!-- Links -->
+        <div class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+          Already have an account?
+          <a routerLink="/login" class="font-medium text-blue-600 hover:underline dark:text-blue-400">
+            Sign in
+          </a>
+        </div>
+      </form>
     </div>
-    <h2>Create Account</h2>
-    <p>Sign up to get started</p>
   </div>
 
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
-    
-    <div *ngIf="errorMessage" class="error-banner">
-      {{ errorMessage }}
-    </div>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Full Name</mat-label>
-      <input matInput formControlName="name" type="text" placeholder="John Doe">
-      <mat-error *ngIf="signupForm.get('name')?.hasError('required')">Name is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Email Address</mat-label>
-      <input matInput formControlName="email" type="email" placeholder="name@example.com">
-      <mat-error *ngIf="signupForm.get('email')?.hasError('required')">Email is required</mat-error>
-      <mat-error *ngIf="signupForm.get('email')?.hasError('email')">Please enter a valid email</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-      <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-      <mat-error *ngIf="signupForm.get('password')?.hasError('required')">Password is required</mat-error>
-      <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be at least 8 characters</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Confirm Password</mat-label>
-      <input matInput formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'">
-      <button type="button" mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide confirm password'" [attr.aria-pressed]="hideConfirmPassword">
-        <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-      <mat-error *ngIf="signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched">
-        Passwords do not match
-      </mat-error>
-    </mat-form-field>
-
-    <div class="form-actions">
-      <button mat-flat-button color="primary" class="full-width submit-btn" type="submit" [disabled]="signupForm.invalid || isLoading">
-        <span *ngIf="!isLoading">Sign Up</span>
-        <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
-      </button>
-    </div>
-
-    <div class="auth-links">
-      <span>Already have an account?</span>
-      <a routerLink="/login" class="primary-link">Sign in</a>
-    </div>
-  </form>
+  <!-- Right Panel: Marketing Content -->
+  <div class="hidden md:flex w-1/2 h-screen sticky top-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900 justify-center items-center p-4 overflow-hidden">
+    <img
+      class="w-auto h-auto max-w-full max-h-[85vh] object-contain block dark:hidden drop-shadow-md"
+      src="login.png"
+      alt="Notification Engine Preview"
+    />
+    <img
+      class="w-auto h-auto max-w-full max-h-[85vh] object-contain hidden dark:block drop-shadow-md"
+      src="login-dark.png"
+      alt="Notification Engine Preview"
+    />
+  </div>
 </div>
