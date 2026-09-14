@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/common/auth/auth.service';
 
 @Component({
@@ -16,14 +16,9 @@ import { AuthService } from '../../../core/common/auth/auth.service';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
@@ -32,7 +27,7 @@ export class LoginComponent {
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
+    password: ['', [Validators.required]],
   });
 
   hidePassword = true;
@@ -48,18 +43,27 @@ export class LoginComponent {
     this.errorMessage = '';
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
+      next: (response) => {
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        if (response.user?.roles?.includes('ADMIN')) {
+          this.router.navigate(['/admin/dashboard']);
+        } else if (response.user?.roles?.includes('USER')) {
+          this.router.navigate(['/user/dashboard']);
+        } else {
+          this.authService.logout();
+          this.errorMessage =
+            'Unauthorized: Your account does not have a valid role.';
+        }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Invalid email or password. Please try again.';
+        this.errorMessage =
+          err.error?.message || 'Invalid email or password. Please try again.';
         // For development fallback if backend is not running
         if (err.status === 0 || err.status === 404) {
-             this.errorMessage = 'Backend API is currently unreachable.';
+          this.errorMessage = 'Backend API is currently unreachable.';
         }
-      }
+      },
     });
   }
 }

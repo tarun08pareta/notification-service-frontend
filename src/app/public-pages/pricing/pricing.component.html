@@ -1,0 +1,248 @@
+<div class="w-full bg-white dark:bg-[#0b0f19] text-gray-900 dark:text-white overflow-hidden">
+
+  <!-- ══════════════════════════════════════════ HERO ══════════════════════════════════════════ -->
+  <section class="relative pt-20 pb-16 lg:pt-28 bg-gradient-to-b from-blue-50/60 to-transparent dark:from-blue-950/20 border-b border-gray-100 dark:border-white/5">
+    <!-- Blur bg blob -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/40 dark:bg-blue-900/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+
+      <!-- Left -->
+      <div class="flex-1">
+        <span class="inline-block px-3 py-1 bg-[#E8F3FF] dark:bg-blue-900/30 text-[#0052FF] dark:text-blue-400 text-[11px] font-bold tracking-widest rounded-full uppercase mb-5">
+          PRICING
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-bold leading-[1.12] tracking-tight mb-5">
+          Simple, Transparent<br />
+          Pricing for <span class="text-[#0052FF]">Everyone</span>
+        </h1>
+        <p class="text-[17px] text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
+          Choose the plan that fits your needs. Start free and scale as you grow with a reliable notification infrastructure.
+        </p>
+
+        <!-- Trust badges -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-[#E8F3FF] dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-[#0052FF]">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+              <div class="text-[13px] font-bold text-gray-900 dark:text-white">No Setup Fees</div>
+              <div class="text-[12px] text-gray-500 dark:text-gray-400">Get started instantly</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-[#E8F3FF] dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-[#0052FF]">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </div>
+            <div>
+              <div class="text-[13px] font-bold text-gray-900 dark:text-white">Flexible Billing</div>
+              <div class="text-[12px] text-gray-500 dark:text-gray-400">Monthly or yearly</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-[#E8F3FF] dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-[#0052FF]">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div>
+              <div class="text-[13px] font-bold text-gray-900 dark:text-white">Cancel Anytime</div>
+              <div class="text-[12px] text-gray-500 dark:text-gray-400">No long-term contracts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — Channel card -->
+      <div class="flex-shrink-0 w-full max-w-[450px] ">
+        <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl p-6">
+          <!-- Channel list -->
+          <div class="space-y-3 mb-6">
+            @for (item of [
+              {name:'Email', color:'text-[#0052FF]', bg:'bg-blue-50 dark:bg-blue-900/30'},
+              {name:'SMS', color:'text-[#10B981]', bg:'bg-green-50 dark:bg-green-900/30'},
+              {name:'Push', color:'text-[#7C3AED]', bg:'bg-purple-50 dark:bg-purple-900/30'},
+              {name:'In-App', color:'text-[#F97316]', bg:'bg-orange-50 dark:bg-orange-900/30'},
+              {name:'Webhook', color:'text-[#E11D48]', bg:'bg-red-50 dark:bg-red-900/30'}
+            ]; track item.name) {
+              <div class="flex items-center gap-3">
+                <div class="w-7 h-7 rounded-lg {{item.bg}} {{item.color}} flex items-center justify-center text-[11px] font-bold">
+                  @switch(item.name) {
+                    @case('Email') { <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> }
+                    @case('SMS') { <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-4.5A7.5 7.5 0 0 1 11.5 9H20v2.5Z"/></svg> }
+                    @case('Push') { <svg class="w-3.5 h-3.5 -rotate-45 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> }
+                    @case('In-App') { <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg> }
+                    @case('Webhook') { <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7a5 5 0 0 1 9 3"/><path d="M17 17a5 5 0 0 1-9-3"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/></svg> }
+                  }
+                </div>
+                <span class="text-[13px] font-semibold text-gray-800 dark:text-gray-200">{{ item.name }}</span>
+                <!-- Progress bar -->
+                <div class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div class="h-full rounded-full {{item.bg}}"
+                    [style.width]="item.name==='Email'?'85%':item.name==='SMS'?'72%':item.name==='Push'?'65%':item.name==='In-App'?'78%':'55%'">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <!-- Scale badge -->
+          <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-8 h-8 bg-[#0052FF] rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="8" width="3" height="8" rx="1"/><rect x="17" y="5" width="3" height="11" rx="1"/></svg>
+            </div>
+            <div>
+              <div class="text-[12px] font-bold text-gray-900 dark:text-white leading-tight">Scale your</div>
+              <div class="text-[12px] font-bold text-gray-900 dark:text-white leading-tight">notifications</div>
+              <div class="text-[12px] font-bold text-gray-900 dark:text-white leading-tight">without limits</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ PLANS ════════════════════════════════════════ -->
+  <section class="py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Billing toggle -->
+      <div class="flex items-center justify-center gap-3 mb-12">
+        <button
+          (click)="toggleBilling(false)"
+          class="px-5 py-2 rounded-full text-[13px] font-bold transition-all"
+          [class]="!billingYearly() ? 'bg-[#0052FF] text-white shadow-lg shadow-blue-500/30' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+        >
+          Monthly
+        </button>
+        <button
+          (click)="toggleBilling(true)"
+          class="px-5 py-2 rounded-full text-[13px] font-bold transition-all"
+          [class]="billingYearly() ? 'bg-[#0052FF] text-white shadow-lg shadow-blue-500/30' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+        >
+          Yearly
+        </button>
+        <span class="inline-flex items-center px-2.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[11px] font-bold rounded-full">
+          Save 20%
+        </span>
+      </div>
+
+      <!-- Plans grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        @for (plan of plans; track plan.name) {
+          <div class="relative rounded-2xl border transition-all duration-300 flex flex-col"
+            [class]="plan.popular
+              ? 'bg-[#0052FF] dark:bg-[#111827] border-[#0052FF] shadow-2xl shadow-blue-500/30'
+              : 'bg-white dark:bg-[#111827] border-black-100 dark:border-gray-800 hover:shadow-xl hover:-translate-y-1'"
+          >
+            <!-- Popular badge -->
+            @if (plan.popular) {
+              <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span class="bg-white text-[#0052FF] text-[11px] font-black px-4 py-1 rounded-full shadow-lg whitespace-nowrap">
+                  ⭐ Most Popular
+                </span>
+              </div>
+            }
+
+            <div class="p-7 flex flex-col flex-1">
+
+              <!-- Icon -->
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
+                [class]="plan.iconBg + ' ' + plan.iconColor">
+                @switch (plan.icon) {
+                  @case ('send') {
+                    <svg class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m22 2-7 20-4-9-9-4Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13"/></svg>
+                  }
+                  @case ('users') {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                  }
+                  @case ('team') {
+                    <svg class="w-5 h-5 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                  }
+                  @case ('building') {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7l9-4 9 4M4 11v10M20 11v10M8 11v4M12 11v4M16 11v4"/></svg>
+                  }
+                }
+              </div>
+
+              <!-- Name + tagline -->
+              <h3 class="text-[18px] font-bold mb-1" [class]="plan.popular ? 'text-white' : 'text-gray-900 dark:text-white'">{{ plan.name }}</h3>
+              <p class="text-[13px] mb-5 leading-relaxed" [class]="plan.popular ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'">{{ plan.tagline }}</p>
+
+              <!-- Price -->
+              <div class="mb-6">
+                @if (plan.monthlyPrice !== null) {
+                  <div class="flex items-end gap-1">
+                    <span class="text-4xl font-black" [class]="plan.popular ? 'text-white' : 'text-gray-900 dark:text-white'">
+                      ${{ billingYearly() ? plan.yearlyPrice : plan.monthlyPrice }}
+                    </span>
+                    <span class="text-[13px] mb-1.5" [class]="plan.popular ? 'text-blue-200' : 'text-gray-500 dark:text-gray-400'">/month</span>
+                  </div>
+                } @else {
+                  <div class="text-[22px] font-black" [class]="plan.popular ? 'text-white' : 'text-gray-900 dark:text-white'">Custom Pricing</div>
+                }
+              </div>
+
+              <!-- CTA -->
+              <button class="w-full py-2.5 rounded-xl text-[13px] font-bold mb-7 transition-all"
+                [class]="plan.ctaClass">
+                {{ plan.ctaLabel }}
+              </button>
+
+              <!-- Divider -->
+              <div class="h-px mb-5" [class]="plan.popular ? 'bg-blue-400/40' : 'bg-gray-100 dark:bg-gray-800'"></div>
+
+              <!-- Features -->
+              <ul class="space-y-2.5 flex-1">
+                @for (f of plan.features; track f.text) {
+                  <li class="flex items-start gap-2.5">
+                    @if (f.included) {
+                      <div class="w-4 h-4 mt-0.5 rounded-full flex items-center justify-center shrink-0"
+                        [class]="plan.popular ? 'bg-white/20' : 'bg-blue-50 dark:bg-blue-900/20'">
+                        <svg class="w-2.5 h-2.5" [class]="plan.popular ? 'text-white' : 'text-[#0052FF]'" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                      </div>
+                      <span class="text-[13px]" [class]="plan.popular ? 'text-blue-50' : 'text-gray-600 dark:text-gray-400'">{{ f.text }}</span>
+                    } @else {
+                      <div class="w-4 h-4 mt-0.5 rounded-full flex items-center justify-center shrink-0 bg-gray-100 dark:bg-gray-800">
+                        <svg class="w-2.5 h-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
+                      </div>
+                      <span class="text-[13px] text-gray-400 dark:text-gray-600 line-through">{{ f.text }}</span>
+                    }
+                  </li>
+                }
+              </ul>
+
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+ 
+
+ 
+
+  <!-- ════════════════════════════════════════ CTA ════════════════════════════════════════ -->
+  <section class="max-w-7xl mx-auto px-6 pb-24">
+    <div class="relative bg-[#0b1b3d] rounded-[2rem] overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-[#0b1b3d] via-[#07132a] to-[#040a18]"></div>
+      <div class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-t from-[#0052FF]/20 to-transparent blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-20 -top-20 w-[300px] h-[300px] bg-[#0052FF]/10 rounded-full blur-[60px] pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between p-12 lg:px-16 lg:py-14 gap-8">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Ready to power your notifications?</h2>
+          <p class="text-[#a0b5df] text-[15px]">
+            Join thousands of businesses using NotificationEngine.
+          </p>
+        </div>
+        <a routerLink="/signup" class="shrink-0 bg-white text-[#0052FF] px-8 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-gray-50 transition-colors shadow-xl whitespace-nowrap">
+          Get Started Today
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

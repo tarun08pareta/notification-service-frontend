@@ -28,7 +28,6 @@ export class AuthService {
         return this.http.post<LoginResponse>(apiUrl(API_ENDPOINTS.AUTH.LOGIN), request).pipe(
             tap(response => {
                 this.setUser(response.user, response.accessToken, response.expiresIn);
-                this.router.navigate(['/dashboard']);
             })
         );
     }

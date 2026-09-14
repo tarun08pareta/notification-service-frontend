@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
-import { NavbarComponent } from './navbar/navbar.component';
 import { HeroComponent } from './hero/hero.component';
 import { ProblemSolutionComponent } from './problem-solution/problem-solution.component';
 import { FeaturesComponent } from './features/features.component';
@@ -10,14 +9,12 @@ import { ChannelsComponent } from './channels/channels.component';
 import { DashboardPreviewComponent } from './dashboard-preview/dashboard-preview.component';
 import { SecurityComponent } from './security/security.component';
 import { CtaComponent } from './cta/cta.component';
-import { FooterComponent } from '../layout/components/footer/footer.component';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NavbarComponent,
     HeroComponent,
     ProblemSolutionComponent,
     FeaturesComponent,
@@ -28,7 +25,6 @@ import { FooterComponent } from '../layout/components/footer/footer.component';
     DashboardPreviewComponent,
     SecurityComponent,
     CtaComponent,
-    FooterComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss',

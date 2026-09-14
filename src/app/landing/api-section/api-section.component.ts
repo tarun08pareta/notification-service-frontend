@@ -22,7 +22,7 @@ export class ApiSectionComponent {
 }`;
 
   readonly fullRequest =
-    `POST /api/v1/notifications\nContent-Type: application/json\nAuthorization: Bearer <token>\n\n` +
+    `POST /api/v1/notifications\nContent-Type: application/json\nX-API-Key: <token>\n\n` +
     this.requestBody;
 
   copyCode(): void {

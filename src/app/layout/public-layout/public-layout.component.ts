@@ -19,15 +19,38 @@ import { FooterComponent } from '../components/footer/footer.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
   template: `
-    <app-landing-navbar></app-landing-navbar>
-    <main class="public-page-content">
-      <router-outlet></router-outlet>
-    </main>
-    <app-footer></app-footer>
+    <div class="public-layout">
+      <app-landing-navbar></app-landing-navbar>
+
+      <main class="public-main">
+        <router-outlet></router-outlet>
+      </main>
+
+      <app-footer></app-footer>
+    </div>
   `,
   styles: [`
-    :host { display: block; }
-    .public-page-content { min-height: calc(100vh - 64px); }
+    :host { 
+      display: block; 
+    }
+    
+    .public-layout {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .public-main {
+      flex: 1 0 auto;
+      width: 100%;
+      min-width: 0;
+    }
+
+    app-landing-navbar, app-footer {
+      flex-shrink: 0;
+    }
   `]
 })
 export class PublicLayoutComponent {}
