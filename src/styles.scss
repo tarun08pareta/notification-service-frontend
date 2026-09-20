@@ -173,3 +173,9 @@ body {
     // -3 is the most compact setting (reduces height to approx 40-44px)
     @include mat.form-field-density(-3);
 }
+
+.blur-backdrop {
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.4); /* Background ko thoda dim karne ke liye */
+}
+

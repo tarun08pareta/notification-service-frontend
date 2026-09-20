@@ -21,5 +21,8 @@ export const API_ENDPOINTS = {
   },
   TEMPLATES: {
     BASE: '/api/v1/templates'
+  },
+  API_TOKENS: {
+    BASE: '/api/v1/api-tokens'
   }
 } as const;

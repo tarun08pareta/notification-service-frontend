@@ -1,0 +1,15 @@
+::ng-deep mat-drawer-container {
+    background-color: transparent !important;
+}
+
+.active-link {
+    background-color: var(--app-primary-container) !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    div{
+      color: #ffffff !important;
+    }
+    .mat-icon {
+      color: #ffffff !important;
+    }
+  }
