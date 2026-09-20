@@ -127,6 +127,20 @@ export const routes: Routes = [
   },
 
   // ══════════════════════════════════════════════════════════════
+  // GOOGLE OAUTH CALLBACK — top-level, NO auth layout wrapper
+  // This route is loaded inside the popup window.
+  // It must be standalone so the popup only renders the callback
+  // component with no navigation shell, header, or login form.
+  // ══════════════════════════════════════════════════════════════
+
+  {
+    path: 'auth/google/callback',
+    loadComponent: () =>
+      import('./features/auth/oauth-callback/oauth-callback.component')
+        .then(m => m.OAuthCallbackComponent)
+  },
+
+  // ══════════════════════════════════════════════════════════════
   // WILDCARD — unknown URLs show the landing page
   // ══════════════════════════════════════════════════════════════
 

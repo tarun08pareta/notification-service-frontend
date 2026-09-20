@@ -26,6 +26,7 @@ import {
   DeliveryAttempt,
 } from '../../../../core/common/notifications/notification.models';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PageHeaderComponent } from '../../../../shared/ui/page-header/page-header.component';
 
 @Component({
   selector: 'app-playground',
@@ -43,6 +44,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     MatExpansionModule,
     MatTableModule,
     MatSnackBarModule,
+    PageHeaderComponent
   ],
   templateUrl: './playground.component.html',
   styleUrls: ['./playground.component.scss'],

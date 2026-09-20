@@ -1,1 +1,395 @@
-<p>api-tokens works!</p>
+<!-- API Token Create Dialog Template -->
+<ng-template #createTokenDialog>
+  <div
+    class="flex flex-col bg-[var(--app-surface)] text-[var(--app-on-surface)] overflow-hidden w-[450px] max-w-[90vw]">
+    <!-- Dialog Header -->
+    <div
+      class="px-6 py-4 border-b border-[var(--app-border)] flex justify-between items-center bg-[var(--app-primary)] text-[var(--app-on-primary)]">
+      <h3 class="text-lg font-semibold m-0">
+        Create API Token
+      </h3>
+      <button mat-icon-button (click)="closeCreateDialog()"
+        class="opacity-80 hover:opacity-100">
+        <mat-icon class="text-white dark:text-black border border-white dark:border-black rounded-full">close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Drawer Content (Form) -->
+    <div class="p-6" *ngIf="!newTokenResponse()">
+      <form [formGroup]="createForm" (ngSubmit)="submitCreateToken()" class="flex flex-col">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Token Name</mat-label>
+          <input matInput formControlName="name" placeholder="Production API" />
+          <mat-error *ngIf="createForm.get('name')?.hasError('required')">Name is required</mat-error>
+          <mat-error *ngIf="createForm.get('name')?.hasError('maxlength')">Name cannot exceed 100 characters</mat-error>
+        </mat-form-field>
+
+        <div
+          class="bg-[var(--app-info)]/10 text-[var(--app-info)] p-4 rounded-[var(--app-radius-md)] text-sm flex justify-center items-start gap-3 mt-4 border border-[var(--app-info)]/30">
+          <mat-icon class="shrink-0">lock</mat-icon>
+          <div>
+            <p class="font-semibold m-0">Security Note</p>
+            <p>
+              Your token will be shown. Store it securely after
+              creation.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" mat-button (click)="closeCreateDialog()" [disabled]="isCreating()">
+            Cancel
+          </button>
+          <button type="submit" mat-flat-button color="primary" [disabled]="createForm.invalid || isCreating()">
+            <span *ngIf="!isCreating()">Create Token</span>
+            <span *ngIf="isCreating()" class="flex items-center gap-2">
+              <mat-spinner diameter="18" class="!stroke-white"></mat-spinner>
+              Creating...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- SUCCESS STATE (Slice 4) -->
+    <div class="p-6 flex flex-col items-center justify-center text-center" *ngIf="newTokenResponse()">
+      <div
+        class="w-16 h-16 bg-[var(--app-success)]/10 text-[var(--app-success)] rounded-full flex items-center justify-center mb-6">
+        <mat-icon class="scale-[1.5]">check_circle</mat-icon>
+      </div>
+
+      <h3 class="text-xl font-bold mb-2">
+        Token Created
+      </h3>
+      <p class="text-sm text-[var(--app-on-surface-variant)] mb-8">
+        Copy this token now. You won't be able to view it again.
+      </p>
+
+      <div
+        class="w-full bg-[var(--app-surface-variant)] border border-[var(--app-border)] rounded-[var(--app-radius-md)] p-4 mb-8">
+        <div class="text-sm font-semibold text-[var(--app-on-surface)] mb-3">
+          {{ newTokenResponse()!.name }}
+        </div>
+        <code
+          class="block font-mono text-sm text-[var(--app-on-surface)] break-all select-all mb-4 bg-[var(--app-surface)] p-3 rounded border border-[var(--app-border)]">
+          {{ newTokenResponse()!.token }}
+        </code>
+        <button mat-flat-button color="primary" class="w-full h-[40px]" (click)="copyToken(newTokenResponse()!.token)">
+          <mat-icon>content_copy</mat-icon> Copy Token
+        </button>
+      </div>
+
+      <button mat-button class="w-full" (click)="closeCreateDialog()">Done</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- API Token View Dialog Template -->
+<ng-template #viewTokenDialog>
+  <div
+    class="flex flex-col bg-[var(--app-surface)] text-[var(--app-on-surface)] overflow-hidden w-[450px] max-w-[90vw]">
+    <!-- Dialog Header -->
+    <div
+      class="px-6 py-4 border-b border-[var(--app-border)] flex justify-between items-center bg-[var(--app-surface-variant)] text-[var(--app-on-surface)]">
+      <h3 class="text-lg font-semibold m-0">
+        Token Details
+      </h3>
+      <button mat-icon-button mat-dialog-close
+        class="text-[var(--app-on-surface-variant)] hover:text-[var(--app-on-surface)]">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Dialog Content -->
+    <div class="p-6 flex flex-col gap-4 backdrop-blur-sm" *ngIf="viewSelectedToken">
+
+      <div>
+        <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Name</div>
+        <div class="font-medium text-[var(--app-on-surface)]">{{ viewSelectedToken.name }}</div>
+      </div>
+
+      <div class=" flex flex-col gap-3">
+        <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Token</div>
+        <div
+          class="font-mono text-sm break-all text-[var(--app-on-surface)] bg-[var(--app-surface-variant)] px-2 py-1 rounded inline-block">
+          {{ viewSelectedToken.token }}
+        </div>
+          <button mat-flat-button color="primary" class="w-full h-[40px]" (click)="copyToken(viewSelectedToken.token)">
+          <mat-icon>content_copy</mat-icon> Copy Token
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Created At</div>
+          <div class="text-sm text-[var(--app-on-surface)]">{{ viewSelectedToken.createdAt | date: 'medium' }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Last Used At</div>
+          <div class="text-sm text-[var(--app-on-surface)]">
+            {{ viewSelectedToken.lastUsedAt ? (viewSelectedToken.lastUsedAt | date: 'medium') : 'Never used' }}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Status</div>
+        <div>
+          <span [ngClass]="{
+              'bg-[var(--app-success)]/10 text-[var(--app-success)]': !viewSelectedToken.revokedAt,
+              'bg-[var(--app-error)]/10 text-[var(--app-error)]': viewSelectedToken.revokedAt
+            }" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+            <span class="w-1.5 h-1.5 rounded-full mr-1.5" [ngClass]="{
+                'bg-[var(--app-success)]': !viewSelectedToken.revokedAt,
+                'bg-[var(--app-error)]': viewSelectedToken.revokedAt
+              }"></span>
+            {{ viewSelectedToken.revokedAt ? "Revoked" : "Active" }}
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="viewSelectedToken.revokedAt">
+        <div class="text-xs text-[var(--app-on-surface-variant)] mb-1">Revoked At</div>
+        <div class="text-sm text-[var(--app-on-surface)]">{{ viewSelectedToken.revokedAt | date: 'medium' }}</div>
+      </div>
+
+    </div>
+
+    <div class="px-6 py-4 border-t border-[var(--app-border)] flex justify-end">
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MAIN CONTENT -->
+<div class="h-full overflow-y-auto bg-[var(--app-background)] text-[var(--app-on-background)]">
+  <div class="mx-auto p-5">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <app-page-header title="API Tokens" description="Create and manage API tokens used to authenticate your notification API requests."></app-page-header>
+      <button (click)="openCreateDialog()"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[var(--app-primary)] hover:bg-[var(--app-primary-hover)] text-[var(--app-on-primary)] text-sm font-medium rounded-lg shadow-sm transition-colors whitespace-nowrap">
+        <mat-icon>add</mat-icon>
+        Create API Token
+      </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <!-- Total Tokens -->
+      <div
+        class="bg-[var(--app-surface)] bg-white dark:bg-slate-900 rounded-xl border border-[var(--app-border)] p-5 flex items-center gap-4 shadow-sm transition-colors">
+        <div
+          class="w-10 h-10 rounded-lg bg-[var(--app-info)]/10 flex items-center justify-center text-[var(--app-info)] shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
+            </path>
+          </svg>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-[var(--app-on-surface)]">{{ totalCount() }}</div>
+          <div class="text-xs font-medium text-[var(--app-on-surface-variant)]">Total Tokens</div>
+        </div>
+      </div>
+      <!-- Active Tokens -->
+      <div
+        class="bg-[var(--app-surface)] bg-white dark:bg-slate-900 rounded-xl border border-[var(--app-border)] p-5 flex items-center gap-4 shadow-sm transition-colors">
+        <div
+          class="w-10 h-10 rounded-lg bg-[var(--app-success)]/10 flex items-center justify-center text-[var(--app-success)] shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-[var(--app-on-surface)]">{{ activeCount() }}</div>
+          <div class="text-xs font-medium text-[var(--app-on-surface-variant)]">Active Tokens</div>
+        </div>
+      </div>
+      <!-- Revoked Tokens -->
+      <div
+        class="bg-[var(--app-surface)] bg-white dark:bg-slate-900 rounded-xl border border-[var(--app-border)] p-5 flex items-center gap-4 shadow-sm transition-colors">
+        <div
+          class="w-10 h-10 rounded-lg bg-[var(--app-error)]/10 flex items-center justify-center text-[var(--app-error)] shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-[var(--app-on-surface)]">{{ revokedCount() }}</div>
+          <div class="text-xs font-medium text-[var(--app-on-surface-variant)]">Revoked Tokens</div>
+        </div>
+      </div>
+      <!-- Latest Token -->
+      <div
+        class="bg-[var(--app-surface)] bg-white dark:bg-slate-900 rounded-xl border border-[var(--app-border)] p-5 flex items-center gap-4 shadow-sm transition-colors">
+        <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="text-lg font-bold text-[var(--app-on-surface)]">
+            {{ latestToken() ? (latestToken()!.createdAt | date: "mediumDate") : "None" }}
+          </div>
+          <div class="text-xs font-medium text-[var(--app-on-surface-variant)]">Latest Token</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tokens Table -->
+    <div
+      class="bg-[var(--app-surface)] border border-[var(--app-border)] rounded-xl shadow-sm overflow-hidden transition-colors">
+      <div class="px-6 py-4 border-b border-[var(--app-border)] flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-[var(--app-on-surface)]">
+          Your API Tokens
+        </h2>
+        <!-- Filters -->
+        <div class="flex gap-1 bg-[var(--app-surface-variant)] p-1 rounded-lg">
+          <button (click)="setFilter('All')" [ngClass]="{
+              'bg-[var(--app-primary)] text-[var(--app-on-primary)] shadow-sm': filterStatus() === 'All',
+              'text-black': filterStatus() !== 'All'
+            }" class="px-3 py-1.5 text-xs font-medium rounded-md transition-all">
+            All
+          </button>
+
+          <button (click)="setFilter('Active')" [ngClass]="{
+              'bg-[var(--app-primary)] text-[var(--app-on-primary)] shadow-sm': filterStatus() === 'Active',
+              'text-black': filterStatus() !== 'Active'
+            }" class="px-3 py-1.5 text-xs font-medium rounded-md transition-all">
+            Active
+          </button>
+
+          <button (click)="setFilter('Revoked')" [ngClass]="{
+              'bg-[var(--app-primary)] text-[var(--app-on-primary)] shadow-sm': filterStatus() === 'Revoked',
+              'text-black': filterStatus() !== 'Revoked'
+            }" class="px-3 py-1.5 text-xs font-medium rounded-md transition-all">
+            Revoked
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm whitespace-nowrap">
+          <thead class="bg-[var(--app-surface-variant)] text-[var(--app-on-surface-variant)] font-medium">
+            <tr>
+              <th class="px-6 py-3">Name</th>
+              <th class="px-6 py-3">Token</th>
+              <th class="px-6 py-3">Created</th>
+              <th class="px-6 py-3">Last Used</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--app-border)]" *ngIf="!isLoading() && filteredTokens().length > 0">
+            <tr *ngFor="let token of filteredTokens()"
+              class="hover:bg-[var(--app-surface-variant)]/50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="font-medium text-[var(--app-on-surface)]">{{ token.name }}</div>
+                <div class="text-xs text-[var(--app-on-surface-variant)] mt-0.5">API Key</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2 text-[var(--app-on-surface-variant)] font-mono text-xs">
+                  {{ token.tokenPrefix }}****************
+                </div>
+              </td>
+              <td class="px-6 py-4 text-[var(--app-on-surface-variant)]">
+                <div>{{ token.createdAt | date: "mediumDate" }}</div>
+                <div class="text-xs opacity-80 mt-0.5">{{ token.createdAt | date: "shortTime" }}</div>
+              </td>
+              <td class="px-6 py-4 text-[var(--app-on-surface-variant)]">
+                {{ token.lastUsedAt ? (token.lastUsedAt | date: "medium") : "Never used" }}
+              </td>
+              <td class="px-6 py-4">
+                <span [ngClass]="{
+                    'bg-[var(--app-success)]/10 text-[var(--app-success)]': !token.revokedAt,
+                    'bg-[var(--app-error)]/10 text-[var(--app-error)]': token.revokedAt
+                  }" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                  <span class="w-1.5 h-1.5 rounded-full mr-1.5" [ngClass]="{
+                      'bg-[var(--app-success)]': !token.revokedAt,
+                      'bg-[var(--app-error)]': token.revokedAt
+                    }"></span>
+                  {{ token.revokedAt ? "Revoked" : "Active" }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-1">
+                  <button (click)="openViewDialog(token)"
+                    class="p-1.5 text-[var(--app-on-surface-variant)] hover:text-[var(--app-primary)] rounded-md bg-[var(--app-surface-variant)] transition-colors">
+                    <mat-icon class="scale-90">visibility</mat-icon>
+                  </button>
+                  <button (click)="openRevokeModal(token)" *ngIf="!token.revokedAt"
+                    class="p-1.5 text-[var(--app-on-surface-variant)] hover:text-[var(--app-error)] rounded-md bg-[var(--app-surface-variant)] transition-colors">
+                   <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="p-12 text-center flex flex-col items-center justify-center">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p class="mt-4 text-[var(--app-on-surface-variant)]">Loading API tokens...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading() && filteredTokens().length === 0" class="p-12 text-center">
+          <div
+            class="w-16 h-16 bg-[var(--app-surface-variant)] rounded-full flex items-center justify-center mx-auto mb-4 text-[var(--app-on-surface-variant)]">
+            <mat-icon class="scale-125">key_off</mat-icon>
+          </div>
+          <h3 class="text-lg font-medium text-[var(--app-on-surface)] mb-2">No tokens found</h3>
+          <p class="text-[var(--app-on-surface-variant)] mb-6">
+            <span *ngIf="filterStatus() === 'All'">Create an API token to start integrating with the Notification
+              Engine.</span>
+            <span *ngIf="filterStatus() !== 'All'">There are no {{ filterStatus() | lowercase }} tokens matching this
+              filter.</span>
+          </p>
+          <button mat-stroked-button (click)="openCreateDialog()" *ngIf="filterStatus() === 'All'">
+            Create API Token
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revoke Confirmation Modal -->
+    <div *ngIf="isRevokeModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+      <div
+        class="bg-[var(--app-surface)] rounded-xl shadow-xl w-full max-w-sm overflow-hidden border border-[var(--app-border)] animate-[fadeIn_0.2s_ease-out]">
+        <div class="p-6">
+          <div
+            class="w-12 h-12 rounded-full bg-[var(--app-error)]/10 text-[var(--app-error)] flex items-center justify-center mb-4">
+            <mat-icon>warning</mat-icon>
+          </div>
+          <h3 class="text-lg font-bold text-[var(--app-on-surface)] mb-2">
+            Revoke API Token?
+          </h3>
+          <p class="text-sm text-[var(--app-on-surface-variant)]">
+            This token (<strong class="text-[var(--app-on-surface)]">{{ selectedToken?.name }}</strong>) will no longer
+            be accepted for API authentication. This action cannot be undone.
+          </p>
+        </div>
+        <div
+          class="px-6 py-4 bg-[var(--app-surface-variant)] border-t border-[var(--app-border)] flex justify-end gap-3">
+          <button mat-button (click)="closeRevokeModal()" [disabled]="isRevoking()"
+            class="text-[var(--app-on-surface)]">
+            Cancel
+          </button>
+          <button mat-flat-button color="warn" (click)="confirmRevoke()" [disabled]="isRevoking()">
+            <span *ngIf="!isRevoking()">Revoke Token</span>
+            <span *ngIf="isRevoking()" class="flex items-center gap-2">
+              <mat-spinner diameter="18" class="!stroke-white"></mat-spinner> Revoking...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

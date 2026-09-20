@@ -16,101 +16,100 @@
 
       <!-- Alert / Error message -->
       @if (errorMessage) {
-        <div
-          class="mb-6 p-4 text-sm text-red-600 bg-red-50 rounded-lg border border-red-100 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20 font-medium animate-[shake_0.5s_ease-in-out]"
-        >
-          {{ errorMessage }}
-        </div>
+      <div
+        class="mb-6 p-4 text-sm text-red-600 bg-red-50 rounded-lg border border-red-100 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20 font-medium animate-[shake_0.5s_ease-in-out]">
+        {{ errorMessage }}
+      </div>
       }
 
       <!-- Form -->
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-1">
         <!-- Full Name field -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full small-form-field">
           <mat-label>Full Name</mat-label>
           <input matInput formControlName="name" type="text" placeholder="John Doe">
           @if (signupForm.get('name')?.hasError('required')) {
-            <mat-error>Name is required</mat-error>
+          <mat-error>Name is required</mat-error>
           }
         </mat-form-field>
 
         <!-- Email Address field -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full small-form-field">
           <mat-label>Email Address</mat-label>
           <input matInput formControlName="email" type="email" placeholder="name@example.com">
           @if (signupForm.get('email')?.hasError('required')) {
-            <mat-error>Email is required</mat-error>
+          <mat-error>Email is required</mat-error>
           }
           @if (signupForm.get('email')?.hasError('email')) {
-            <mat-error>Please enter a valid email</mat-error>
+          <mat-error>Please enter a valid email</mat-error>
           }
         </mat-form-field>
 
         <!-- Password field -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full small-form-field">
           <mat-label>Password</mat-label>
           <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'">
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           @if (signupForm.get('password')?.hasError('required')) {
-            <mat-error>Password is required</mat-error>
+          <mat-error>Password is required</mat-error>
           }
           @if (signupForm.get('password')?.hasError('minlength')) {
-            <mat-error>Password must be at least 8 characters</mat-error>
+          <mat-error>Password must be at least 8 characters</mat-error>
           }
         </mat-form-field>
 
         <!-- Confirm Password field -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full small-form-field">
           <mat-label>Confirm Password</mat-label>
           <input matInput formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'">
-          <button type="button" mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide confirm password'">
+          <button type="button" mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="'Hide confirm password'">
             <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           @if (signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched) {
-            <mat-error>Passwords do not match</mat-error>
+          <mat-error>Passwords do not match</mat-error>
           }
         </mat-form-field>
 
         <!-- Submit Button -->
-        <button
-          class="mt-4 w-full h-[48px] rounded-full shadow-md"
-          mat-flat-button
-          color="primary"
-          type="submit"
-          [disabled]="signupForm.invalid || isLoading"
-        >
+        <button class="mt-4 w-full h-[48px] rounded-full shadow-md" mat-flat-button color="primary" type="submit"
+          [disabled]="signupForm.invalid || isLoading">
           @if (!isLoading) {
-            <span>Sign Up →</span>
+          <span>Sign Up →</span>
           }
           @if (isLoading) {
-            <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+          <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
           }
         </button>
 
         <!-- Links -->
-        <div class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+        
+        <div class="mt-1 flex items-center justify-center">
+          <span class="text-sm text-slate-400 dark:text-slate-500">OR</span>
+        </div>
+
+        <!-- Social Login Buttons -->
+
+        <app-google-login></app-google-login>
+      </form>
+      <div class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?
           <a routerLink="/login" class="font-medium text-blue-600 hover:underline dark:text-blue-400">
             Sign in
           </a>
         </div>
-      </form>
     </div>
   </div>
 
   <!-- Right Panel: Marketing Content -->
-  <div class="hidden md:flex w-1/2 h-screen sticky top-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900 justify-center items-center p-4 overflow-hidden">
-    <img
-      class="w-auto h-auto max-w-full max-h-[85vh] object-contain block dark:hidden drop-shadow-md"
-      src="login.png"
-      alt="Notification Engine Preview"
-    />
-    <img
-      class="w-auto h-auto max-w-full max-h-[85vh] object-contain hidden dark:block drop-shadow-md"
-      src="login-dark.png"
-      alt="Notification Engine Preview"
-    />
+  <div
+    class="hidden md:flex w-1/2 h-screen sticky top-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900 justify-center items-center p-4 overflow-hidden">
+    <img class="w-auto h-auto max-w-full max-h-[85vh] object-contain block dark:hidden drop-shadow-md" src="login.png"
+      alt="Notification Engine Preview" />
+    <img class="w-auto h-auto max-w-full max-h-[85vh] object-contain hidden dark:block drop-shadow-md"
+      src="login-dark.png" alt="Notification Engine Preview" />
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GlobalLoaderComponent } from './shared/components/global-loader/global-loader.component';
 
@@ -9,6 +9,22 @@ import { GlobalLoaderComponent } from './shared/components/global-loader/global-
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'notification-portal';
+export class AppComponent implements OnInit {
+  title = 'notification-engine';
+
+  ngOnInit(): void {
+    this.hideSplashScreen();
+  }
+
+  private hideSplashScreen(): void {
+    const splashScreen = document.getElementById('app-splash-screen');
+    if (splashScreen) {
+      splashScreen.classList.add('hidden');
+      
+      // Animation (0.4s) complete hone ke baad element ko DOM se remove kar dein
+      setTimeout(() => {
+        splashScreen.remove();
+      }, 400);
+    }
+  }
 }

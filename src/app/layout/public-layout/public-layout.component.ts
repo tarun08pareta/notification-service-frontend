@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../../landing/navbar/navbar.component';
-import { FooterComponent } from '../components/footer/footer.component';
+import { FooterComponent } from '../../public-pages/footer/footer.component';
 
 /**
  * Shared layout for all public (non-authenticated) pages except the landing page.
