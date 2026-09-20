@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/common/auth/auth.service';
+import { GoogleLoginComponent } from '../../../shared/components/google-login/google-login.component';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +21,9 @@ import { AuthService } from '../../../core/common/auth/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    GoogleLoginComponent
+
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']

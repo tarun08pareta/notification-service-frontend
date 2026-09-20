@@ -10,6 +10,87 @@
 @import 'styles/components';
 
 @include mat.core();
+// when application start 
+/* Splash Screen Full Overlay */
+#app-splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff; /* Apni theme ke hisab se background color badlein */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Logo Styling */
+.splash-logo {
+  width: 140px; /* Logo ka size adjust karein */
+  height: auto;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Three Dots Bounce Spinner */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner > div {
+  width: 12px;
+  height: 12px;
+  background-color: #3b82f6; /* Apne brand ka primary color set karein */
+  border-radius: 50%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  animation-delay: -0.16s;
+}
+
+/* Animations */
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 40% { 
+    transform: scale(1.0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Hide Splash Screen Utility Class */
+#app-splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+
 
 // Define a light theme using brand colors
 $light-theme: mat.define-theme((
@@ -87,4 +168,8 @@ body {
     margin: 0;
     color: var(--app-on-surface-variant);
   }
+}
+.small-form-field {
+    // -3 is the most compact setting (reduces height to approx 40-44px)
+    @include mat.form-field-density(-3);
 }
