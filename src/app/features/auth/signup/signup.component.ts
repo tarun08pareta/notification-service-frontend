@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/common/auth/auth.service';
 import { GoogleLoginComponent } from '../../../shared/components/google-login/google-login.component';
+import { ToastService } from '../../../core/common/toast/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -32,6 +33,7 @@ export class SignupComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toastr = inject(ToastService);
 
   signupForm: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
@@ -71,6 +73,7 @@ export class SignupComponent {
       next: () => {
         this.isLoading = false;
         // Navigate to login on success (ideally showing a success message/toast)
+        this.toastr.success('Account created successfully! Please login.');
         this.router.navigate(['/login']);
       },
       error: (err) => {
@@ -79,6 +82,7 @@ export class SignupComponent {
         if (err.status === 0 || err.status === 404) {
              this.errorMessage = 'Backend API is currently unreachable.';
         }
+        this.toastr.error('Registration failed. Please try again.');
       }
     });
   }

@@ -11,6 +11,8 @@ import { loaderReducer } from './core/common/store/loader/loader.reducer';
 import { authReducer } from './core/common/store/auth/auth.reducer';
 import { AuthStorageService } from './core/common/auth/auth-storage.service';
 import { restoreAuth } from './core/common/store/auth/auth.actions';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 export function initializeAuth(store: Store, authStorage: AuthStorageService) {
   return () => {
@@ -35,6 +37,19 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeAuth,
       deps: [Store, AuthStorageService],
       multi: true
-    }
+    },
+     provideAnimations(),
+
+    // UPDATED:
+    // Global toast configuration.
+    provideToastr({
+      timeOut: 4000,
+      closeButton: true,
+      progressBar: true,
+      newestOnTop: true,
+      preventDuplicates: true,
+      positionClass: 'toast-top-right'
+    })
   ]
+
 };

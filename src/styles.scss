@@ -169,6 +169,17 @@ body {
     color: var(--app-on-surface-variant);
   }
 }
+/* Toastr card ki height control karne ke liye */
+.toast-container .ngx-toastr {
+  padding: 8px 12px 8px 50px !important; /* Padding kam karke height reduce hogi */
+  min-height: 45px !important;            /* Default min-height (64px) ko kam kiya */
+  font-size: 13px !important;             /* Font size thoda chota */
+}
+
+/* Close button ki alignment fixed rakhne ke liye */
+.toast-container .ngx-toastr .toast-close-button {
+  top: -4px !important;
+}
 .small-form-field {
     // -3 is the most compact setting (reduces height to approx 40-44px)
     @include mat.form-field-density(-3);
@@ -177,4 +188,15 @@ body {
 .blur-backdrop {
   backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.4); /* Background ko thoda dim karne ke liye */
+}
+
+// for table 
+.table-responsive {
+  overflow-x: auto;
+
+  td,
+  mat-cell {
+    white-space: nowrap;
+    padding: 16px;
+  }
 }

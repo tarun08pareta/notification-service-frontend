@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { PageHeaderComponent } from '../../../../shared/ui/page-header/page-header.component';
 import { NotificationService } from '../../../../core/common/notifications/notification.service';
 import { NotificationRequest, NotificationResponse, DeliveryAttempt } from '../../../../core/common/notifications/notification.models';
+import { ToastService } from '../../../../core/common/toast/toast.service';
 
 // ---------------------------------------------------------------------------
 // Template variable definitions — source of truth for playground variable UI.
@@ -135,7 +136,8 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private toastr: ToastService
   ) {
     this.playgroundForm = this.fb.group({
       apiToken:       ['', Validators.required],
@@ -367,6 +369,7 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
         // Always generate a fresh idempotency key after a successful send
         // so the user never accidentally reuses the same key
         this.generateIdempotencyKey();
+        this.toastr.success('Notification sent successfully!');
       },
       error: (err: HttpErrorResponse) => {
         this.lastResponseMs = Date.now() - this.requestStartTime;
@@ -375,6 +378,7 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
         this.lastResponse = null;
         this.hasResponse = true;
         this.isSending = false;
+        this.toastr.error(err.message || 'Failed to send notification');
       }
     });
   }

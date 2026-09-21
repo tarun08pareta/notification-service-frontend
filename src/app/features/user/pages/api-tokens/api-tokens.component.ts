@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiTokenService, ApiTokenListResponse, ApiTokenCreateResponse } from '../../../../core/common/auth/api-token.service';
 import { PageHeaderComponent } from '../../../../shared/ui/page-header/page-header.component';
+import { ToastService } from '../../../../core/common/toast/toast.service';
 
 @Component({
   selector: 'app-api-tokens',
@@ -34,6 +35,7 @@ export class ApiTokensComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private toastr = inject(ToastService);
 
   @ViewChild('createTokenDialog') createTokenDialog!: TemplateRef<any>;
   @ViewChild('viewTokenDialog') viewTokenDialog!: TemplateRef<any>;
@@ -136,6 +138,7 @@ export class ApiTokensComponent implements OnInit {
         this.isCreating.set(false);
         this.newTokenResponse.set(response);
         this.loadTokens(); // Refresh list to show new token
+        this.toastr.success('Token created successfully');
       },
       error: (err) => {
         this.isCreating.set(false);
@@ -144,6 +147,7 @@ export class ApiTokensComponent implements OnInit {
           msg = err.error.message;
         }
         this.snackBar.open(msg, 'Close', { duration: 5000 });
+        this.toastr.error('Failed to create token');
       }
     });
   }
@@ -184,10 +188,12 @@ export class ApiTokensComponent implements OnInit {
         this.snackBar.open('API Token revoked successfully.', 'Close', { duration: 3000 });
         this.loadTokens();
         this.closeRevokeModal();
+        this.toastr.success('Token deleted successfully');
       },
       error: (err) => {
         this.isRevoking.set(false);
         this.snackBar.open('Failed to revoke API token.', 'Close', { duration: 5000 });
+        this.toastr.error('Failed to delete token');
       }
     });
   }
