@@ -1,262 +1,937 @@
-<div class="playground-container">
-  <!-- Header -->
- 
-  <app-page-header title="Notification Playground" description="Test, inspect and debug notification delivery through the Notification Engine."></app-page-header>
+<!-- Main Container -->
+<div
+  class="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-200 transition-colors duration-300"
+>
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-6">
+    <!-- Page Title -->
+    <div
+      class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
+    >
+      <app-page-header
+        title="Notification Playground"
+        description="Test, inspect and debug notification delivery through the Notification Engine."
+      >
+      </app-page-header>
+    </div>
 
-  <!-- Two Column Grid -->
-  <div class="playground-grid">
-    
-    <!-- LEFT COLUMN: REQUEST BUILDER -->
-    <div class="col-left">
-      <mat-card class="builder-card">
-        <mat-card-header>
-          <mat-card-title>Notification Request</mat-card-title>
-          <mat-card-subtitle>Build and send a notification using the configured providers.</mat-card-subtitle>
-        </mat-card-header>
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- ================================================================
+           LEFT COLUMN: Notification Request Form
+           ================================================================ -->
+      <div class="space-y-6">
+        <div
+          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6"
+        >
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+            Notification Request
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
+            Build and send a notification using the configured providers.
+          </p>
 
-        <mat-card-content>
-          <form [formGroup]="form" class="request-form">
-            
-            <!-- Channel -->
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Channel</mat-label>
-                <mat-select formControlName="channel">
-                  <mat-option value="EMAIL">Email</mat-option>
-                  <mat-option value="SMS">SMS</mat-option>
-                </mat-select>
-                <mat-error *ngIf="form.get('channel')?.hasError('required')">Channel is required</mat-error>
-              </mat-form-field>
-              <mat-icon class="info-icon" matTooltip="Select the delivery channel for this notification. The available recipient validation and payload behavior depend on the selected channel.">info</mat-icon>
-            </div>
+          <form [formGroup]="playgroundForm" class="space-y-5">
+            <!-- ── API Token ─────────────────────────────────────────── -->
+            <div>
+              <label
+                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              >
+                API Token <span class="text-red-500">*</span>
+              </label>
 
-            <!-- Recipient -->
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Recipient</mat-label>
-                <input matInput formControlName="recipient" [placeholder]="form.get('channel')?.value === 'EMAIL' ? 'test@example.com' : '+919876543210'">
-                <mat-error *ngIf="form.get('recipient')?.hasError('required')">Recipient is required</mat-error>
-                <mat-error *ngIf="form.get('recipient')?.hasError('email')">Must be a valid email format</mat-error>
-                <mat-error *ngIf="form.get('recipient')?.hasError('pattern')">Must be in international E.164 format (e.g. +919876543210)</mat-error>
-              </mat-form-field>
-              <mat-icon class="info-icon" [matTooltip]="form.get('channel')?.value === 'EMAIL' ? 'Enter a valid email address, for example: test@example.com' : 'Enter the phone number in international E.164 format, for example: +919876543210'">info</mat-icon>
-            </div>
-
-            <!-- Template -->
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Template</mat-label>
-                <mat-select formControlName="template">
-                  <mat-option value="WELCOME">WELCOME</mat-option>
-                  <mat-option value="OTP">OTP</mat-option>
-                </mat-select>
-                <mat-error *ngIf="form.get('template')?.hasError('required')">Template is required</mat-error>
-              </mat-form-field>
-              <mat-icon class="info-icon" matTooltip="Notification template identifier used by the notification engine.">info</mat-icon>
-            </div>
-
-            <!-- Variables Section -->
-            <div class="variables-section" formGroupName="variables">
-              <h3>Template Variables <mat-icon class="info-icon inline" matTooltip="Provide values required by the selected template.">info</mat-icon></h3>
-              
-              <div class="form-row" *ngIf="form.get('template')?.value === 'WELCOME'">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Name</mat-label>
-                  <input matInput formControlName="name" placeholder="Tarun">
-                  <mat-error *ngIf="form.get('variables.name')?.hasError('required')">Name is required</mat-error>
-                </mat-form-field>
-                <mat-icon class="info-icon" matTooltip="Variable name expected by the WELCOME template.">info</mat-icon>
-              </div>
-
-              <div class="form-row" *ngIf="form.get('template')?.value === 'OTP'">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>OTP</mat-label>
-                  <input matInput formControlName="otp" placeholder="123456">
-                  <mat-error *ngIf="form.get('variables.otp')?.hasError('required')">OTP is required</mat-error>
-                </mat-form-field>
-                <mat-icon class="info-icon" matTooltip="Variable otp expected by the OTP template.">info</mat-icon>
-              </div>
-            </div>
-
-            <!-- Advanced Variables -->
-            <mat-expansion-panel class="advanced-variables-panel">
-              <mat-expansion-panel-header>
-                <mat-panel-title>Advanced Variables</mat-panel-title>
-              </mat-expansion-panel-header>
-              <p class="help-text">Allow developers to manually add additional key/value pairs for testing.</p>
-              
-              <div formArrayName="advancedVariables">
-                <div class="advanced-var-row" *ngFor="let adv of advancedVariables.controls; let i=index" [formGroupName]="i">
-                  <mat-form-field appearance="outline" class="small-field">
-                    <mat-label>Key</mat-label>
-                    <input matInput formControlName="key">
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class="small-field">
-                    <mat-label>Value</mat-label>
-                    <input matInput formControlName="value">
-                  </mat-form-field>
-                  <button mat-icon-button color="warn" (click)="removeAdvancedVariable(i)" type="button">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+              <!-- Token Input -->
+              <mat-form-field
+                appearance="outline"
+                class="w-full custom-mat-field dense-field small-form-field"
+              >
+                <div class="flex items-center w-full px-3">
+                  <mat-icon class="text-slate-400 mr-2 icon-sm">lock</mat-icon>
+                  <input
+                    matInput
+                    formControlName="apiToken"
+                    class="font-mono text-sm"
+                    placeholder="Enter API Token (e.g. ne_...)"
+                  />
                 </div>
-                <button mat-button color="primary" type="button" (click)="addAdvancedVariable()">+ Add variable</button>
+              </mat-form-field>
+
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Used as the <code class="font-mono">X-API-Key</code> header in
+                the notification request.
+              </p>
+            </div>
+
+            <!-- ── Channel & Recipient ───────────────────────────────── -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                >
+                  Channel <span class="text-red-500">*</span>
+                </label>
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full custom-mat-field dense-field small-form-field"
+                >
+                  <div class="flex items-center w-full px-3">
+                    <mat-icon class="text-slate-400 mr-2 icon-sm">{{
+                      currentChannel === "EMAIL" ? "email" : "sms"
+                    }}</mat-icon>
+                    <mat-select
+                      formControlName="channel"
+                      class="text-sm"
+                      (selectionChange)="onChannelChange()"
+                    >
+                      <mat-option
+                        *ngFor="let ch of supportedChannels"
+                        [value]="ch.value"
+                      >
+                        {{ ch.label }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                >
+                  Recipient <span class="text-red-500">*</span>
+                </label>
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full custom-mat-field dense-field small-form-field"
+                >
+                  <input
+                    matInput
+                    formControlName="recipient"
+                    [placeholder]="recipientPlaceholder"
+                  />
+                </mat-form-field>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  {{ recipientHint }}
+                </p>
+              </div>
+            </div>
+
+            <!-- ── Template ──────────────────────────────────────────── -->
+            <div>
+              <label
+                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              >
+                Template <span class="text-red-500">*</span>
+              </label>
+              <mat-form-field
+                appearance="outline"
+                class="w-full custom-mat-field dense-field small-form-field"
+              >
+                <div class="flex items-center w-full px-3">
+                  <mat-icon class="text-slate-400 mr-2 icon-sm"
+                    >description</mat-icon
+                  >
+                  <mat-select
+                    formControlName="template"
+                    class="text-sm"
+                    (selectionChange)="onTemplateChange()"
+                  >
+                    <mat-option
+                      *ngFor="let tmpl of supportedTemplates"
+                      [value]="tmpl"
+                    >
+                      {{ tmpl }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </mat-form-field>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Choose a template for your notification.
+              </p>
+            </div>
+
+            <!-- ── Template Variables ────────────────────────────────── -->
+            <mat-expansion-panel
+              class="custom-expansion-panel shadow-none border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+            >
+              <mat-expansion-panel-header class="px-4 py-3">
+                <mat-panel-title
+                  class="flex items-center gap-2 text-sm font-medium text-slate-900 dark:text-white"
+                >
+                  <mat-icon class="text-blue-500 icon-sm">group_work</mat-icon>
+                  Template Variables
+                </mat-panel-title>
+                <mat-panel-description
+                  class="text-xs text-slate-500 dark:text-slate-400"
+                >
+                  Fill in the required variables for the selected template.
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="p-4 pt-0 space-y-3">
+                <!-- No variables defined for this template -->
+                <p
+                  *ngIf="currentTemplateVarDefs.length === 0"
+                  class="text-xs text-slate-400 dark:text-slate-500 italic"
+                >
+                  No template variables required for {{ currentTemplate }}.
+                </p>
+
+                <!-- Dynamic variable fields -->
+                <div
+                  *ngFor="
+                    let varDef of currentTemplateVarDefs;
+                    trackBy: trackByIndex
+                  "
+                >
+                  <label
+                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                  >
+                    {{ varDef.label }}
+                    <span *ngIf="varDef.required" class="text-red-500">*</span>
+                  </label>
+                  <mat-form-field
+                    appearance="outline"
+                    class="w-full custom-mat-field dense-field small-form-field"
+                  >
+                    <input
+                      matInput
+                      [placeholder]="varDef.placeholder"
+                      [(ngModel)]="templateVariableValues[varDef.key]"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </mat-form-field>
+                </div>
               </div>
             </mat-expansion-panel>
 
-            <!-- Idempotency Key -->
-            <div class="form-row mt-4">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Idempotency-Key</mat-label>
-                <input matInput formControlName="idempotencyKey">
-                <button mat-icon-button matSuffix (click)="generateIdempotencyKey()" type="button" matTooltip="Generate new key">
-                  <mat-icon>refresh</mat-icon>
+            <!-- ── Advanced Variables ────────────────────────────────── -->
+            <mat-expansion-panel
+              class="custom-expansion-panel shadow-none border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+            >
+              <mat-expansion-panel-header class="px-4 py-3">
+                <mat-panel-title
+                  class="flex items-center gap-2 text-sm font-medium text-slate-900 dark:text-white"
+                >
+                  <mat-icon class="text-indigo-500 icon-sm">code</mat-icon>
+                  Advanced Variables
+                  <span
+                    *ngIf="advancedVariables.length > 0"
+                    class="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 text-[10px] font-bold"
+                  >
+                    {{ advancedVariables.length }}
+                  </span>
+                </mat-panel-title>
+                <mat-panel-description
+                  class="text-xs text-slate-500 dark:text-slate-400"
+                >
+                  Manually add additional key/value pairs for testing.
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="p-4 pt-0 space-y-2">
+                <!-- Advanced variable rows -->
+                <div
+                  *ngFor="
+                    let av of advancedVariables;
+                    let i = index;
+                    trackBy: trackByIndex
+                  "
+                  class="grid grid-cols-2 gap-3"
+                >
+                  <div>
+                    <mat-form-field
+                      *ngIf="i === 0"
+                      appearance="outline"
+                      class="w-full custom-mat-field dense-field small-form-field"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="av.key"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="key"
+                      />
+                    </mat-form-field>
+                    <mat-form-field
+                      *ngIf="i > 0"
+                      appearance="outline"
+                      class="w-full custom-mat-field dense-field small-form-field"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="av.key"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="key"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="flex-1 custom-mat-field dense-field small-form-field"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="av.value"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="value"
+                      />
+                    </mat-form-field>
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="!text-slate-400 hover:!text-red-500 flex-shrink-0"
+                      (click)="removeAdvancedVariable(i)"
+                      matTooltip="Remove"
+                    >
+                      <mat-icon class="icon-sm">delete_outline</mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <p
+                  *ngIf="advancedVariables.length === 0"
+                  class="text-xs text-slate-400 dark:text-slate-500 italic pt-1"
+                >
+                  No additional variables. Click below to add one.
+                </p>
+
+                <button
+                  mat-stroked-button
+                  type="button"
+                  class="mt-2 !text-blue-600 !border-blue-200 dark:!border-blue-800 dark:!text-blue-400 text-xs"
+                  (click)="addAdvancedVariable()"
+                >
+                  <mat-icon class="icon-sm mr-1">add</mat-icon> Add Variable
                 </button>
-                <mat-error *ngIf="form.get('idempotencyKey')?.hasError('required')">Idempotency key is required</mat-error>
-              </mat-form-field>
-              <mat-icon class="info-icon" matTooltip="A unique key used to prevent accidental duplicate notification creation. Reusing the same key with the same request returns the existing notification. Reusing it with different request data results in a conflict.">info</mat-icon>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- ── Idempotency Key ───────────────────────────────────── -->
+            <div class="mt-4">
+              <label
+                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              >
+                Idempotency-Key <span class="text-red-500">*</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <mat-form-field
+                  appearance="outline"
+                  class="flex-1 custom-mat-field dense-field small-form-field"
+                >
+                  <div class="flex items-center w-full px-3">
+                    <mat-icon class="text-slate-400 mr-2 icon-sm"
+                      >vpn_key</mat-icon
+                    >
+                    <input
+                      matInput
+                      formControlName="idempotencyKey"
+                      class="font-mono text-sm"
+                    />
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="!text-slate-400 hover:!text-slate-600 ml-1 flex-shrink-0"
+                      (click)="generateIdempotencyKey()"
+                      matTooltip="Generate new key"
+                    >
+                      <mat-icon class="icon-sm">refresh</mat-icon>
+                    </button>
+                  </div>
+                </mat-form-field>
+                <mat-icon
+                  class="text-slate-400 cursor-help flex-shrink-0"
+                  matTooltip="A unique key that prevents duplicate notifications. Automatically regenerated after each successful send."
+                >
+                  info_outline
+                </mat-icon>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Prevents duplicate notification requests. Regenerated
+                automatically after each successful send.
+              </p>
             </div>
 
+            <!-- ── Submit Button ─────────────────────────────────────── -->
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+              class="w-full !bg-blue-600 hover:!bg-blue-700 !text-white !py-6 !rounded-lg !text-base shadow-sm mt-6"
+              [disabled]="isSending"
+              (click)="sendNotification()"
+            >
+              <mat-icon *ngIf="!isSending" class="mr-2">send</mat-icon>
+<mat-spinner *ngIf="isSending" diameter="18" class="mr-2 inline-block !text-white"></mat-spinner>
+{{ isSending ? 'Sending…' : 'Send Notification' }}
+            </button>
           </form>
-        </mat-card-content>
+        </div>
+      </div>
 
-        <mat-card-actions class="p-3">
-          <button mat-flat-button color="primary" class="full-width-btn" [disabled]="isSending()" (click)="sendNotification()">
-            <span *ngIf="!isSending()">Send Notification</span>
-            <span *ngIf="isSending()">Sending...</span>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-
-    <!-- RIGHT COLUMN: PREVIEW & RESPONSE -->
-    <div class="col-right">
-      
-      <!-- Request Preview -->
-      <mat-card class="preview-card">
-        <mat-card-header>
-          <mat-card-title>Request Preview</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="code-header">
-            <span class="endpoint-url">POST /api/v1/notifications</span>
-            <button mat-button color="primary" class="copy-btn" (click)="copyPreview()">Copy JSON</button>
+      <!-- ================================================================
+           RIGHT COLUMN: Request Preview + Response + Lifecycle
+           ================================================================ -->
+      <div class="space-y-6">
+        <!-- ── Request Preview ─────────────────────────────────────── -->
+        <div
+          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6"
+        >
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+                Request Preview
+              </h2>
+              <p class="text-sm text-slate-500 dark:text-slate-400">
+                See the exact API request that will be sent.
+              </p>
+            </div>
+            <button
+              mat-stroked-button
+              class="!text-blue-600 !border-blue-200 dark:!border-blue-800 dark:!text-blue-400 text-xs"
+              (click)="copyRequestJson()"
+              type="button"
+            >
+              <mat-icon class="icon-sm mr-1">content_copy</mat-icon> Copy JSON
+            </button>
           </div>
-          <div class="code-headers-list">
-            <span class="header-name">Idempotency-Key:</span> {{ form.get('idempotencyKey')?.value }}
-          </div>
-          <pre class="json-preview">{{ requestPreview() | json }}</pre>
-        </mat-card-content>
-      </mat-card>
 
-      <!-- Error Response -->
-      <mat-card class="response-card error-card" *ngIf="apiError()">
-        <mat-card-content>
-          <div class="response-header">
-            <mat-icon color="warn">error_outline</mat-icon>
-            <h3>{{ apiError()?.status === 400 ? 'Invalid notification request' : 
-                   apiError()?.status === 401 ? 'Authentication required' : 
-                   apiError()?.status === 409 ? 'Idempotency conflict' : 
-                   'Notification service error' }}</h3>
+          <!-- Tabs -->
+          <div
+            class="flex gap-4 border-b border-slate-200 dark:border-slate-800 mb-4"
+          >
+            <button
+              *ngFor="let tab of ['HTTP', 'cURL', 'JSON']"
+              type="button"
+              (click)="activeRequestTab = tab"
+              [class.text-blue-600]="activeRequestTab === tab"
+              [class.border-blue-600]="activeRequestTab === tab"
+              [class.dark:text-blue-400]="activeRequestTab === tab"
+              [class.dark:border-blue-400]="activeRequestTab === tab"
+              [class.text-slate-500]="activeRequestTab !== tab"
+              [class.border-transparent]="activeRequestTab !== tab"
+              class="text-sm font-medium border-b-2 transition-colors"
+            >
+              {{ tab }}
+            </button>
           </div>
-          <p class="error-msg">{{ apiError()?.message }}</p>
-        </mat-card-content>
-      </mat-card>
 
-      <!-- Success Response -->
-      <mat-card class="response-card success-card" *ngIf="apiResponse()">
-        <mat-card-content>
-          <div class="response-header">
-            <mat-icon class="success-icon">check_circle</mat-icon>
-            <div class="response-title-area">
-              <h3>Notification accepted</h3>
-              <span class="http-status">202 Accepted</span>
+          <!-- HTTP Tab -->
+          <div
+            *ngIf="activeRequestTab === 'HTTP'"
+            class="bg-[#1e1e1e] dark:bg-[#0f172a] rounded-lg p-4 overflow-x-auto text-sm font-mono text-slate-300 leading-relaxed border border-slate-800"
+          >
+            <pre><code><span class="text-pink-400">POST</span> <span class="text-blue-300">/api/v1/notifications</span> <span class="text-slate-500">HTTP/1.1</span>
+<span class="text-slate-500">Content-Type:</span>     <span class="text-green-400">application/json</span>
+<span class="text-slate-500">X-API-Key:</span>        <span class="text-amber-300">{{ getMaskedTokenForPreview() }}</span>
+<span class="text-slate-500">Idempotency-Key:</span>  <span class="text-green-400">{{ idempotencyKey }}</span>
+
+<span class="text-yellow-300">{{ getRequestBodyJson() }}</span></code></pre>
+          </div>
+
+          <!-- cURL Tab -->
+          <div
+            *ngIf="activeRequestTab === 'cURL'"
+            class="bg-[#1e1e1e] dark:bg-[#0f172a] rounded-lg p-4 overflow-x-auto text-sm font-mono text-slate-300 leading-relaxed border border-slate-800"
+          >
+            <pre><code><span class="text-pink-400">curl</span> -X POST /api/v1/notifications \
+  -H <span class="text-green-400">"X-API-Key: {{ getMaskedTokenForPreview() }}"</span> \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -H <span class="text-green-400">"Idempotency-Key: {{ idempotencyKey }}"</span> \
+  -d <span class="text-yellow-300">'{{ getRequestBodyJson() }}'</span></code></pre>
+          </div>
+
+          <!-- JSON Tab -->
+          <div
+            *ngIf="activeRequestTab === 'JSON'"
+            class="bg-[#1e1e1e] dark:bg-[#0f172a] rounded-lg p-4 overflow-x-auto text-sm font-mono text-slate-300 leading-relaxed border border-slate-800"
+          >
+            <pre><code class="text-yellow-300">{{ getRequestBodyJson() }}</code></pre>
+          </div>
+        </div>
+
+        <!-- ── API Response ─────────────────────────────────────────── -->
+        <div
+          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6"
+        >
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+                API Response
+              </h2>
+              <p class="text-sm text-slate-500 dark:text-slate-400">
+                Response from the Notification Engine API.
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <!-- Status badge -->
+              <ng-container *ngIf="hasResponse">
+                <span
+                  *ngIf="overallSuccess"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"
+                  ></span
+                  >Success
+                </span>
+                <span
+                  *ngIf="!overallSuccess"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"
+                  ></span
+                  >Error
+                </span>
+              </ng-container>
+
+              <!-- Copy response -->
+              <button
+                *ngIf="lastResponse"
+                mat-stroked-button
+                class="!text-blue-600 !border-blue-200 dark:!border-blue-800 dark:!text-blue-400 text-xs"
+                (click)="copyResponseJson()"
+                type="button"
+              >
+                <mat-icon class="icon-sm mr-1">content_copy</mat-icon> Copy
+              </button>
             </div>
           </div>
-          
-          <div class="response-details">
-            <div class="detail-row"><span class="label">Notification ID:</span> <span class="value">{{ apiResponse()?.id }}</span></div>
-            <div class="detail-row"><span class="label">Status:</span> <span class="badge status-{{ apiResponse()?.status | lowercase }}">{{ apiResponse()?.status }}</span></div>
-            <div class="detail-row"><span class="label">Channel:</span> <span class="value">{{ apiResponse()?.channel }}</span></div>
-            <div class="detail-row"><span class="label">Template:</span> <span class="value">{{ apiResponse()?.template }}</span></div>
-            <div class="detail-row"><span class="label">Recipient:</span> <span class="value">{{ apiResponse()?.recipient }}</span></div>
-            <div class="detail-row"><span class="label">Created At:</span> <span class="value">{{ apiResponse()?.createdAt | date:'medium' }}</span></div>
-          </div>
-        </mat-card-content>
-      </mat-card>
 
-      <!-- Delivery Status & History -->
-      <mat-card class="history-card" *ngIf="apiResponse()">
-        <mat-card-header>
-          <mat-card-title>
-            Delivery Status 
-            <mat-icon class="info-icon inline" matTooltip="Tracks the progression of the notification delivery lifecycle.">info</mat-icon>
-          </mat-card-title>
-          <button mat-icon-button color="primary" (click)="refreshAttempts()" matTooltip="Refresh status">
-            <mat-icon>refresh</mat-icon>
-          </button>
-        </mat-card-header>
-        
-        <mat-card-content>
-          <!-- Status Pipeline -->
-          <div class="status-pipeline">
-            <div class="pipeline-node" [class.active]="apiResponse()?.status === 'QUEUED'">QUEUED</div>
-            <mat-icon class="pipeline-arrow">arrow_forward</mat-icon>
-            <div class="pipeline-node" [class.active]="apiResponse()?.status === 'PROCESSING' || apiResponse()?.status === 'RETRY_SCHEDULED'">PROCESSING</div>
-            <mat-icon class="pipeline-arrow">arrow_forward</mat-icon>
-            <div class="pipeline-node terminal" [class.active]="apiResponse()?.status === 'SENT'" [class.failed]="apiResponse()?.status === 'FAILED'">
-              {{ apiResponse()?.status === 'FAILED' ? 'FAILED' : 'SENT' }}
+          <!-- Empty state — before first send -->
+          <div
+            *ngIf="!hasResponse && !isSending"
+            class="flex flex-col items-center justify-center py-12 text-center"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3"
+            >
+              <mat-icon class="text-slate-400">send</mat-icon>
             </div>
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-400">
+              No response yet
+            </p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+              Fill in the form and click Send Notification.
+            </p>
           </div>
 
-          <h4 class="mt-4 table-title">Delivery Attempts</h4>
-          
-          <div class="table-container" *ngIf="deliveryAttempts().length > 0; else noAttempts">
-            <table mat-table [dataSource]="deliveryAttempts()" class="attempts-table">
-              
-              <ng-container matColumnDef="attempt">
-                <th mat-header-cell *matHeaderCellDef> Attempt </th>
-                <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="provider">
-                <th mat-header-cell *matHeaderCellDef> Provider </th>
-                <td mat-cell *matCellDef="let element"> {{element.provider}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let element"> 
-                  <span class="badge status-{{ element.status | lowercase }}">{{element.status}}</span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="error">
-                <th mat-header-cell *matHeaderCellDef> Error Code </th>
-                <td mat-cell *matCellDef="let element"> 
-                  <span class="error-code" *ngIf="element.errorCode" [matTooltip]="element.errorMessage || 'Unknown Error'">{{element.errorCode}}</span>
-                  <span *ngIf="!element.errorCode">—</span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="msgId">
-                <th mat-header-cell *matHeaderCellDef> Provider Message ID </th>
-                <td mat-cell *matCellDef="let element"> 
-                  <span class="msg-id" *ngIf="element.providerMessageId">{{element.providerMessageId}}</span>
-                  <span *ngIf="!element.providerMessageId">—</span>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="['attempt', 'provider', 'status', 'error', 'msgId']"></tr>
-              <tr mat-row *matRowDef="let row; columns: ['attempt', 'provider', 'status', 'error', 'msgId'];"></tr>
-            </table>
+          <!-- Sending in progress -->
+          <div
+            *ngIf="isSending"
+            class="flex flex-col items-center justify-center py-12 text-center"
+          >
+            <mat-spinner diameter="32" class="mb-4"></mat-spinner>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+              Sending notification…
+            </p>
           </div>
-          <ng-template #noAttempts>
-            <p class="no-attempts-text">No delivery attempts recorded yet. Click refresh to check status.</p>
-          </ng-template>
 
-        </mat-card-content>
-      </mat-card>
+          <!-- Response received -->
+          <ng-container *ngIf="hasResponse && !isSending">
+            <!-- ── Tabs row with meta info ─── -->
+            <div
+              class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 mb-4"
+            >
+              <div class="flex gap-4">
+                <button
+                  *ngFor="let tab of ['JSON', 'Details']"
+                  type="button"
+                  (click)="activeResponseTab = tab"
+                  [class.text-blue-600]="activeResponseTab === tab"
+                  [class.border-blue-600]="activeResponseTab === tab"
+                  [class.text-slate-500]="activeResponseTab !== tab"
+                  [class.border-transparent]="activeResponseTab !== tab"
+                  class="text-sm font-medium border-b-2 transition-colors"
+                >
+                  {{ tab }}
+                </button>
+              </div>
+              <!-- HTTP Status + Response Time -->
+              <div
+                *ngIf="lastHttpStatus"
+                class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pb-2"
+              >
+                <span class="flex items-center gap-1">
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [class]="getHttpStatusDotClass(lastHttpStatus)"
+                  ></span>
+                  {{ getHttpStatusLabel(lastHttpStatus) }}
+                </span>
+                <span
+                  *ngIf="lastResponseMs !== null"
+                  class="flex items-center gap-1"
+                >
+                  <mat-icon class="icon-xs">schedule</mat-icon>
+                  {{ lastResponseMs }} ms
+                </span>
+              </div>
+            </div>
 
+            <!-- ── Error panel ─── -->
+            <div
+              *ngIf="lastErrorMessage"
+              class="rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 p-4 mb-4"
+            >
+              <div class="flex items-start gap-3">
+                <mat-icon class="text-red-500 flex-shrink-0 mt-0.5"
+                  >error_outline</mat-icon
+                >
+                <div>
+                  <p
+                    class="text-sm font-semibold text-red-700 dark:text-red-400"
+                  >
+                    Request Failed
+                  </p>
+                  <p class="text-sm text-red-600 dark:text-red-300 mt-0.5">
+                    {{ lastErrorMessage }}
+                  </p>
+                  <p
+                    *ngIf="lastHttpStatus === 409"
+                    class="text-xs text-red-500 dark:text-red-400 mt-1"
+                  >
+                    Click the ↻ icon next to the Idempotency-Key to generate a
+                    new one.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Success summary ─── -->
+            <div
+              *ngIf="lastResponse && !lastErrorMessage"
+              class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 mb-4"
+            >
+              <div class="flex items-start gap-3">
+                <mat-icon class="text-emerald-500 flex-shrink-0 mt-0.5"
+                  >check_circle</mat-icon
+                >
+                <div>
+                  <p
+                    class="text-sm font-semibold text-emerald-700 dark:text-emerald-400"
+                  >
+                    <ng-container [ngSwitch]="lastResponse.status">
+                      <ng-container *ngSwitchCase="'SENT'"
+                        >Notification sent successfully.</ng-container
+                      >
+                      <ng-container *ngSwitchCase="'QUEUED'"
+                        >Notification queued successfully.</ng-container
+                      >
+                      <ng-container *ngSwitchCase="'FAILED'"
+                        >Notification delivery failed.</ng-container
+                      >
+                      <ng-container *ngSwitchDefault
+                        >Notification request accepted.</ng-container
+                      >
+                    </ng-container>
+                  </p>
+                  <p
+                    class="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5"
+                  >
+                    {{ getStatusDescription(lastResponse.status) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── JSON Tab ─── -->
+            <ng-container *ngIf="activeResponseTab === 'JSON'">
+              <div
+                *ngIf="lastResponse"
+                class="bg-[#1e1e1e] dark:bg-[#0f172a] rounded-lg p-4 overflow-x-auto text-sm font-mono leading-relaxed border border-slate-800"
+              >
+                <pre><code class="text-slate-300">{{ lastResponseJson }}</code></pre>
+              </div>
+            </ng-container>
+
+            <!-- ── Details Tab ─── -->
+            <ng-container
+              *ngIf="activeResponseTab === 'Details' && lastResponse"
+            >
+              <div
+                class="divide-y divide-slate-100 dark:divide-slate-800 text-sm"
+              >
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Notification ID</span
+                  >
+                  <span
+                    class="font-mono text-xs text-slate-800 dark:text-slate-200 truncate ml-4 max-w-[220px]"
+                    >{{ lastResponse.id }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Status</span
+                  >
+                  <span
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [class]="getStatusBadgeClass(lastResponse.status)"
+                  >
+                    {{ lastResponse.status }}
+                  </span>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Channel</span
+                  >
+                  <span class="text-slate-800 dark:text-slate-200">{{
+                    lastResponse.channel
+                  }}</span>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Recipient</span
+                  >
+                  <span
+                    class="text-slate-800 dark:text-slate-200 truncate ml-4 max-w-[200px]"
+                    >{{ lastResponse.recipient }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Template</span
+                  >
+                  <span
+                    class="font-mono text-xs text-slate-800 dark:text-slate-200"
+                    >{{ lastResponse.template }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Created At</span
+                  >
+                  <span class="text-slate-800 dark:text-slate-200">{{
+                    formatDate(lastResponse.createdAt)
+                  }}</span>
+                </div>
+                <div
+                  *ngIf="lastResponse.retryCount > 0"
+                  class="flex items-center justify-between py-2.5"
+                >
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Retry Count</span
+                  >
+                  <span class="text-slate-800 dark:text-slate-200">{{
+                    lastResponse.retryCount
+                  }}</span>
+                </div>
+                <div
+                  *ngIf="lastResponse.nextRetryAt"
+                  class="flex items-center justify-between py-2.5"
+                >
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Next Retry At</span
+                  >
+                  <span class="text-slate-800 dark:text-slate-200">{{
+                    formatDate(lastResponse.nextRetryAt)
+                  }}</span>
+                </div>
+                <div
+                  *ngIf="lastResponseMs !== null"
+                  class="flex items-center justify-between py-2.5"
+                >
+                  <span class="text-slate-500 dark:text-slate-400 font-medium"
+                    >Response Time</span
+                  >
+                  <span class="text-slate-800 dark:text-slate-200"
+                    >{{ lastResponseMs }} ms</span
+                  >
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <!-- ── Notification Lifecycle ───────────────────────────────── -->
+        <div
+          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6"
+        >
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+                Notification Lifecycle
+              </h2>
+              <p class="text-sm text-slate-500 dark:text-slate-400">
+                Track the delivery status and events for this notification.
+              </p>
+            </div>
+            <button
+  mat-stroked-button
+  class="!text-blue-600 !border-blue-200 dark:!border-blue-800 dark:!text-blue-400 text-xs"
+  [disabled]="!lastResponse?.id || isRefreshingStatus"
+  (click)="refreshStatus()"
+  type="button"
+>
+  <mat-icon *ngIf="!isRefreshingStatus" class="icon-sm mr-1">refresh</mat-icon>
+  <mat-spinner *ngIf="isRefreshingStatus" diameter="14" class="mr-2 inline-block"></mat-spinner>
+  {{ isRefreshingStatus ? 'Refreshing…' : 'Refresh Status' }}
+</button>
+          </div>
+
+          <!-- Empty lifecycle state -->
+          <div
+            *ngIf="!lastResponse"
+            class="flex flex-col items-center justify-center py-8 text-center"
+          >
+            <div
+              class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3"
+            >
+              <mat-icon class="text-slate-400 icon-sm">timeline</mat-icon>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+              Send a notification to see its lifecycle here.
+            </p>
+          </div>
+
+          <!-- Lifecycle stepper -->
+          <ng-container *ngIf="lastResponse">
+            <div class="relative flex justify-between items-start">
+              <!-- Connecting line -->
+              <div
+                class="absolute top-4 left-0 right-0 h-0.5 bg-slate-200 dark:bg-slate-700 z-0"
+              ></div>
+
+              <!-- Steps -->
+              <div
+                *ngFor="
+                  let step of lifecycleStepsComputed;
+                  trackBy: trackByIndex
+                "
+                class="relative z-10 flex flex-col items-center text-center w-1/3 px-2"
+              >
+                <!-- Icon circle -->
+                <div
+                  class="w-8 h-8 rounded-full flex items-center justify-center mb-3 transition-all duration-300"
+                  [class]="getStepIconClass(step.stepStatus)"
+                >
+                  <mat-icon class="icon-sm">{{
+                    getStepIconName(step.stepStatus)
+                  }}</mat-icon>
+                </div>
+
+                <!-- Step text -->
+                <div
+                  class="text-sm font-semibold text-slate-900 dark:text-white mb-1 leading-tight"
+                >
+                  {{ step.label }}
+                </div>
+                <div
+                  class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight"
+                >
+                  {{ step.desc }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Status description -->
+            <div
+              class="mt-6 rounded-lg p-3 text-sm"
+              [class]="getStatusDescriptionBannerClass(lastResponse.status)"
+            >
+              <span class="font-medium">{{ lastResponse.status }}:</span>
+              {{ getStatusDescription(lastResponse.status) }}
+            </div>
+          </ng-container>
+
+          <!-- ── Delivery Attempts ──────────────────────────────────── -->
+          <ng-container *ngIf="deliveryAttempts.length > 0">
+            <div class="mt-6">
+              <h3
+                class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2"
+              >
+                <mat-icon class="text-slate-400 icon-sm">history</mat-icon>
+                Delivery Attempts
+                <span
+                  class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-400"
+                >
+                  {{ deliveryAttempts.length }}
+                </span>
+              </h3>
+              <div class="space-y-3">
+                <div
+                  *ngFor="
+                    let attempt of deliveryAttempts;
+                    let i = index;
+                    trackBy: trackByIndex
+                  "
+                  class="rounded-lg border border-slate-100 dark:border-slate-800 p-3 text-sm"
+                >
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="font-medium text-slate-800 dark:text-slate-200"
+                      >Attempt {{ i + 1 }}</span
+                    >
+                    <span
+                      class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                      [ngClass]="
+                        attempt.status === 'SUCCESS'
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                          : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                      "
+                    >
+                      {{ attempt.status }}
+                    </span>
+                  </div>
+                  <div
+                    class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400"
+                  >
+                    <div>
+                      <span
+                        class="font-medium text-slate-600 dark:text-slate-300"
+                        >Provider:</span
+                      >
+                      {{ attempt.provider }}
+                    </div>
+                    <div *ngIf="attempt.startedAt">
+                      <span
+                        class="font-medium text-slate-600 dark:text-slate-300"
+                        >Started:</span
+                      >
+                      {{ formatTime(attempt.startedAt) }}
+                    </div>
+                    <div *ngIf="attempt.completedAt">
+                      <span
+                        class="font-medium text-slate-600 dark:text-slate-300"
+                        >Completed:</span
+                      >
+                      {{ formatTime(attempt.completedAt) }}
+                    </div>
+                    <div *ngIf="attempt.errorCode">
+                      <span class="font-medium text-red-600 dark:text-red-400"
+                        >Error:</span
+                      >
+                      {{ attempt.errorCode }}
+                    </div>
+                    <div *ngIf="attempt.errorMessage" class="col-span-2">
+                      <span class="font-medium text-red-600 dark:text-red-400"
+                        >Message:</span
+                      >
+                      {{ attempt.errorMessage }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Attempts error -->
+          <div
+            *ngIf="attemptsError"
+            class="mt-4 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 p-3"
+          >
+            <p
+              class="text-xs text-red-600 dark:text-red-400 flex items-center gap-1"
+            >
+              <mat-icon class="icon-xs">error_outline</mat-icon>
+              {{ attemptsError }}
+            </p>
+          </div>
+        </div>
+        <!-- end lifecycle card -->
+      </div>
+      <!-- end right column -->
     </div>
-  </div>
+    <!-- end grid -->
+  </main>
 </div>
