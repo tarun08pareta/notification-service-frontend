@@ -17,7 +17,7 @@
     <!-- Drawer Content (Form) -->
     <div class="p-6" *ngIf="!newTokenResponse()">
       <form [formGroup]="createForm" (ngSubmit)="submitCreateToken()" class="flex flex-col">
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full ">
           <mat-label>Token Name</mat-label>
           <input matInput formControlName="name" placeholder="Production API" />
           <mat-error *ngIf="createForm.get('name')?.hasError('required')">Name is required</mat-error>
