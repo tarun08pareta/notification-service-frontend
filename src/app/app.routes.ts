@@ -94,6 +94,12 @@ export const routes: Routes = [
             loadChildren: () =>
               import('./features/admin/pages/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
           },
+          // UPDATED: Admin Notification Management route
+          {
+            path: 'notifications',
+            loadChildren: () =>
+              import('./features/admin/pages/notifications/notifications.routes').then(m => m.ADMIN_NOTIFICATIONS_ROUTES)
+          },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
       },

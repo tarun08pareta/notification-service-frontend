@@ -1,0 +1,228 @@
+:host {
+  display: block;
+}
+
+// ── Page Layout ─────────────────────────────────────────────────────────────
+
+.providers-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ── Table Card ───────────────────────────────────────────────────────────────
+
+.table-card {
+  position: relative;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+}
+
+// ── Table ────────────────────────────────────────────────────────────────────
+
+.table-wrapper {
+  overflow-x: auto;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.providers-table {
+  width: 100%;
+}
+
+.table-row {
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--app-surface-hover);
+  }
+}
+
+// ── Cell Helpers ─────────────────────────────────────────────────────────────
+
+.provider-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.provider-icon {
+  color: var(--app-primary);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.provider-name {
+  font-weight: 500;
+  color: var(--app-on-surface);
+  text-transform: capitalize;
+}
+
+.status-cell {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.inline-spinner {
+  margin-left: 12px;
+}
+
+.priority-cell {
+  display: flex;
+  align-items: center;
+}
+
+.priority-badge {
+  background-color: var(--app-surface-variant);
+  color: var(--app-on-surface);
+  font-family: var(--app-font-family-technical);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 2px 10px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-outline-variant);
+}
+
+.channels-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.channel-chip {
+  background-color: rgba(14, 165, 233, 0.12); /* Sky based info token */
+  color: var(--app-info);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--app-radius-md);
+  white-space: nowrap;
+}
+
+.date-cell {
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: var(--app-on-surface-variant);
+}
+
+.success-text {
+  color: var(--app-success);
+}
+
+.error-text {
+  color: var(--app-error);
+  font-weight: 500;
+}
+
+.failure-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.failure-info-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--app-warning);
+  cursor: help;
+}
+
+.actions-header,
+.actions-cell {
+  width: 72px;
+  text-align: center;
+}
+
+.edit-btn {
+  color: var(--app-outline);
+  &:hover {
+    color: var(--app-primary);
+  }
+}
+
+.no-data {
+  color: var(--app-on-surface-variant);
+  font-style: italic;
+}
+
+// ── Edit Dialog ─────────────────────────────────────────────────────────────
+
+::ng-deep .admin-provider-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.edit-dialog {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--app-surface);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--app-divider);
+  background-color: var(--app-surface);
+}
+
+.dialog-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+}
+
+.close-btn {
+  color: var(--app-on-surface-variant);
+}
+
+.dialog-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dialog-desc {
+  font-size: 0.9rem;
+  color: var(--app-on-surface-variant);
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--app-divider);
+  background-color: var(--app-surface-variant);
+}
+
+.btn-spinner {
+  margin: 0 auto;
+}
+
+/* Tooltip styles to allow newlines */
+::ng-deep .multiline-tooltip {
+  white-space: pre-line;
+}

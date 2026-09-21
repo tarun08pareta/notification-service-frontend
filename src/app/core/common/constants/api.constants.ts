@@ -24,5 +24,11 @@ export const API_ENDPOINTS = {
   },
   API_TOKENS: {
     BASE: '/api/v1/api-tokens'
+  },
+  // UPDATED: Added admin-scoped API endpoints
+  ADMIN: {
+    NOTIFICATIONS: {
+      BASE: '/api/v1/admin/notifications'
+    }
   }
 } as const;

@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GoogleLoginComponent } from '../../../shared/components/google-login/google-login.component';
+import { ToastService } from '../../../core/common/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,8 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-
+  private toastr = inject(ToastService);
+ 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -60,6 +62,7 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         this.isLoading = false;
+        this.toastr.success('Logged in successfully!');
         if (response.user?.roles?.includes('ADMIN')) {
           this.router.navigate(['/admin/dashboard']);
         } else if (response.user?.roles?.includes('USER')) {
@@ -78,6 +81,7 @@ export class LoginComponent {
         if (err.status === 0 || err.status === 404) {
           this.errorMessage = 'Backend API is currently unreachable.';
         }
+        this.toastr.error('Invalid credentials or login failed');
       },
     });
   }

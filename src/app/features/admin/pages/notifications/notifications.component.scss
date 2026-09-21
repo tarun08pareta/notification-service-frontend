@@ -1,0 +1,403 @@
+// ---------------------------------------------------------------------------
+// Admin Notifications Page Styles
+//
+// All colors use the project's CSS custom properties from _tokens.scss so
+// both light and dark themes work automatically without any manual overrides.
+// body.dark-theme { @include mat.all-component-colors($dark-theme); } in
+// styles.scss already handles all Material component tokens.
+// ---------------------------------------------------------------------------
+
+:host {
+  display: block;
+}
+
+// ── Page Layout ─────────────────────────────────────────────────────────────
+
+.notifications-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ── Filters Bar ─────────────────────────────────────────────────────────────
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-field {
+  min-width: 160px;
+  // Reduce default Material form-field bottom spacing
+  &::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.clear-filters-btn {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ── Table Card ───────────────────────────────────────────────────────────────
+
+.table-card {
+  position: relative;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+}
+
+// ── Table ────────────────────────────────────────────────────────────────────
+
+.table-wrapper {
+  overflow-x: auto;    // horizontal scroll for small screens
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.notifications-table {
+  width: 100%;
+  // Inherit Material theming — background/text handled by mat.all-component-colors
+}
+
+.table-row {
+  cursor: default;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--app-surface-hover);
+  }
+}
+
+// ── Cell Helpers ─────────────────────────────────────────────────────────────
+
+.id-cell {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.8rem;
+  color: var(--app-on-surface-variant);
+  cursor: help;
+  white-space: nowrap;
+}
+
+.channel-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.channel-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: var(--app-outline);
+}
+
+.recipient-cell {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.template-badge {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.75rem;
+  background-color: var(--app-surface-variant);
+  color: var(--app-on-surface-variant);
+  padding: 2px 8px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-outline-variant);
+  white-space: nowrap;
+}
+
+.date-cell {
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: var(--app-on-surface-variant);
+}
+
+.center-cell {
+  text-align: center;
+}
+
+.retry-warning {
+  color: var(--app-warning);
+  font-weight: 600;
+}
+
+.actions-header,
+.actions-cell {
+  width: 72px;
+  text-align: center;
+}
+
+.view-btn {
+  color: var(--app-primary);
+}
+
+// ── Detail Dialog ─────────────────────────────────────────────────────────────
+// The dialog panel background is set by Material theming automatically.
+// We only need to manage the internal layout.
+
+::ng-deep .admin-notification-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.detail-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  background-color: var(--app-surface);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--app-divider);
+  flex-shrink: 0;
+  background-color: var(--app-surface);
+}
+
+.dialog-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+}
+
+.close-btn {
+  color: var(--app-on-surface-variant);
+}
+
+.dialog-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+}
+
+.dialog-loading-text {
+  color: var(--app-on-surface-variant);
+  font-size: 0.9rem;
+}
+
+.dialog-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: var(--app-surface);
+}
+
+// ── Detail Sections ──────────────────────────────────────────────────────────
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.section-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: var(--app-primary);
+}
+
+// ── Detail Grid ──────────────────────────────────────────────────────────────
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--app-divider);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--app-on-surface-variant);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--app-on-surface);
+  word-break: break-all;
+
+  &.mono {
+    font-family: var(--app-font-family-technical);
+    font-size: 0.78rem;
+    color: var(--app-on-surface-variant);
+  }
+}
+
+.error-text {
+  color: var(--app-error);
+  font-size: 0.82rem;
+}
+
+// ── Variables ────────────────────────────────────────────────────────────────
+
+.variables-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: var(--app-surface-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--app-outline-variant);
+}
+
+.variable-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--app-divider);
+  font-size: 0.85rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.variable-key {
+  font-family: var(--app-font-family-technical);
+  color: var(--app-primary);
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.variable-sep {
+  color: var(--app-on-surface-variant);
+}
+
+.variable-value {
+  color: var(--app-on-surface);
+  word-break: break-all;
+}
+
+// ── Delivery Attempts ────────────────────────────────────────────────────────
+
+.attempts-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.attempts-loading-text {
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+}
+
+.no-attempts-text {
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+  font-style: italic;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.attempts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attempt-card {
+  border: 1px solid var(--app-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.attempt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: var(--app-surface-variant);
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.attempt-number {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+}
+
+.attempt-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: var(--app-radius-full);
+  padding: 2px 10px;
+
+  &.attempt-success {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: var(--app-success);
+  }
+
+  &.attempt-failed {
+    background-color: rgba(186, 26, 26, 0.12);
+    color: var(--app-error);
+  }
+}
+
+.attempt-status-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+}
+
+.attempt-detail-grid {
+  padding: 4px 14px;
+}
