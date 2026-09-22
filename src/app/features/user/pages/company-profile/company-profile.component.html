@@ -1,0 +1,409 @@
+<input
+  type="file"
+  #logoInput
+  accept="image/png,image/jpeg,image/webp"
+  class="hidden"
+  (change)="onFileSelected($event)"
+/>
+
+<div
+  class="h-full overflow-y-auto bg-[var(--app-background)] text-[var(--app-on-background)]"
+>
+  <div class="mx-auto p-5 pb-24">
+    <!-- Page Header -->
+    <div
+      class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
+    >
+      <app-page-header
+        title="Company Profile"
+        description="Manage your company identity and notification sender settings."
+      >
+      </app-page-header>
+    </div>
+
+    <!-- ── LOADING STATE ───────────────────────────────────────── -->
+    <div
+      *ngIf="isLoadingProfile()"
+      class="flex flex-col items-center justify-center py-24"
+    >
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="mt-4 text-[var(--app-on-surface-variant)]">
+        Loading company profile...
+      </p>
+    </div>
+
+    <!-- ── ERROR STATE ─────────────────────────────────────────── -->
+    <div
+      *ngIf="!isLoadingProfile() && loadError()"
+      class="flex flex-col items-center justify-center py-24 text-center"
+    >
+      <div
+        class="w-16 h-16 rounded-full bg-[var(--app-error)]/10 flex items-center justify-center mb-4"
+      >
+        <mat-icon class="text-[var(--app-error)] scale-125"
+          >error_outline</mat-icon
+        >
+      </div>
+      <h3 class="text-lg font-medium text-[var(--app-on-surface)] mb-2">
+        Failed to load profile
+      </h3>
+      <p class="text-[var(--app-on-surface-variant)] mb-6">
+        Something went wrong while loading your company profile.
+      </p>
+      <button mat-stroked-button (click)="loadProfile()">
+        <mat-icon class="mr-1">refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+
+    <!-- ── PROFILE CONTENT (only when loaded) ──────────────────── -->
+    <form
+      *ngIf="!isLoadingProfile() && !loadError()"
+      [formGroup]="profileForm"
+      (ngSubmit)="saveChanges()"
+    >
+      <!-- ================= CARD 1: Company Information ================= -->
+      <mat-card
+        class="mb-6 !shadow-sm !border !border-[var(--app-border)] !rounded-xl !p-0 overflow-hidden !bg-[var(--app-surface)] transition-colors"
+      >
+        <div class="p-6">
+          <div class="flex items-start gap-4 mb-6">
+            <div
+              class="w-10 h-10 rounded-lg bg-[var(--app-primary)]/10 text-[var(--app-primary)] flex flex-shrink-0 items-center justify-center"
+            >
+              <mat-icon>business</mat-icon>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-semibold text-[var(--app-on-surface)] m-0"
+              >
+                Company Information
+              </h2>
+              <p class="text-sm text-[var(--app-on-surface-variant)]">
+                Update your company name and logo. This information will be used
+                across the platform.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-6">
+            <!-- Left: Name Input -->
+            <div>
+              <mat-form-field
+                appearance="outline"
+                class="w-full small-form-field"
+              >
+                <mat-label>Company Name </mat-label>
+                <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                  >business</mat-icon
+                >
+                <input
+                  matInput
+                  formControlName="companyName"
+                  placeholder="Enter company name"
+                />
+                <mat-error
+                  *ngIf="profileForm.get('companyName')?.hasError('required')"
+                  >Company Name is required</mat-error
+                >
+                <mat-hint class="!text-xs"
+                  >This name will be displayed in emails, notifications and
+                  across your workspace.</mat-hint
+                >
+              </mat-form-field>
+            </div>
+
+            <!-- Right: Logo Upload -->
+            <div
+              class="w-full bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center md:items-start gap-8 justify-center"
+            >
+              <!-- Logo Preview -->
+              <div
+                class="relative w-40 h-40 rounded-full flex items-center justify-center shrink-0 border border-gray-800 overflow-hidden"
+                [ngClass]="
+                  displayLogoUrl
+                    ? 'bg-white'
+                    : 'bg-gray-500 text-gray-400 text-4xl font-bold'
+                "
+              >
+                <img
+                  *ngIf="displayLogoUrl"
+                  [src]="displayLogoUrl"
+                  alt="Company Logo"
+                  class="w-full h-full object-cover"
+                />
+                <span *ngIf="!displayLogoUrl">{{ companyInitial }}</span>
+
+                <!-- Deleting Spinner Overlay -->
+                <div
+                  *ngIf="isDeletingLogo()"
+                  class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
+                >
+                  <mat-spinner diameter="24"></mat-spinner>
+                </div>
+              </div>
+
+              <!-- Actions & Info Box -->
+                <!-- Action Buttons -->
+                <div
+                  class="flex flex-col justify-center items-start gap-4 mb-5  "
+                >
+                  <!-- Change/Upload Logo Button -->
+                  <button
+                    type="button"
+                    (click)="logoInput.click()"
+                    [disabled]="isUploadingLogo() || isDeletingLogo()"
+                    class="flex items-center gap-2 px-6 py-2.5 rounded-md font-medium text-sm tracking-wide text-white bg-[#1F265C] hover:bg-[#151a40] transition-colors disabled:opacity-50 shadow-sm"
+                  >
+                    <mat-spinner
+                      *ngIf="isUploadingLogo()"
+                      diameter="18"
+                    ></mat-spinner>
+                    <mat-icon
+                      *ngIf="!isUploadingLogo()"
+                      class="!text-[18px] !w-[18px] !h-[18px]"
+                      >file_upload</mat-icon
+                    >
+                    {{
+                      isUploadingLogo()
+                        ? "UPLOADING..."
+                        : displayLogoUrl
+                          ? "CHANGE LOGO"
+                          : "UPLOAD LOGO"
+                    }}
+                  </button>
+
+                  <!-- Remove Logo Button -->
+                  <button
+                    *ngIf="displayLogoUrl"
+                    type="button"
+                    (click)="removeLogo()"
+                    [disabled]="isDeletingLogo() || isUploadingLogo()"
+                    class="flex items-center gap-2 px-6 py-2.5 rounded-md font-medium text-sm tracking-wide text-[#9C1C1F] bg-white border border-[#9C1C1F] hover:bg-red-50 transition-colors disabled:opacity-50 shadow-sm"
+                  >
+                    <mat-icon class="!text-[18px] !w-[18px] !h-[18px]"
+                      >delete_outline</mat-icon
+                    >
+                    REMOVE LOGO
+                  </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- ================= CARD 2: Email Configuration ================= -->
+      <mat-card
+        class="mb-6 !shadow-sm !border !border-[var(--app-border)] !rounded-xl !p-0 overflow-hidden !bg-[var(--app-surface)] transition-colors"
+      >
+        <div class="p-6">
+          <div class="flex items-start gap-4 mb-6">
+            <div
+              class="w-10 h-10 rounded-lg bg-[var(--app-primary)]/10 text-[var(--app-primary)] flex flex-shrink-0 items-center justify-center"
+            >
+              <mat-icon>mail_outline</mat-icon>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-semibold text-[var(--app-on-surface)] m-0"
+              >
+                Email Configuration
+              </h2>
+              <p class="text-sm text-[var(--app-on-surface-variant)]">
+                Configure the sender identity used for email notifications.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 mt-6">
+            <!-- Sender Name -->
+            <mat-form-field
+              appearance="outline"
+              class="w-full small-form-field"
+            >
+              <mat-label>Sender Name </mat-label>
+              <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                >person_outline</mat-icon
+              >
+              <input matInput formControlName="senderName" />
+              <mat-error
+                *ngIf="profileForm.get('senderName')?.hasError('required')"
+                >Sender Name is required</mat-error
+              >
+              <mat-hint class="!text-xs"
+                >This name will appear in the "From" field of emails.</mat-hint
+              >
+            </mat-form-field>
+
+            <!-- Sender Email -->
+            <mat-form-field
+              appearance="outline"
+              class="w-full small-form-field"
+            >
+              <mat-label>Sender Email </mat-label>
+              <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                >mail_outline</mat-icon
+              >
+              <input matInput type="email" formControlName="senderEmail" />
+              <mat-error
+                *ngIf="profileForm.get('senderEmail')?.hasError('required')"
+                >Sender Email is required</mat-error
+              >
+              <mat-error
+                *ngIf="profileForm.get('senderEmail')?.hasError('email')"
+                >Please enter a valid email address</mat-error
+              >
+              <mat-hint class="!text-xs"
+                >The sender email must be authorized by your email
+                provider.</mat-hint
+              >
+            </mat-form-field>
+
+            <!-- Reply-To Email -->
+            <mat-form-field
+              appearance="outline"
+              class="w-full small-form-field"
+            >
+              <mat-label>Reply-To Email</mat-label>
+              <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                >reply</mat-icon
+              >
+              <input matInput type="email" formControlName="replyToEmail" />
+              <mat-error
+                *ngIf="profileForm.get('replyToEmail')?.hasError('email')"
+                >Please enter a valid email address</mat-error
+              >
+              <mat-hint class="!text-xs"
+                >Replies to your emails will be sent to this address.</mat-hint
+              >
+            </mat-form-field>
+          </div>
+
+          <!-- Info Alert -->
+          <div
+            class="bg-[var(--app-info)]/10 border border-[var(--app-info)]/20 rounded-lg p-4 flex items-start gap-3 mt-4"
+          >
+            <mat-icon
+              class="text-[var(--app-info)] shrink-0 !w-5 !h-5 !text-[20px]"
+              >info_outline</mat-icon
+            >
+            <p class="text-sm text-[var(--app-info)] m-0">
+              The sender email must be authorized by your email provider. Make
+              sure your domain is verified to avoid deliverability issues.
+            </p>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- ================= CARD 3: SMS Configuration ================= -->
+      <mat-card
+        class="mb-6 !shadow-sm !border !border-[var(--app-border)] !rounded-xl !p-0 overflow-hidden !bg-[var(--app-surface)] transition-colors"
+      >
+        <div class="p-6">
+          <div class="flex items-start gap-4 mb-6">
+            <div
+              class="w-10 h-10 rounded-lg bg-[var(--app-primary)]/10 text-[var(--app-primary)] flex flex-shrink-0 items-center justify-center"
+            >
+              <mat-icon>chat_bubble_outline</mat-icon>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-semibold text-[var(--app-on-surface)] m-0"
+              >
+                SMS Configuration
+              </h2>
+              <p class="text-sm text-[var(--app-on-surface-variant)]">
+                Configure the sender identity used for SMS notifications.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+            <!-- Sender ID -->
+            <mat-form-field
+              appearance="outline"
+              class="w-full small-form-field"
+            >
+              <mat-label>Sender ID </mat-label>
+              <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                >sms</mat-icon
+              >
+              <input matInput formControlName="smsSenderId" />
+              <mat-error
+                *ngIf="profileForm.get('smsSenderId')?.hasError('required')"
+                >Sender ID is required</mat-error
+              >
+              <mat-error
+                *ngIf="profileForm.get('smsSenderId')?.hasError('maxlength')"
+                >Max 11 characters allowed</mat-error
+              >
+              <mat-hint class="!text-xs"
+                >This ID will be displayed as the sender name in SMS (max 11
+                characters).</mat-hint
+              >
+            </mat-form-field>
+
+            <!-- Sender Number -->
+            <mat-form-field
+              appearance="outline"
+              class="w-full small-form-field"
+            >
+              <mat-label>Sender Number</mat-label>
+              <mat-icon matPrefix class="text-[var(--app-on-surface-variant)]"
+                >phone</mat-icon
+              >
+              <input
+                matInput
+                formControlName="smsSenderNumber"
+                placeholder="+1234567890"
+              />
+              <mat-error
+                *ngIf="profileForm.get('smsSenderNumber')?.hasError('pattern')"
+                >Please enter a valid international phone number (e.g.
+                +1234567890)</mat-error
+              >
+              <mat-hint class="!text-xs"
+                >Use your registered phone number for SMS notifications (include
+                country code).</mat-hint
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Sticky Footer Actions -->
+      <div
+        class="!sticky !bottom-0 !right-0 !left-0 !p-4 bg-[var(--app-surface)]/90 backdrop-blur-md border-t border-[var(--app-border)] flex justify-end gap-4 z-50"
+      >
+        <button
+          type="button"
+          mat-stroked-button
+          (click)="cancel()"
+          class="!rounded-lg !px-8 !h-[44px]"
+          [disabled]="isSaving()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          class="!rounded-lg !px-6 !h-[44px]"
+          [disabled]="isSaving() || isUploadingLogo() || isDeletingLogo()"
+        >
+          <mat-spinner
+            *ngIf="isSaving()"
+            diameter="18"
+            class="mr-2"
+          ></mat-spinner>
+          <mat-icon
+            *ngIf="!isSaving()"
+            class="mr-2 !text-[18px] !w-[18px] !h-[18px]"
+            >save</mat-icon
+          >
+          {{ isSaving() ? "Saving..." : "Save Changes" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
