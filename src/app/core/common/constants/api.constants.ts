@@ -25,6 +25,11 @@ export const API_ENDPOINTS = {
   API_TOKENS: {
     BASE: '/api/v1/api-tokens'
   },
+  // UPDATED: Company profile endpoints
+  COMPANY_PROFILE: {
+    BASE: '/api/v1/company/profile',
+    LOGO: '/api/v1/company/profile/logo'
+  },
   // UPDATED: Added admin-scoped API endpoints
   ADMIN: {
     NOTIFICATIONS: {

@@ -37,15 +37,16 @@ export const routes: Routes = [
           },
           {
             path: 'api-tokens',
-            loadComponent: () =>
-              import('./features/user/pages/api-tokens/api-tokens.component').then(m => m.ApiTokensComponent)
+            loadChildren: () =>
+              import('./features/user/pages/api-tokens/api-tokens.routes').then(m => m.API_TOKEN_ROUTES)
           },
           {
             path: 'playground',
             loadChildren: () =>
               import('./features/user/pages/playground/playground.routes').then(m => m.PLAYGROUND_ROUTES)
           },
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          { path: 'company-profile', loadChildren: () => import('./features/user/pages/company-profile/company-profile.routes').then(m => m.COMPANY_PROFILE_ROUTES) }
         ]
       },
 

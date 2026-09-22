@@ -1,0 +1,14 @@
+/* Optional: Smooth scrolling for the main content area */
+main {
+  scroll-behavior: smooth;
+}
+
+/* Ensure the sticky footer stays at the bottom gracefully */
+.absolute.bottom-0 {
+  box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.05);
+}
+
+/* UPDATED: Ensure hidden file input is truly invisible */
+input[type="file"].hidden {
+  display: none;
+}
