@@ -1,0 +1,209 @@
+// Template Modal Styles — mirrors notifications dialog conventions
+// All colors use var(--app-*) tokens so light/dark themes work automatically.
+
+:host {
+  display: block;
+}
+
+::ng-deep .template-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+}
+
+
+
+// ── Header ───────────────────────────────────────────────────────────────────
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--app-divider);
+  flex-shrink: 0;
+  background-color: var(--app-surface);
+  gap: 12px;
+}
+
+.delete-header {
+  align-items: flex-start;
+}
+
+.delete-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(186, 26, 26, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.delete-icon {
+  color: var(--app-error);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.dialog-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+  flex: 1;
+}
+
+.dialog-subtitle {
+  font-size: 0.85rem;
+  color: var(--app-on-surface-variant);
+  margin: 4px 0 0;
+}
+
+.close-btn {
+  color: var(--app-on-surface-variant);
+  flex-shrink: 0;
+}
+
+// ── Body ─────────────────────────────────────────────────────────────────────
+
+.dialog-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--app-surface);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.optional-label {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--app-on-surface-variant);
+}
+
+.version-hint {
+  font-size: 0.8rem;
+  color: var(--app-on-surface-variant);
+  margin: 4px 0 0;
+}
+
+// ── Delete body ───────────────────────────────────────────────────────────────
+
+.delete-body {
+  gap: 16px;
+}
+
+.delete-info {
+  background-color: var(--app-surface-variant);
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--app-divider);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--app-on-surface-variant);
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--app-on-surface);
+}
+
+.template-badge {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.75rem;
+  background-color: var(--app-surface);
+  color: var(--app-on-surface-variant);
+  padding: 2px 8px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-outline-variant);
+  word-break: break-all;
+}
+
+// ── View Dialog Extras ────────────────────────────────────────────────────────
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.section-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: var(--app-primary);
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.body-preview {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.8rem;
+  color: var(--app-on-surface);
+  background-color: var(--app-surface-variant);
+  border: 1px solid var(--app-outline-variant);
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  max-height: 240px;
+}
+
+.plain-text {
+  color: var(--app-on-surface-variant);
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--app-divider);
+}
+
+.btn-spinner {
+  display: inline-block;
+  margin: 0 4px;
+}

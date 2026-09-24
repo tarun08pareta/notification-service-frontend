@@ -1,0 +1,190 @@
+// ---------------------------------------------------------------------------
+// Admin Email Templates Page Styles
+// Matches the notifications page conventions exactly.
+// All colors use var(--app-*) tokens for automatic dark/light theme support.
+// ---------------------------------------------------------------------------
+
+:host {
+  display: block;
+}
+
+// ── Page Layout ─────────────────────────────────────────────────────────────
+
+.templates-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ── Page Header Row (header + create button) ─────────────────────────────────
+
+.page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.create-btn {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+// ── Filters Bar ─────────────────────────────────────────────────────────────
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-field {
+  &::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.search-field {
+  min-width: 280px;
+  flex: 1;
+}
+
+.small-form-field {
+  min-width: 160px;
+}
+
+// ── Table Card ───────────────────────────────────────────────────────────────
+
+.table-card {
+  position: relative;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+}
+
+// ── Table ────────────────────────────────────────────────────────────────────
+
+.table-responsive {
+  overflow-x: auto;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.templates-table {
+  width: 100%;
+}
+
+.table-row {
+  cursor: default;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--app-surface-hover);
+  }
+}
+
+// ── Cell Helpers ─────────────────────────────────────────────────────────────
+
+.template-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--app-on-surface);
+  margin-bottom: 4px;
+}
+
+.template-badge {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.72rem;
+  background-color: var(--app-surface-variant);
+  color: var(--app-on-surface-variant);
+  padding: 2px 8px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-outline-variant);
+  white-space: nowrap;
+}
+
+.subject-cell {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+}
+
+.version-cell {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.82rem;
+  color: var(--app-on-surface-variant);
+}
+
+.date-cell {
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: var(--app-on-surface-variant);
+}
+
+.actions-header,
+.actions-cell {
+  width: 120px;
+  text-align: center;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.action-btn {
+  color: var(--app-on-surface-variant);
+  
+  &:hover {
+    color: var(--app-on-surface);
+    background-color: var(--app-surface-hover);
+  }
+}
+
+.delete-btn {
+  &:hover {
+    color: var(--app-error);
+    background-color: rgba(186, 26, 26, 0.12);
+  }
+}
+
+.status-toggle {
+  margin: 0 4px;
+}
+
+.row-spinner {
+  margin: 0 auto;
+  display: block;
+}
+
+.status-label {
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.active-text {
+  color: var(--app-success, #059669);
+}
+
+.inactive-text {
+  color: var(--app-on-surface-variant, #6b7280);
+}

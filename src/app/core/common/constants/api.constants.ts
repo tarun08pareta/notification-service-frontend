@@ -34,6 +34,14 @@ export const API_ENDPOINTS = {
   ADMIN: {
     NOTIFICATIONS: {
       BASE: '/api/v1/admin/notifications'
+    },
+    // UPDATED: Admin email template endpoints
+    EMAIL_TEMPLATES: {
+      BASE: '/api/v1/admin/email-templates'
     }
+  },
+  // UPDATED: User-facing email templates (active templates only)
+  EMAIL_TEMPLATES: {
+    BASE: '/api/v1/email-templates'
   }
 } as const;

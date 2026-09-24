@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,34 +11,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PageHeaderComponent } from '../../../../shared/ui/page-header/page-header.component';
 import { NotificationService } from '../../../../core/common/notifications/notification.service';
 import { NotificationRequest, NotificationResponse, DeliveryAttempt } from '../../../../core/common/notifications/notification.models';
 import { ToastService } from '../../../../core/common/toast/toast.service';
+import { EmailTemplateService } from '../../../../core/common/email-template/email-template.service';
+import { CompanyProfileService } from '../../../../core/common/company-profile/company-profile.service';
+import { EmailTemplate, TemplateVariable } from '../../../../core/admin/services/admin-email-template.models';
+import { CompanyProfile } from '../../../../core/common/company-profile/company-profile.model';
+import { forkJoin } from 'rxjs';
 
 // ---------------------------------------------------------------------------
-// Template variable definitions — source of truth for playground variable UI.
-// Extend this map when new backend templates are supported.
+// Template variable definitions are now dynamically fetched.
 // ---------------------------------------------------------------------------
-interface TemplateVariableDef {
-  key: string;
-  label: string;
-  placeholder: string;
-  required: boolean;
-}
-
-const TEMPLATE_VARIABLE_DEFS: Record<string, TemplateVariableDef[]> = {
-  WELCOME: [
-    { key: 'name', label: 'Name', placeholder: 'John Doe', required: true }
-  ],
-  OTP: [
-    { key: 'otp', label: 'OTP Code', placeholder: '123456', required: true }
-  ],
-  RESET_PASSWORD: [
-    { key: 'name', label: 'Name', placeholder: 'John Doe', required: true },
-    { key: 'resetLink', label: 'Reset Link', placeholder: 'https://example.com/reset/...', required: true }
-  ]
-};
 
 // Channels that the backend actually supports
 const SUPPORTED_CHANNELS = [
@@ -82,16 +68,16 @@ interface AdvancedVariable {
 })
 export class PlaygroundComponent implements OnInit, OnDestroy {
 
+  availableTemplates: EmailTemplate[] = [];
+  companyProfile: CompanyProfile | null = null;
+  isLoadingData = true;
+
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
   playgroundForm: FormGroup;
 
-  /** Key-value map for template variable inputs (not in FormGroup to stay flexible). */
-  templateVariableValues: Record<string, string> = {};
 
-  /** Advanced key/value pairs added by the user. */
-  advancedVariables: AdvancedVariable[] = [];
 
   // ---------------------------------------------------------------------------
   // Token state
@@ -102,7 +88,6 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // Constants exposed to template
   // ---------------------------------------------------------------------------
   readonly supportedChannels = SUPPORTED_CHANNELS;
-  readonly supportedTemplates = Object.keys(TEMPLATE_VARIABLE_DEFS);
 
   // ---------------------------------------------------------------------------
   // Request / send state
@@ -137,21 +122,46 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private notificationService: NotificationService,
-    private toastr: ToastService
+    private toastr: ToastService,
+    private emailTemplateService: EmailTemplateService,
+    private companyProfileService: CompanyProfileService,
+    private sanitizer: DomSanitizer
   ) {
     this.playgroundForm = this.fb.group({
       apiToken:       ['', Validators.required],
       channel:        ['EMAIL', Validators.required],
       recipient:      ['', Validators.required],
-      template:       ['WELCOME', Validators.required],
-      idempotencyKey: [this.generateKey(), Validators.required]
+      template:       ['', Validators.required],
+      idempotencyKey: [this.generateKey(), Validators.required],
+      variables: this.fb.group({}),
+      advancedVariables: this.fb.array([])
     });
-
-    // Initialise template variable values for the default template
-    this.syncTemplateVariableValues('WELCOME');
   }
 
   ngOnInit(): void {
+    this.isLoadingData = true;
+    this.subs.add(
+      forkJoin({
+        templates: this.emailTemplateService.getTemplates(0, 100),
+        profile: this.companyProfileService.getProfile()
+      }).subscribe({
+        next: (data) => {
+          this.availableTemplates = data.templates.content || [];
+          this.companyProfile = data.profile;
+          
+          if (this.availableTemplates.length > 0) {
+            const firstTemplateCode = this.availableTemplates[0].code;
+            this.playgroundForm.get('template')!.setValue(firstTemplateCode);
+            this.syncTemplateVariableValues(firstTemplateCode);
+          }
+          this.isLoadingData = false;
+        },
+        error: () => {
+          this.toastr.error('Failed to load data for playground.');
+          this.isLoadingData = false;
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -190,20 +200,93 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   }
 
   get currentTemplate(): string {
-    return this.playgroundForm.get('template')?.value ?? 'WELCOME';
+    return this.playgroundForm.get('template')?.value ?? '';
   }
 
-  get currentTemplateVarDefs(): TemplateVariableDef[] {
-    return TEMPLATE_VARIABLE_DEFS[this.currentTemplate] ?? [];
+  get currentSelectedTemplateObj(): EmailTemplate | undefined {
+    return this.availableTemplates.find(t => t.code === this.currentTemplate);
   }
 
-  private syncTemplateVariableValues(template: string): void {
-    const newValues: Record<string, string> = {};
-    (TEMPLATE_VARIABLE_DEFS[template] ?? []).forEach(v => {
-      // Preserve existing value if key already exists
-      newValues[v.key] = this.templateVariableValues[v.key] ?? '';
+  get currentTemplateVarDefs(): TemplateVariable[] {
+    return this.currentSelectedTemplateObj?.variables || [];
+  }
+
+  get companyProfileVars(): TemplateVariable[] {
+    return this.currentTemplateVarDefs.filter(v => v.source === 'COMPANY_PROFILE');
+  }
+
+  get playgroundVars(): TemplateVariable[] {
+    return this.currentTemplateVarDefs.filter(v => v.source !== 'COMPANY_PROFILE');
+  }
+
+  get variablesGroup(): FormGroup {
+    return this.playgroundForm.get('variables') as FormGroup;
+  }
+
+  private syncTemplateVariableValues(templateCode: string): void {
+    const templateObj = this.availableTemplates.find(t => t.code === templateCode);
+    const variables = templateObj?.variables || [];
+    const dynamicGroup = this.variablesGroup;
+    
+    const newVars = variables.filter(v => v.source !== 'COMPANY_PROFILE');
+    const newKeys = newVars.map(v => v.key);
+    
+    // Remove controls that are no longer in the new template
+    Object.keys(dynamicGroup.controls).forEach(key => {
+      if (!newKeys.includes(key)) {
+        dynamicGroup.removeControl(key);
+      }
     });
-    this.templateVariableValues = newValues;
+    
+    // Add new controls or update validators for existing ones
+    newVars.forEach(v => {
+      const validators = v.required ? [Validators.required] : [];
+      if (!dynamicGroup.contains(v.key)) {
+        dynamicGroup.addControl(v.key, this.fb.control('', validators));
+      } else {
+        // Control exists, just update validators
+        const control = dynamicGroup.get(v.key);
+        if (control) {
+          control.setValidators(validators);
+          control.updateValueAndValidity({ emitEvent: false });
+        }
+      }
+    });
+  }
+
+  formatVariableName(key: string): string {
+    if (!key) return '';
+    const result = key.replace(/([A-Z])/g, ' $1');
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  }
+
+  getRenderedHtml(): SafeHtml | null {
+    const template = this.currentSelectedTemplateObj;
+    if (!template || !template.htmlBody) return null;
+
+    let html = template.htmlBody;
+    
+    const dynamicValues = this.variablesGroup.getRawValue();
+
+    // Replace PLAYGROUND variables
+    this.playgroundVars.forEach(v => {
+      const value = dynamicValues[v.key] || `[${v.key}]`;
+      const regex = new RegExp(`{{\\s*${v.key}\\s*}}`, 'g');
+      html = html.replace(regex, value);
+    });
+
+    // Replace COMPANY_PROFILE variables
+    this.companyProfileVars.forEach(v => {
+      let value = `[${v.key}]`;
+      if (this.companyProfile) {
+        if (v.key === 'companyName' && this.companyProfile.companyName) value = this.companyProfile.companyName;
+        if (v.key === 'logoUrl' && this.companyProfile.logoUrl) value = this.companyProfile.logoUrl;
+      }
+      const regex = new RegExp(`{{\\s*${v.key}\\s*}}`, 'g');
+      html = html.replace(regex, value);
+    });
+
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   // ---------------------------------------------------------------------------
@@ -233,12 +316,20 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // Advanced variables
   // ---------------------------------------------------------------------------
 
+  get advancedVariablesArray(): FormArray {
+    return this.playgroundForm.get('advancedVariables') as FormArray;
+  }
+
   addAdvancedVariable(): void {
-    this.advancedVariables = [...this.advancedVariables, { key: '', value: '' }];
+    // UPDATED: Use FormArray for Advanced Variables
+    this.advancedVariablesArray.push(this.fb.group({
+      key: ['', Validators.required],
+      value: ['', Validators.required]
+    }));
   }
 
   removeAdvancedVariable(index: number): void {
-    this.advancedVariables = this.advancedVariables.filter((_, i) => i !== index);
+    this.advancedVariablesArray.removeAt(index);
   }
 
   trackByIndex(index: number): number {
@@ -269,12 +360,17 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
 
   private buildRequestBody(): NotificationRequest {
-    const variables: Record<string, string> = { ...this.templateVariableValues };
+    const rawValue = this.playgroundForm.getRawValue();
+    const variables: Record<string, string> = { ...(rawValue.variables || {}) };
+    
+    // UPDATED: Advanced variables are kept strictly separate from template variables.
+    const advancedVariables: Record<string, string> = {};
 
-    // Merge advanced variables — skip empty keys
-    this.advancedVariables.forEach(av => {
-      if (av.key.trim()) {
-        variables[av.key.trim()] = av.value;
+    this.advancedVariablesArray.controls.forEach((control: AbstractControl) => {
+      const key = control.value.key?.trim();
+      const value = control.value.value;
+      if (key) {
+        advancedVariables[key] = value;
       }
     });
 
@@ -282,7 +378,8 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
       channel: this.currentChannel as 'EMAIL' | 'SMS',
       recipient: this.playgroundForm.get('recipient')!.value?.trim() ?? '',
       template: this.currentTemplate,
-      variables
+      variables,
+      advancedVariables
     };
   }
 
@@ -314,16 +411,52 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
     if (channel === 'SMS' && !/^\+[1-9]\d{6,14}$/.test(recipient)) {
       return 'Please enter a valid phone number in E.164 format (e.g. +919876543210).';
     }
-    const template = this.currentTemplate;
-    if (!template) {
+    const templateObj = this.currentSelectedTemplateObj;
+    if (!templateObj) {
       return 'Please select a template.';
     }
-    const templateVars = TEMPLATE_VARIABLE_DEFS[template] ?? [];
+    const templateVars = templateObj.variables?.filter(v => v.source !== 'COMPANY_PROFILE') || [];
+    const templatePlaygroundKeys = new Set<string>();
+    const dynamicValues = this.variablesGroup.getRawValue();
+
     for (const v of templateVars) {
-      if (v.required && !(this.templateVariableValues[v.key] ?? '').trim()) {
-        return `"${v.label}" is required for the ${template} template.`;
+      templatePlaygroundKeys.add(v.key);
+      if (v.required && !(dynamicValues[v.key] ?? '').trim()) {
+        return `"${this.formatVariableName(v.key)}" is required for the ${templateObj.code} template.`;
       }
     }
+    
+    // Check advanced variables for duplicates against each other and against PLAYGROUND variables
+    const seenAdvKeys = new Set<string>();
+    for (let i = 0; i < this.advancedVariablesArray.length; i++) {
+      const control = this.advancedVariablesArray.at(i);
+      const advKey = control.value.key?.trim();
+      const advValue = control.value.value;
+      
+      // Validation rule: "Completely empty row -> either prevent submission or automatically remove it."
+      // We will automatically remove completely empty rows before validating.
+      if (!advKey && !advValue) {
+        this.removeAdvancedVariable(i);
+        i--;
+        continue;
+      }
+      
+      if (!advKey) {
+        return 'Advanced Variable must have a key.';
+      }
+      if (!advValue && advValue !== '') { // allow empty strings if explicitly typed, but check logic
+        return 'Advanced Variable must have a value.';
+      }
+      
+      // We don't check against templatePlaygroundKeys here anymore because they are separate payloads.
+      // Wait, the prompt says "Do not infer Advanced Variables by comparing entered keys against template variables."
+      // So we just check for duplicates inside advanced variables.
+      if (seenAdvKeys.has(advKey)) {
+        return `Duplicate Advanced Variable key "${advKey}".`;
+      }
+      seenAdvKeys.add(advKey);
+    }
+    
     if (!this.idempotencyKey) {
       return 'Idempotency key is required.';
     }

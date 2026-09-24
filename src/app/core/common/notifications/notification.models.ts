@@ -3,6 +3,7 @@ export interface NotificationRequest {
   recipient: string;
   template: string;
   variables: Record<string, any>;
+  advancedVariables?: Record<string, string>;
 }
 
 export interface NotificationResponse {
