@@ -1,0 +1,241 @@
+<div class="flex flex-col max-h-[calc(100vh-48px)] sm:max-h-[calc(100vh-100px)] overflow-hidden bg-white dark:bg-gray-900">
+
+  <!-- ── SHARED HEADER ───────────────────────────────────────────────────── -->
+  <cb-dialog-header
+    class="shrink-0 z-10"
+    [action]="actionTitle"
+    [key]="mode === 'delete' ? 'Email Template?' : 'Email Template'"
+    [profileModal]="true">
+  </cb-dialog-header>
+
+  <!-- ── VIEW BODY ─────────────────────────────────────────────────────── -->
+  <div class="flex-1 overflow-y-auto p-6 min-h-0 bg-white dark:bg-gray-900" *ngIf="mode === 'view' && template as t">
+
+    <div class="detail-grid">
+      <div class="detail-row">
+        <span class="detail-label">Template Code</span>
+        <code class="template-badge">{{ t.code }}</code>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Template Name</span>
+        <span class="detail-value">{{ t.name }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Subject</span>
+        <span class="detail-value">{{ t.subject }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Status</span>
+        <span class="detail-value">{{ t.status }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Version</span>
+        <span class="detail-value">v{{ t.version }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Created At</span>
+        <span class="detail-value">{{ t.createdAt | date:'medium' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Updated At</span>
+        <span class="detail-value">{{ t.updatedAt | date:'medium' }}</span>
+      </div>
+    </div>
+
+    <div class="detail-section" *ngIf="t.htmlBody">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">html</mat-icon>
+        HTML Body
+      </h3>
+      <pre class="body-preview">{{ t.htmlBody }}</pre>
+    </div>
+
+    <div class="detail-section" *ngIf="t.textBody">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">article</mat-icon>
+        Plain Text Body
+      </h3>
+      <pre class="body-preview">{{ t.textBody }}</pre>
+    </div>
+    <div class="detail-section" *ngIf="getDisplayVariables().length > 0">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">data_object</mat-icon>
+        Template Variables
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let v of getDisplayVariables()" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+          <div class="font-medium text-gray-900 dark:text-gray-100">{{ formatVariableName(v.key) }}</div>
+          <div class="text-xs text-gray-500 mb-2 font-mono">key: {{ v.key }}</div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-800">
+              Source: {{ v.source }}
+            </span>
+            <span class="text-gray-600 dark:text-gray-400">
+              Required: <strong [class.text-red-600]="v.required" [class.dark:text-red-400]="v.required">{{ v.required ? 'Yes' : 'No' }}</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── CREATE / EDIT FORM ────────────────────────────────────────────── -->
+  <div class="flex-1 overflow-y-auto p-6 min-h-0 bg-white dark:bg-gray-900" *ngIf="mode === 'create' || mode === 'edit'">
+    <form [formGroup]="form" (ngSubmit)="save()" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
+      <!-- Template Code (disabled in edit) -->
+      <mat-form-field appearance="outline" class="col-span-1 md:col-span-2 w-full small-form-field">
+        <mat-label>Template Code</mat-label>
+        <mat-icon matPrefix>code</mat-icon>
+        <input matInput formControlName="code" placeholder="e.g. WELCOME_EMAIL">
+        <mat-hint *ngIf="mode === 'create'" class="!text-xs">Uppercase letters, numbers, and underscores only.</mat-hint>
+        <mat-hint *ngIf="mode === 'edit'" class="!text-xs">Template code cannot be changed.</mat-hint>
+        <mat-error *ngIf="form.get('code')?.hasError('required')">Template Code is required.</mat-error>
+        <mat-error *ngIf="form.get('code')?.hasError('pattern')">Only uppercase letters, numbers, and underscores are allowed.</mat-error>
+      </mat-form-field>
+
+      <!-- Template Name -->
+      <mat-form-field appearance="outline" class="col-span-1 w-full small-form-field">
+        <mat-label>Template Name</mat-label>
+        <mat-icon matPrefix>label</mat-icon>
+        <input matInput formControlName="name" placeholder="e.g. Welcome Email">
+        <mat-error *ngIf="form.get('name')?.hasError('required')">Template Name is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Email Subject -->
+      <mat-form-field appearance="outline" class="col-span-1 w-full small-form-field">
+        <mat-label>Email Subject</mat-label>
+        <mat-icon matPrefix>subject</mat-icon>
+        <input matInput formControlName="subject" placeholder="e.g. Welcome to [companyName]">
+        <mat-error *ngIf="form.get('subject')?.hasError('required')">Email Subject is required.</mat-error>
+      </mat-form-field>
+
+      <!-- HTML Body -->
+      <mat-form-field appearance="outline" class="col-span-1 md:col-span-2 w-full small-form-field">
+        <mat-label>HTML Body</mat-label>
+        <mat-icon matPrefix>html</mat-icon>
+        <textarea matInput formControlName="htmlBody" rows="6" placeholder="<html>...</html>"></textarea>
+        <mat-error *ngIf="form.get('htmlBody')?.hasError('required')">HTML Body is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Plain Text Body (optional) -->
+      <mat-form-field appearance="outline" class="col-span-1 md:col-span-2 w-full small-form-field">
+        <mat-label>Plain Text Body <span class="optional-label">(optional)</span></mat-label>
+        <mat-icon matPrefix>article</mat-icon>
+        <textarea matInput formControlName="textBody" rows="3" placeholder="Plain text version of the email…"></textarea>
+      </mat-form-field>
+
+      <p class="col-span-1 md:col-span-2 text-sm text-gray-500 mt-2" *ngIf="mode === 'edit' && template">
+        Current version: <strong>v{{ template.version }}</strong>
+      </p>
+
+      <!-- Template Variables Management (Create & Edit Mode) -->
+      <div class="col-span-1 md:col-span-2 mt-4" *ngIf="mode === 'edit' || mode === 'create'">
+        <div class="flex justify-between items-center mb-3 border-b border-gray-200 dark:border-gray-700 pb-2">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Template Variables
+          </h3>
+          <button type="button" mat-button color="primary" (click)="addVariable()" class="!px-2">
+            <mat-icon>add</mat-icon> Add Variable
+          </button>
+        </div>
+        
+        <p class="text-xs text-gray-500 mb-4">
+          <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{{ '{' + '{companyName}' + '}' }}</code> and <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{{ '{' + '{logoUrl}' + '}' }}</code> are protected system variables. 
+          Use <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{{ '{' + '{advancedVariables}' + '}' }}</code> for advanced placeholders (do not add here).
+        </p>
+
+        <!-- Form Array Validation Error -->
+        <mat-error *ngIf="variablesArray.hasError('duplicateKey')" class="text-xs mb-3 block">
+          Duplicate variable key: <strong>{{ variablesArray.errors?.['duplicateValue'] }}</strong>
+        </mat-error>
+        <mat-error *ngIf="variablesArray.hasError('advancedVariablesReserved')" class="text-xs mb-3 block">
+          <strong>advancedVariables</strong> is a reserved key and cannot be added manually.
+        </mat-error>
+        
+        <div formArrayName="variables" class="flex flex-col gap-3">
+          <div *ngFor="let vGroup of variablesArray.controls; let i = index" [formGroupName]="i" 
+               class="flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+            
+            <mat-form-field appearance="outline" class="w-full sm:flex-1 small-form-field !mb-0">
+              <mat-label>Key</mat-label>
+              <input matInput formControlName="key" placeholder="e.g. firstName">
+              <mat-error *ngIf="vGroup.get('key')?.hasError('required')">Required.</mat-error>
+              <mat-error *ngIf="vGroup.get('key')?.hasError('pattern')">Invalid format.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="w-full sm:w-40 small-form-field !mb-0">
+              <mat-label>Source</mat-label>
+              <mat-select formControlName="source">
+                <mat-option value="COMPANY_PROFILE">COMPANY_PROFILE</mat-option>
+                <mat-option value="PLAYGROUND">PLAYGROUND</mat-option>
+                <mat-option value="USER">USER</mat-option>
+                <mat-option value="EVENT">EVENT</mat-option>
+              </mat-select>
+              <mat-error *ngIf="vGroup.get('source')?.hasError('required')">Required.</mat-error>
+            </mat-form-field>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <!-- Required Toggle -->
+              <mat-slide-toggle formControlName="required" class="text-sm scale-90 origin-left" color="primary">
+                Req.
+              </mat-slide-toggle>
+              
+              <!-- System Badge or Delete Button -->
+              <ng-container *ngIf="vGroup.get('isSystem')?.value; else deleteBtn">
+                <span class="text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-1 rounded-full border border-blue-200 dark:border-blue-800 ml-auto sm:ml-0">
+                  System
+                </span>
+              </ng-container>
+              <ng-template #deleteBtn>
+                <button type="button" mat-icon-button color="warn" (click)="removeVariable(i)" class="ml-auto sm:ml-0" matTooltip="Remove variable">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-template>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ── DELETE CONFIRMATION ───────────────────────────────────────────── -->
+  <div class="flex flex-col p-5 overflow-y-auto w-full" *ngIf="mode === 'delete'">
+  <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg w-full">
+    
+    <div class="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Template</span>
+      <span class="text-sm text-gray-900 dark:text-gray-100 truncate">{{ template?.name }}</span>
+    </div>
+    
+    <div class="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-3 px-4 py-3 min-w-0">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Code</span>
+      <div class="min-w-0">
+        <code class="text-xs bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full border border-gray-300 dark:border-gray-600 break-all max-w-full inline-block">
+          {{ template?.code }}
+        </code>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- ── SHARED FOOTER ─────────────────────────────────────────────────── -->
+<cb-dialog-footer
+  class="shrink-0 z-10 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
+  *ngIf="mode !== 'view'"
+  [action]="actionTitle"
+  [form]="form"
+  [isSaving]="isSaving()"
+  [disableButton]="isSaving() || (mode !== 'delete' && form.invalid)"
+  (submitClicked)="mode === 'delete' ? confirmDelete() : save()">
+</cb-dialog-footer>
+
+<div class="shrink-0 z-10 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-end" *ngIf="mode === 'view'">
+  <button type="button" mat-flat-button color="primary" (click)="cancel()">Close</button>
+</div>
+
+</div>

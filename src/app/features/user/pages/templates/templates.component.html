@@ -1,0 +1,166 @@
+<div class="templates-page">
+
+  <!-- ── Page Header ──────────────────────────────────────────────────── -->
+  <app-page-header
+    title="Email Templates"
+    description="Browse available email notification templates.">
+  </app-page-header>
+
+  <!-- ── Table Card ───────────────────────────────────────────────────── -->
+  <div class="table-card">
+
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="loading-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Empty state -->
+    <ng-container *ngIf="!isLoading() && templates().length === 0">
+      <app-empty-state
+        icon="description"
+        title="No email templates found"
+        description="There are no active email templates available at this time.">
+      </app-empty-state>
+    </ng-container>
+
+    <!-- Table -->
+    <div class="table-responsive" [class.hidden]="!isLoading() && templates().length === 0">
+      <table mat-table [dataSource]="templates()" class="templates-table">
+
+        <!-- Template Column -->
+        <ng-container matColumnDef="template">
+          <th mat-header-cell *matHeaderCellDef>Template</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="template-name">{{ row.name }}</div>
+            <code class="template-badge">{{ row.code }}</code>
+          </td>
+        </ng-container>
+
+        <!-- Subject Column -->
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef>Subject</th>
+          <td mat-cell *matCellDef="let row" class="subject-cell">{{ row.subject }}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <app-status-chip
+              [label]="statusLabel(row.status)"
+              [variant]="statusVariant(row.status)">
+            </app-status-chip>
+          </td>
+        </ng-container>
+
+        <!-- Version Column -->
+        <ng-container matColumnDef="version">
+          <th mat-header-cell *matHeaderCellDef>Version</th>
+          <td mat-cell *matCellDef="let row" class="version-cell">v{{ row.version }}</td>
+        </ng-container>
+
+        <!-- Last Updated Column -->
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef>Last Updated</th>
+          <td mat-cell *matCellDef="let row" class="date-cell">{{ formatDate(row.updatedAt) }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+          <td mat-cell *matCellDef="let row" class="actions-cell">
+            <button
+              mat-icon-button
+              matTooltip="View template"
+              (click)="openView(row)"
+              class="view-btn">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      *ngIf="!isLoading() && templates().length > 0"
+      [length]="totalElements()"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+
+  </div><!-- /table-card -->
+
+</div><!-- /templates-page -->
+
+
+<!-- ================================================================
+     VIEW DIALOG (read-only)
+     ================================================================ -->
+<ng-template #viewDialog>
+  <div class="detail-dialog" *ngIf="selectedTemplate() as t">
+
+    <!-- Header -->
+    <div class="dialog-header">
+      <h2 class="dialog-title">{{ t.name }}</h2>
+      <button mat-icon-button class="close-btn" (click)="closeView()" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="dialog-body">
+
+      <!-- Meta -->
+      <section class="detail-section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">info_outline</mat-icon>
+          Template Info
+        </h3>
+        <div class="detail-grid">
+          <div class="detail-row">
+            <span class="detail-label">Template Code</span>
+            <code class="template-badge">{{ t.code }}</code>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Subject</span>
+            <span class="detail-value">{{ t.subject }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Version</span>
+            <span class="detail-value">v{{ t.version }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Updated</span>
+            <span class="detail-value">{{ formatDate(t.updatedAt) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- HTML Body -->
+      <section class="detail-section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">html</mat-icon>
+          HTML Body
+        </h3>
+        <pre class="body-preview">{{ t.htmlBody }}</pre>
+      </section>
+
+      <!-- Plain Text -->
+      <section class="detail-section" *ngIf="t.textBody">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">article</mat-icon>
+          Plain Text Body
+        </h3>
+        <pre class="body-preview plain-text">{{ t.textBody }}</pre>
+      </section>
+
+    </div><!-- /dialog-body -->
+  </div><!-- /detail-dialog -->
+</ng-template>

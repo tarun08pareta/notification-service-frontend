@@ -1,0 +1,8 @@
+<div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-t-xl shrink-0 gap-3">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white m-0 truncate" mat-dialog-title>
+    {{ action }} {{ key }}
+  </h2>
+  <button mat-icon-button class="text-gray-500 dark:text-gray-400 shrink-0" *ngIf="profileModal" (click)="handelModalClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

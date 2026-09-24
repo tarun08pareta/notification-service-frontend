@@ -46,7 +46,13 @@ export const routes: Routes = [
               import('./features/user/pages/playground/playground.routes').then(m => m.PLAYGROUND_ROUTES)
           },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-          { path: 'company-profile', loadChildren: () => import('./features/user/pages/company-profile/company-profile.routes').then(m => m.COMPANY_PROFILE_ROUTES) }
+          { path: 'company-profile', loadChildren: () => import('./features/user/pages/company-profile/company-profile.routes').then(m => m.COMPANY_PROFILE_ROUTES) },
+          // UPDATED: User email templates route
+          {
+            path: 'templates',
+            loadChildren: () =>
+              import('./features/user/pages/templates/templates.routes').then(m => m.USER_TEMPLATES_ROUTES)
+          }
         ]
       },
 
@@ -100,6 +106,12 @@ export const routes: Routes = [
             path: 'notifications',
             loadChildren: () =>
               import('./features/admin/pages/notifications/notifications.routes').then(m => m.ADMIN_NOTIFICATIONS_ROUTES)
+          },
+          // UPDATED: Admin Email Templates route
+          {
+            path: 'templates',
+            loadChildren: () =>
+              import('./features/admin/pages/templates/templates.routes').then(m => m.ADMIN_TEMPLATES_ROUTES)
           },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]

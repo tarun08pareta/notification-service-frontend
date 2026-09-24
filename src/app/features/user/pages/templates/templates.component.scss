@@ -1,0 +1,199 @@
+// User Email Templates Page Styles
+// Mirrors notifications and admin templates conventions.
+
+:host { display: block; }
+
+.templates-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.table-card {
+  position: relative;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  &.hidden { display: none; }
+}
+
+.templates-table { width: 100%; }
+
+.table-row {
+  cursor: default;
+  transition: background-color 0.15s ease;
+  &:hover { background-color: var(--app-surface-hover); }
+}
+
+// Cells
+.template-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--app-on-surface);
+  margin-bottom: 4px;
+}
+
+.template-badge {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.72rem;
+  background-color: var(--app-surface-variant);
+  color: var(--app-on-surface-variant);
+  padding: 2px 8px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-outline-variant);
+  white-space: nowrap;
+}
+
+.subject-cell {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+}
+
+.version-cell {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.82rem;
+  color: var(--app-on-surface-variant);
+}
+
+.date-cell {
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: var(--app-on-surface-variant);
+}
+
+.actions-header,
+.actions-cell {
+  width: 64px;
+  text-align: center;
+}
+
+.view-btn { color: var(--app-primary); }
+
+// ── View Dialog ──────────────────────────────────────────────────────────────
+
+::ng-deep .template-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.detail-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  background-color: var(--app-surface);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--app-divider);
+  flex-shrink: 0;
+}
+
+.dialog-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+}
+
+.close-btn { color: var(--app-on-surface-variant); }
+
+.dialog-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.section-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: var(--app-primary);
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--app-divider);
+  &:last-child { border-bottom: none; }
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--app-on-surface-variant);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--app-on-surface);
+  word-break: break-word;
+}
+
+.body-preview {
+  font-family: var(--app-font-family-technical);
+  font-size: 0.8rem;
+  color: var(--app-on-surface);
+  background-color: var(--app-surface-variant);
+  border: 1px solid var(--app-outline-variant);
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  max-height: 240px;
+}
+
+.plain-text {
+  color: var(--app-on-surface-variant);
+}

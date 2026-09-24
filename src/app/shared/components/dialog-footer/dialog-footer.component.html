@@ -1,0 +1,65 @@
+<div class="pt-4" [ngSwitch]="action">
+  
+  <!-- Delete -->
+  <ng-container *ngSwitchCase="'Delete'">
+    <div class="flex justify-end gap-2 px-6 pb-6 pt-2 w-full mt-auto">
+      <button mat-button (click)="closeDialog()" [disabled]="isSaving">
+        Cancel
+      </button>
+      <button mat-flat-button color="warn" (click)="onSubmit()" [disabled]="isSaving">
+        <mat-spinner *ngIf="isSaving" diameter="18" class="inline-block mx-1"></mat-spinner>
+        <span *ngIf="!isSaving" class="relative top-0.5">Delete</span>
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Confirm -->
+  <ng-container *ngSwitchCase="'Confirm'">
+    <div class="flex justify-end gap-2 px-6 pb-6 pt-2">
+      <button mat-button (click)="onCancel()">
+        Cancel
+      </button>
+      <button mat-flat-button color="primary" (click)="onSubmit()">
+        Confirm
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Add -->
+  <ng-container *ngSwitchCase="'Add'">
+    <div class="flex justify-end gap-2 px-6 pb-6 pt-2">
+      <button mat-button (click)="onCancel()" [disabled]="isSaving">
+        Cancel
+      </button>
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        [disabled]="!isFormValid || !disableButton || isSaving"
+        (click)="onSubmit()"
+      >
+        <mat-spinner *ngIf="isSaving" diameter="18" class="inline-block mx-1"></mat-spinner>
+        <span *ngIf="!isSaving" class="relative top-0.5">Add</span>
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- DEFAULT (Update / Save / Edit) -->
+  <ng-container *ngSwitchDefault>
+    <div class="flex justify-end gap-2 px-6 pb-6 pt-2">
+      <button mat-button (click)="onCancel()" [disabled]="isSaving">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="!isFormValid || !disableButton || isSaving"
+        (click)="onSubmit()"
+      >
+        <mat-spinner *ngIf="isSaving" diameter="18" class="inline-block mx-1"></mat-spinner>
+        <span *ngIf="!isSaving" class="relative top-0.5">Update</span>
+      </button>
+    </div>
+  </ng-container>
+
+</div>

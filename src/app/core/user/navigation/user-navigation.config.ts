@@ -7,6 +7,7 @@ export const USER_NAVIGATION_ITEMS: NavigationItem[] = [
     // UPDATED: Added Company Profile navigation item
     { label: 'Company Profile', icon: 'business', route: '/user/company-profile' },
     { label: 'My Notifications', icon: 'notifications', route: '/notifications' },
-    { label: 'Templates', icon: 'description', route: '/templates' }
+    // UPDATED: Fixed Templates route to /user/templates
+    { label: 'Templates', icon: 'description', route: '/user/templates' }
 ];
 
