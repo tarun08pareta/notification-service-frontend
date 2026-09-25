@@ -2,7 +2,7 @@
   
   <!-- Delete -->
   <ng-container *ngSwitchCase="'Delete'">
-    <div class="flex justify-end gap-2 px-6 pb-6 pt-2 w-full mt-auto">
+    <div class="flex justify-end gap-2 px-6 pb-6 pt-2 w-[92%] mt-auto">
       <button mat-button (click)="closeDialog()" [disabled]="isSaving">
         Cancel
       </button>
@@ -35,7 +35,7 @@
         type="button"
         mat-flat-button
         color="primary"
-        [disabled]="!isFormValid || !disableButton || isSaving"
+        [disabled]="!isFormValid || disableButton || isSaving"
         (click)="onSubmit()"
       >
         <mat-spinner *ngIf="isSaving" diameter="18" class="inline-block mx-1"></mat-spinner>
@@ -53,7 +53,7 @@
       <button
         mat-flat-button
         color="primary"
-        [disabled]="!isFormValid || !disableButton || isSaving"
+        [disabled]="!isFormValid || disableButton || isSaving"
         (click)="onSubmit()"
       >
         <mat-spinner *ngIf="isSaving" diameter="18" class="inline-block mx-1"></mat-spinner>

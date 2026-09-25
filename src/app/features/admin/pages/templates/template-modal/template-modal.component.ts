@@ -80,6 +80,11 @@ export class TemplateModalComponent implements OnInit, OnDestroy {
     return 'View';
   }
 
+  get buttonTitle(): string {
+    if (this.mode === 'edit') return 'Update';
+    return this.actionTitle;
+  }
+
   get template(): EmailTemplate | undefined {
     return this.data.template;
   }
@@ -100,8 +105,9 @@ export class TemplateModalComponent implements OnInit, OnDestroy {
   }
 
   // UPDATED: Custom validator for the variables array
-  private variablesValidator(array: AbstractControl) {
-    const values = array.value as any[];
+  private variablesValidator = (array: AbstractControl) => {
+    const arr = array as FormArray;
+    const values = arr.getRawValue ? arr.getRawValue() : array.value as any[];
     const keys = new Set<string>();
     
     for (let i = 0; i < values.length; i++) {
@@ -161,6 +167,22 @@ export class TemplateModalComponent implements OnInit, OnDestroy {
       textBody:     [t?.textBody ?? '',  []],
       variables:    varsArray
     });
+
+    // UPDATED: Auto-suggest Template Code based on Template Name
+    if (this.mode === 'create') {
+      this.form.get('name')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(val => {
+        const codeControl = this.form.get('code');
+        if (codeControl && !codeControl.dirty) {
+          const suggested = (val || '')
+            .toUpperCase()
+            .replace(/[^A-Z0-9\s_]/g, '')
+            .replace(/\s+/g, '_')
+            .replace(/_+/g, '_')
+            .replace(/^_|_$/g, '');
+          codeControl.setValue(suggested);
+        }
+      });
+    }
   }
 
   // UPDATED: Methods for manual variable management

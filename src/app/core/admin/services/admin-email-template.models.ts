@@ -54,7 +54,7 @@ export interface CreateEmailTemplateRequest {
   subject: string;
   htmlBody: string;
   textBody?: string;
-  variables?: TemplateVariable[];
+  variables: TemplateVariable[];
 }
 
 export interface UpdateEmailTemplateRequest {
@@ -62,7 +62,7 @@ export interface UpdateEmailTemplateRequest {
   subject: string;
   htmlBody: string;
   textBody?: string;
-  variables?: TemplateVariable[];
+  variables: TemplateVariable[];
 }
 
 export interface UpdateEmailTemplateStatusRequest {

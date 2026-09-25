@@ -35,7 +35,7 @@ import { DIALOG_CONFIG } from '../../../../shared/components/dialog-config';
 
 
 const DISPLAYED_COLUMNS: string[] = [
-  'template', 'subject', 'variables', 'status', 'version', 'updatedAt', 'actions'
+  'name', 'code', 'status', 'version', 'updatedAt', 'actions'
 ];
 
 const STATUS_OPTIONS: Array<{ label: string; value: EmailTemplateStatus | null }> = [
