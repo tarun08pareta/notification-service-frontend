@@ -21,7 +21,7 @@ export const DIALOG_CONFIG: Record<string, MatDialogConfig> = {
   },
   DELETE: {
     width: '400px',
-    maxWidth: '90vw',
-    panelClass: 'template-dialog-panel'
+    // maxWidth: '90vw',
+    // panelClass: 'template-dialog-panel'
   }
 };

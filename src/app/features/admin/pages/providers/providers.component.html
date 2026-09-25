@@ -24,7 +24,7 @@
     </ng-container>
 
     <!-- Mat Table -->
-    <div class="table-wrapper nowrap" [class.hidden]="!isLoading() && providers().length === 0">
+    <div class="table-responsive" [class.hidden]="!isLoading() && providers().length === 0">
       <table mat-table [dataSource]="providers()" class="providers-table">
 
         <!-- Provider Name Column -->
