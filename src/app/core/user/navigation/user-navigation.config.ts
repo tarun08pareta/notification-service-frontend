@@ -6,7 +6,8 @@ export const USER_NAVIGATION_ITEMS: NavigationItem[] = [
     { label: 'Playground', icon: 'science', route: '/user/playground' },
     // UPDATED: Added Company Profile navigation item
     { label: 'Company Profile', icon: 'business', route: '/user/company-profile' },
-    { label: 'My Notifications', icon: 'notifications', route: '/notifications' },
+    // UPDATED: Fixed Notifications route to /user/notifications
+    { label: 'My Notifications', icon: 'notifications', route: '/user/notifications' },
     // UPDATED: Fixed Templates route to /user/templates
     { label: 'Templates', icon: 'description', route: '/user/templates' }
 ];

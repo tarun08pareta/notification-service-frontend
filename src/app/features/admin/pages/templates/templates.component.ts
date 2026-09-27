@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, finalize } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,6 +27,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PageHeaderComponent }   from '../../../../shared/ui/page-header/page-header.component';
 import { EmptyStateComponent }   from '../../../../shared/ui/empty-state/empty-state.component';
 import { StatusChipComponent, StatusVariant } from '../../../../shared/ui/status-chip/status-chip.component';
+import { LoaderFacade } from '../../../../core/common/store/loader/loader.facade';
 
 import { AdminEmailTemplateService, ADMIN_TEMPLATES_DEFAULT_PAGE_SIZE, ADMIN_TEMPLATES_PAGE_SIZE_OPTIONS } from '../../../../core/admin/services/admin-email-template.service';
 import { ToastService }          from '../../../../core/common/toast/toast.service';
@@ -84,7 +86,9 @@ export class TemplatesComponent implements OnInit, OnDestroy {
   // ── Table state ────────────────────────────────────────────────────────
   templates    = signal<EmailTemplate[]>([]);
   totalElements = signal<number>(0);
-  isLoading    = signal<boolean>(false);
+  
+  private readonly loaderFacade = inject(LoaderFacade);
+  isLoading = toSignal(this.loaderFacade.isLoading$, { initialValue: false });
 
   pageIndex = 0;
   pageSize  = ADMIN_TEMPLATES_DEFAULT_PAGE_SIZE;
@@ -145,7 +149,6 @@ export class TemplatesComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
 
   loadTemplates(): void {
-    this.isLoading.set(true);
 
     this.templateService
       .getTemplates(
@@ -156,7 +159,6 @@ export class TemplatesComponent implements OnInit, OnDestroy {
       )
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         next: (page) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,6 +21,7 @@ import { CompanyProfileService } from '../../../../core/common/company-profile/c
 import { EmailTemplate, TemplateVariable } from '../../../../core/admin/services/admin-email-template.models';
 import { CompanyProfile } from '../../../../core/common/company-profile/company-profile.model';
 import { forkJoin } from 'rxjs';
+import { LoaderFacade } from '../../../../core/common/store/loader/loader.facade';
 
 // ---------------------------------------------------------------------------
 // Template variable definitions are now dynamically fetched.
@@ -92,7 +93,8 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
   // Request / send state
   // ---------------------------------------------------------------------------
-  isSending = false;
+  private readonly loaderFacade = inject(LoaderFacade);
+  isLoading$ = this.loaderFacade.isLoading$;
   private requestStartTime = 0;
 
   // ---------------------------------------------------------------------------
@@ -108,7 +110,6 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // Lifecycle / delivery attempts
   // ---------------------------------------------------------------------------
   deliveryAttempts: DeliveryAttempt[] = [];
-  isRefreshingStatus = false;
   attemptsError: string | null = null;
 
   // ---------------------------------------------------------------------------
@@ -482,7 +483,6 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
     const idempotencyKey = this.idempotencyKey;
     const apiToken = this.playgroundForm.get('apiToken')!.value.trim();
 
-    this.isSending = true;
     this.hasResponse = false;
     this.lastResponse = null;
     this.lastErrorMessage = null;
@@ -498,7 +498,6 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
         this.lastResponse = response;
         this.lastHttpStatus = 200;
         this.hasResponse = true;
-        this.isSending = false;
         // Always generate a fresh idempotency key after a successful send
         // so the user never accidentally reuses the same key
         this.generateIdempotencyKey();
@@ -510,7 +509,6 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
         this.lastErrorMessage = this.mapHttpError(err);
         this.lastResponse = null;
         this.hasResponse = true;
-        this.isSending = false;
         this.toastr.error(err.message || 'Failed to send notification');
       }
     });
@@ -542,19 +540,16 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
 
   refreshStatus(): void {
-    if (!this.lastResponse?.id || this.isRefreshingStatus) return;
+    if (!this.lastResponse?.id) return;
 
-    this.isRefreshingStatus = true;
     this.attemptsError = null;
 
     this.notificationService.getDeliveryAttempts(this.lastResponse.id).subscribe({
       next: (attempts) => {
         this.deliveryAttempts = attempts;
-        this.isRefreshingStatus = false;
       },
       error: () => {
         this.attemptsError = 'Could not load delivery attempts.';
-        this.isRefreshingStatus = false;
       }
     });
   }

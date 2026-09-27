@@ -32,6 +32,12 @@ export const API_ENDPOINTS = {
   },
   // UPDATED: Added admin-scoped API endpoints
   ADMIN: {
+    USERS: {
+      BASE: '/api/v1/admin/users'
+    },
+    ROLES: {
+      BASE: '/api/v1/admin/roles'
+    },
     NOTIFICATIONS: {
       BASE: '/api/v1/admin/notifications'
     },

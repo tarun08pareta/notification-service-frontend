@@ -1,11 +1,94 @@
-.global-loader-container {
-  position: fixed;
+// .global-loader-container {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   z-index: 9999;
+  
+//   mat-progress-bar {
+//     height: 3px;
+//   }
+// }
+
+
+/* Full screen overlay to center the loader */
+.custom-loader-overlay {
+  position: fixed; /* or absolute if inside a specific container */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: rgba(255, 255, 255, 0.7); /* Optional: dims the background */
+  z-index: 9999;
+}
+
+.custom-loader {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SVG sizing */
+.loader-track, .loader-progress {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
+  height: 100%;
+}
+
+/* Spin Animation */
+.loader-progress {
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+  /* Add glow to the spinning ring */
+  filter: drop-shadow(0 0 6px rgba(0, 102, 255, 0.5));
+}
+
+/* Keyframes for rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* The static nodes on the ring */
+.node {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: #ffffff;
+  border: 3px solid #0066FF;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 102, 255, 0.6), inset 0 0 4px rgba(0, 102, 255, 0.8);
+  z-index: 2;
+}
+
+/* Position nodes on the track (based on a 150px container) */
+.node-top { top: -7px; left: 50%; transform: translateX(-50%); }
+.node-right { right: -7px; top: 50%; transform: translateY(-50%); }
+.node-bottom { bottom: -7px; left: 50%; transform: translateX(-50%); }
+.node-left { left: -7px; top: 50%; transform: translateY(-50%); }
+
+/* Center Bell Icon styling */
+.center-icon-wrapper {
+  position: relative;
+  z-index: 3;
+  /* Creating the glowing blue gradient effect for the icon */
+  background: linear-gradient(135deg, #00d2ff, #0033ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0px 6px 12px rgba(0, 102, 255, 0.4));
   
-  mat-progress-bar {
-    height: 3px;
+  /* Adjust size of the icon here */
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
   }
 }
