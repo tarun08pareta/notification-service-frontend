@@ -115,28 +115,28 @@
 
             <!-- Right: Logo Upload -->
             <div
-              class="w-full bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center md:items-start gap-8 justify-center"
+              class="w-full  rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center md:items-start gap-8 justify-center"
             >
               <!-- Logo Preview -->
               <div
                 class="relative w-40 h-40 rounded-full flex items-center justify-center shrink-0 border border-gray-800 overflow-hidden"
                 [ngClass]="
                   displayLogoUrl
-                    ? 'bg-white'
-                    : 'bg-gray-500 text-gray-400 text-4xl font-bold'
+                    ? ''
+                    : ' text-gray-400 text-4xl font-bold'
                 "
               >
                 <img
                   *ngIf="displayLogoUrl"
                   [src]="displayLogoUrl"
                   alt="Company Logo"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain"
                 />
                 <span *ngIf="!displayLogoUrl">{{ companyInitial }}</span>
 
                 <!-- Deleting Spinner Overlay -->
                 <div
-                  *ngIf="isDeletingLogo()"
+                  *ngIf="isLoading() && displayLogoUrl"
                   class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
                 >
                   <mat-spinner diameter="24"></mat-spinner>
@@ -146,28 +146,21 @@
               <!-- Actions & Info Box -->
                 <!-- Action Buttons -->
                 <div
-                  class="flex flex-col justify-center items-start gap-4 mb-5  "
+                  class="flex h-full flex-col justify-center items-start gap-4 mb-5  "
                 >
                   <!-- Change/Upload Logo Button -->
                   <button
                     type="button"
                     (click)="logoInput.click()"
-                    [disabled]="isUploadingLogo() || isDeletingLogo()"
+                    [disabled]="isLoading()"
                     class="flex items-center gap-2 px-6 py-2.5 rounded-md font-medium text-sm tracking-wide text-white bg-[#1F265C] hover:bg-[#151a40] transition-colors disabled:opacity-50 shadow-sm"
                   >
-                    <mat-spinner
-                      *ngIf="isUploadingLogo()"
-                      diameter="18"
-                    ></mat-spinner>
                     <mat-icon
-                      *ngIf="!isUploadingLogo()"
                       class="!text-[18px] !w-[18px] !h-[18px]"
                       >file_upload</mat-icon
                     >
                     {{
-                      isUploadingLogo()
-                        ? "UPLOADING..."
-                        : displayLogoUrl
+                      displayLogoUrl
                           ? "CHANGE LOGO"
                           : "UPLOAD LOGO"
                     }}
@@ -178,7 +171,7 @@
                     *ngIf="displayLogoUrl"
                     type="button"
                     (click)="removeLogo()"
-                    [disabled]="isDeletingLogo() || isUploadingLogo()"
+                    [disabled]="isLoading()"
                     class="flex items-center gap-2 px-6 py-2.5 rounded-md font-medium text-sm tracking-wide text-[#9C1C1F] bg-white border border-[#9C1C1F] hover:bg-red-50 transition-colors disabled:opacity-50 shadow-sm"
                   >
                     <mat-icon class="!text-[18px] !w-[18px] !h-[18px]"
@@ -380,7 +373,7 @@
           mat-stroked-button
           (click)="cancel()"
           class="!rounded-lg !px-8 !h-[44px]"
-          [disabled]="isSaving()"
+          [disabled]="isLoading()"
         >
           Cancel
         </button>
@@ -389,19 +382,13 @@
           mat-flat-button
           color="primary"
           class="!rounded-lg !px-6 !h-[44px]"
-          [disabled]="isSaving() || isUploadingLogo() || isDeletingLogo()"
+          [disabled]="isLoading()"
         >
-          <mat-spinner
-            *ngIf="isSaving()"
-            diameter="18"
-            class="mr-2"
-          ></mat-spinner>
           <mat-icon
-            *ngIf="!isSaving()"
             class="mr-2 !text-[18px] !w-[18px] !h-[18px]"
             >save</mat-icon
           >
-          {{ isSaving() ? "Saving..." : "Save Changes" }}
+          Save Changes
         </button>
       </div>
     </form>

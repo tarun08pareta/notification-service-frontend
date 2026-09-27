@@ -52,6 +52,12 @@ export const routes: Routes = [
             path: 'templates',
             loadChildren: () =>
               import('./features/user/pages/templates/templates.routes').then(m => m.USER_TEMPLATES_ROUTES)
+          },
+          // UPDATED: User notification history route
+          {
+            path: 'notifications',
+            loadChildren: () =>
+              import('./features/user/pages/notifications/notifications.routes').then(m => m.USER_NOTIFICATIONS_ROUTES)
           }
         ]
       },

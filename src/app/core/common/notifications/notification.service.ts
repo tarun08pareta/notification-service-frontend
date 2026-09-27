@@ -1,10 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   NotificationRequest,
   NotificationResponse,
   DeliveryAttempt,
+  UserNotificationPageResponse,
+  UserNotificationDetail,
+  UserNotificationStatus,
+  UserNotificationChannel,
+  UserNotificationAttempt
 } from './notification.models';
 import { apiUrl } from '../constants/api-url';
 import { API_ENDPOINTS } from '../constants/api.constants';
@@ -16,6 +21,50 @@ import { SKIP_AUTH_INTERCEPTOR } from '../interceptors/auth.interceptor';
 })
 export class NotificationService {
   private http = inject(HttpClient);
+
+  /**
+   * Get a paginated list of notifications for the authenticated user.
+   */
+  getNotifications(
+    page: number,
+    size: number,
+    status?: UserNotificationStatus | null,
+    channel?: UserNotificationChannel | null,
+  ): Observable<UserNotificationPageResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (channel) {
+      params = params.set('channel', channel);
+    }
+
+    return this.http.get<UserNotificationPageResponse>(
+      apiUrl(API_ENDPOINTS.NOTIFICATIONS.BASE),
+      { params }
+    );
+  }
+
+  /**
+   * Get notification details by ID.
+   */
+  getNotification(id: string): Observable<UserNotificationDetail> {
+    return this.http.get<UserNotificationDetail>(
+      apiUrl(`${API_ENDPOINTS.NOTIFICATIONS.BASE}/${id}`)
+    );
+  }
+
+  /**
+   * Get delivery attempts for a notification.
+   */
+  getUserNotificationAttempts(id: string): Observable<UserNotificationAttempt[]> {
+    return this.http.get<UserNotificationAttempt[]>(
+      apiUrl(`${API_ENDPOINTS.NOTIFICATIONS.BASE}/${id}/attempts`)
+    );
+  }
 
   /**
    * Send a notification using JWT authentication (standard dashboard flow).

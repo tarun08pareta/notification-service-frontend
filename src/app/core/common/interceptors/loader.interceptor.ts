@@ -1,8 +1,7 @@
 import { HttpContextToken, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs';
-import { loadStart, loadEnd } from '../store/loader/loader.actions';
+import { LoaderFacade } from '../store/loader/loader.facade';
 
 export const SKIP_GLOBAL_LOADER = new HttpContextToken<boolean>(() => false);
 
@@ -11,12 +10,12 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  const store = inject(Store);
-  store.dispatch(loadStart());
+  const loaderFacade = inject(LoaderFacade);
+  loaderFacade.startLoading();
 
   return next(req).pipe(
     finalize(() => {
-      store.dispatch(loadEnd());
+      loaderFacade.stopLoading();
     })
   );
 };

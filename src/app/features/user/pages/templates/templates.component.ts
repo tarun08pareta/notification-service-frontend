@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, finalize } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { MatTableModule }           from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -21,6 +22,7 @@ import { MatTooltipModule }         from '@angular/material/tooltip';
 import { PageHeaderComponent }  from '../../../../shared/ui/page-header/page-header.component';
 import { EmptyStateComponent }  from '../../../../shared/ui/empty-state/empty-state.component';
 import { StatusChipComponent, StatusVariant } from '../../../../shared/ui/status-chip/status-chip.component';
+import { LoaderFacade } from '../../../../core/common/store/loader/loader.facade';
 
 
 import { EmailTemplateService, USER_TEMPLATES_DEFAULT_PAGE_SIZE, USER_TEMPLATES_PAGE_SIZE_OPTIONS } from '../../../../core/common/email-template/email-template.service';
@@ -62,7 +64,9 @@ export class UserTemplatesComponent implements OnInit, OnDestroy {
 
   templates     = signal<EmailTemplate[]>([]);
   totalElements = signal<number>(0);
-  isLoading     = signal<boolean>(false);
+  
+  private readonly loaderFacade = inject(LoaderFacade);
+  isLoading = toSignal(this.loaderFacade.isLoading$, { initialValue: false });
 
   pageIndex = 0;
   pageSize  = USER_TEMPLATES_DEFAULT_PAGE_SIZE;
@@ -80,13 +84,11 @@ export class UserTemplatesComponent implements OnInit, OnDestroy {
   }
 
   loadTemplates(): void {
-    this.isLoading.set(true);
 
     this.templateService
       .getTemplates(this.pageIndex, this.pageSize)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         next: (page) => {

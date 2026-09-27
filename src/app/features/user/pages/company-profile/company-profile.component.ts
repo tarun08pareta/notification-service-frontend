@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil, finalize } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +14,7 @@ import { CompanyProfileService } from '../../../../core/common/company-profile/c
 import { CompanyProfile, UpdateCompanyProfileRequest } from '../../../../core/common/company-profile/company-profile.model';
 import { ToastService } from '../../../../core/common/toast/toast.service';
 import { PageHeaderComponent } from '../../../../shared/ui/page-header/page-header.component';
+import { LoaderFacade } from '../../../../core/common/store/loader/loader.facade';
 
 const MAX_LOGO_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
 const ALLOWED_LOGO_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -44,10 +46,10 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
   profileForm!: FormGroup;
 
   // ── Loading / action states ────────────────────────────────────────────
+  private readonly loaderFacade = inject(LoaderFacade);
+  isLoading = toSignal(this.loaderFacade.isLoading$, { initialValue: false });
+  
   isLoadingProfile = signal<boolean>(true);
-  isSaving = signal<boolean>(false);
-  isUploadingLogo = signal<boolean>(false);
-  isDeletingLogo = signal<boolean>(false);
   loadError = signal<boolean>(false);
 
   // ── Logo state ─────────────────────────────────────────────────────────
@@ -129,7 +131,7 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.isSaving()) return;
+    if (this.isLoading()) return;
 
     const formValue = this.profileForm.value;
     const request: UpdateCompanyProfileRequest = {
@@ -142,12 +144,9 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
       smsSenderNumber: formValue.smsSenderNumber?.trim() || ''
     };
 
-    this.isSaving.set(true);
-
     this.profileService.updateProfile(request)
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isSaving.set(false))
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: (profile) => {
@@ -196,13 +195,11 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
   }
 
   private uploadLogo(file: File): void {
-    if (this.isUploadingLogo()) return;
-    this.isUploadingLogo.set(true);
+    if (this.isLoading()) return;
 
     this.profileService.uploadLogo(file)
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isUploadingLogo.set(false))
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: (profile) => {
@@ -219,13 +216,11 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
   }
 
   removeLogo(): void {
-    if (this.isDeletingLogo()) return;
-    this.isDeletingLogo.set(true);
+    if (this.isLoading()) return;
 
     this.profileService.deleteLogo()
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isDeletingLogo.set(false))
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: (profile) => {

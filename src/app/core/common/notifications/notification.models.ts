@@ -27,3 +27,65 @@ export interface DeliveryAttempt {
   startedAt: string;
   completedAt: string;
 }
+
+export type UserNotificationStatus =
+  | 'QUEUED'
+  | 'PROCESSING'
+  | 'RETRY_SCHEDULED'
+  | 'SENT'
+  | 'FAILED';
+
+export type UserNotificationChannel = 'EMAIL' | 'SMS';
+
+export interface UserNotification {
+  id: string;
+  channel: UserNotificationChannel;
+  recipient: string;
+  template: string;
+  status: UserNotificationStatus;
+  retryCount: number;
+  nextRetryAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserNotificationPageResponse {
+  content: UserNotification[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+}
+
+export interface UserNotificationDetail {
+  id: string;
+  channel: UserNotificationChannel;
+  recipient: string;
+  template: string;
+  variables: Record<string, string>;
+  advancedVariables: Record<string, string>;
+  status: UserNotificationStatus;
+  retryCount: number;
+  nextRetryAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserNotificationAttempt {
+  id: string;
+  provider: string;
+  attemptNumber: number;
+  status: string;
+  errorCode: string | null;
+  errorMessage: string | null;
+  providerMessageId: string | null;
+  startedAt: string;
+  completedAt: string | null;
+}
+
+export interface UserNotificationFilters {
+  status: UserNotificationStatus | null;
+  channel: UserNotificationChannel | null;
+}

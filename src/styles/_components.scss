@@ -49,16 +49,23 @@ mat-card.mat-mdc-card {
   --mdc-outlined-text-field-focus-outline-color: var(--app-primary) !important;
   background-color: var(--app-surface) !important;
 }
-
-/* Input Focus Glow (ring) */
-.mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline {
-  box-shadow: 0 0 0 2px rgba(53, 37, 205, 0.2); /* 2px semi-transparent Indigo glow */
+.mdc-text-field--outlined .mdc-text-field__focus-ring {
+  display: none !important;
 }
+/* Input Focus Glow (ring) */
+// .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline {
+//   box-shadow: 0 0 0 2px rgba(53, 37, 205, 0.2); /* 2px semi-transparent Indigo glow */
+// }
 
 .dark-theme .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline {
   box-shadow: 0 0 0 2px rgba(195, 192, 255, 0.2); /* lighter glow in dark mode */
 }
-
+/* Dark Theme Specific Rules */
+.dark-theme .mdc-text-field--outlined {
+  /* Bina touch/focus kiye normal state me light border dikhane ke liye */
+  --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.3) !important; /* ya koi light color/variable */
+  --mdc-outlined-text-field-focus-outline-color: var(--app-primary) !important;
+}
 /* Tables */
 table.mat-mdc-table {
   background-color: transparent !important;

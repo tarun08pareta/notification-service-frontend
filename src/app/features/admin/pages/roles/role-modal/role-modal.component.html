@@ -1,0 +1,75 @@
+<div class="flex flex-col max-h-[90vh] bg-white dark:bg-gray-900 overflow-hidden">
+
+  <!-- ── SHARED HEADER ───────────────────────────────────────────────────── -->
+  <cb-dialog-header
+    class="shrink-0 z-10"
+    [action]="actionTitle"
+    [key]="mode === 'delete' ? 'Role?' : 'Role'"
+    [profileModal]="true">
+  </cb-dialog-header>
+
+  <!-- ── VIEW BODY ─────────────────────────────────────────────────────── -->
+  <div class="flex-1 overflow-y-auto p-6 min-h-0 bg-white dark:bg-gray-900" *ngIf="mode === 'view' && role as r">
+    <div class="detail-grid">
+      <div class="detail-row">
+        <span class="detail-label">Role Name</span>
+        <span class="detail-value font-medium">{{ r.name }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Status</span>
+        <span class="detail-value">{{ r.status }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Created At</span>
+        <span class="detail-value">{{ r.createdAt | date:'medium' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Updated At</span>
+        <span class="detail-value">{{ r.updatedAt | date:'medium' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CREATE / EDIT FORM ────────────────────────────────────────────── -->
+  <div class="flex-1 overflow-y-auto p-6 min-h-0 bg-white dark:bg-gray-900" *ngIf="mode === 'create' || mode === 'edit'">
+    <form [formGroup]="form" (ngSubmit)="save()" class="flex flex-col gap-4">
+      <mat-form-field appearance="outline" class="w-full small-form-field">
+        <mat-label>Role Name</mat-label>
+        <mat-icon matPrefix>security</mat-icon>
+        <input matInput formControlName="name" placeholder="e.g. USER, ADMIN">
+        <mat-error *ngIf="form.get('name')?.hasError('required')">Role Name is required.</mat-error>
+        <mat-error *ngIf="form.get('name')?.hasError('maxlength')">Role Name is too long.</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <!-- ── DELETE CONFIRMATION ───────────────────────────────────────────── -->
+  <div class="flex flex-col p-6 w-full" *ngIf="mode === 'delete'">
+    <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg w-full">
+      <div class="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] gap-3 px-4 py-3 min-w-0">
+        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Role</span>
+        <div class="min-w-0">
+          <span class="text-sm text-gray-900 dark:text-gray-100 truncate font-medium">
+            {{ role?.name }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SHARED FOOTER ─────────────────────────────────────────────────── -->
+  <cb-dialog-footer
+    class="shrink-0 z-10 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
+    *ngIf="mode !== 'view'"
+    [action]="buttonTitle"
+    [form]="form"
+    [isSaving]="isSaving()"
+    [disableButton]="isSaving() || (mode !== 'delete' && form.invalid)"
+    (submitClicked)="mode === 'delete' ? confirmDelete() : save()">
+  </cb-dialog-footer>
+
+  <div class="shrink-0 z-10 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-end" *ngIf="mode === 'view'">
+    <button type="button" mat-flat-button color="primary" (click)="cancel()">Close</button>
+  </div>
+
+</div>

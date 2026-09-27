@@ -46,11 +46,6 @@
   <!-- ── Table Card ─────────────────────────────────────────────────────── -->
   <div class="table-card">
 
-    <!-- Loading overlay -->
-    <div *ngIf="isLoading()" class="loading-overlay">
-      <mat-spinner diameter="48"></mat-spinner>
-    </div>
-
     <!-- Empty state -->
     <ng-container *ngIf="!isLoading() && templates().length === 0">
       <app-empty-state

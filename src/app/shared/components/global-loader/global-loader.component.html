@@ -1,5 +1,43 @@
-@if (isLoading$ | async) {
+<!-- @if (isLoading$ | async) {
   <div class="global-loader-container">
     <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+  </div>
+} -->
+
+@if (isLoading$ | async) {
+  <div class="custom-loader-overlay blur-backdrop">
+    <div class="custom-loader">
+      
+      <!-- Static Background Track -->
+      <svg class="loader-track" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#E6F0FF" stroke-width="4" />
+      </svg>
+
+      <!-- Spinning Progress Ring -->
+      <svg class="loader-progress" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d2ff" />
+            <stop offset="100%" stop-color="#0033ff" />
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#blueGradient)" stroke-width="4"
+                stroke-dasharray="283" stroke-dashoffset="200" stroke-linecap="round" />
+      </svg>
+
+      <!-- Static Nodes (The dots on the ring) -->
+      <div class="node node-top"></div>
+      <div class="node node-right"></div>
+      <div class="node node-bottom"></div>
+      <div class="node node-left"></div>
+
+      <!-- Center Icon (Use your exact image here if needed) -->
+      <div class="center-icon-wrapper">
+        <!-- Replace this mat-icon with <img src="assets/bell-icon.png"> if you have the exact asset -->
+        <!-- <mat-icon class="center-icon">notifications_active</mat-icon> -->
+         <img src="small-logo.png" alt="Notification Portal" class="splash-logo">
+      </div>
+
+    </div>
   </div>
 }
