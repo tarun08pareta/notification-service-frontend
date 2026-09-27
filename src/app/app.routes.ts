@@ -5,7 +5,6 @@ import { adminGuard } from './core/guards/admin.guard';
 import { userGuard } from './core/guards/user.guard';
 
 export const routes: Routes = [
-
   // ══════════════════════════════════════════════════════════════
   // PUBLIC WEBSITE
   // ══════════════════════════════════════════════════════════════
@@ -13,7 +12,9 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./layout/public-layout/public-layout.routes').then((m) => m.PUBLIC_LAYOUT_ROUTES),
+      import('./layout/public-layout/public-layout.routes').then(
+        (m) => m.PUBLIC_LAYOUT_ROUTES,
+      ),
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -33,33 +34,49 @@ export const routes: Routes = [
           {
             path: 'dashboard',
             loadChildren: () =>
-              import('./features/user/pages/user-dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES)
+              import('./features/user/pages/user-dashboard/dashboard.routes').then(
+                (m) => m.DASHBOARD_ROUTES,
+              ),
           },
           {
             path: 'api-tokens',
             loadChildren: () =>
-              import('./features/user/pages/api-tokens/api-tokens.routes').then(m => m.API_TOKEN_ROUTES)
+              import('./features/user/pages/api-tokens/api-tokens.routes').then(
+                (m) => m.API_TOKEN_ROUTES,
+              ),
           },
           {
             path: 'playground',
             loadChildren: () =>
-              import('./features/user/pages/playground/playground.routes').then(m => m.PLAYGROUND_ROUTES)
+              import('./features/user/pages/playground/playground.routes').then(
+                (m) => m.PLAYGROUND_ROUTES,
+              ),
           },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-          { path: 'company-profile', loadChildren: () => import('./features/user/pages/company-profile/company-profile.routes').then(m => m.COMPANY_PROFILE_ROUTES) },
+          {
+            path: 'company-profile',
+            loadChildren: () =>
+              import('./features/user/pages/company-profile/company-profile.routes').then(
+                (m) => m.COMPANY_PROFILE_ROUTES,
+              ),
+          },
           // UPDATED: User email templates route
           {
             path: 'templates',
             loadChildren: () =>
-              import('./features/user/pages/templates/templates.routes').then(m => m.USER_TEMPLATES_ROUTES)
+              import('./features/user/pages/templates/templates.routes').then(
+                (m) => m.USER_TEMPLATES_ROUTES,
+              ),
           },
           // UPDATED: User notification history route
           {
             path: 'notifications',
             loadChildren: () =>
-              import('./features/user/pages/notifications/notifications.routes').then(m => m.USER_NOTIFICATIONS_ROUTES)
-          }
-        ]
+              import('./features/user/pages/notifications/notifications.routes').then(
+                (m) => m.USER_NOTIFICATIONS_ROUTES,
+              ),
+          },
+        ],
       },
 
       // ── Admin routes ─────────────────────────────────────────
@@ -69,74 +86,98 @@ export const routes: Routes = [
         children: [
           {
             path: 'dashboard',
-            loadComponent: () =>
-              import('./features/admin/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+            loadChildren: () =>
+              import('./features/admin/pages/admin-dashboard/admin-dashboard.routes').then(
+                (m) => m.ADMIN_NOTIFICATIONS_ROUTES,
+              ),
           },
           {
             path: 'users',
             loadChildren: () =>
-              import('./features/admin/pages/users/users.routes').then(m => m.USERS_ROUTES)
+              import('./features/admin/pages/users/users.routes').then(
+                (m) => m.USERS_ROUTES,
+              ),
           },
           {
             path: 'roles',
             loadChildren: () =>
-              import('./features/admin/pages/roles/roles.routes').then(m => m.ROLES_ROUTES)
+              import('./features/admin/pages/roles/roles.routes').then(
+                (m) => m.ROLES_ROUTES,
+              ),
           },
           {
             path: 'providers',
             loadChildren: () =>
-              import('./features/admin/pages/providers/providers.routes').then(m => m.PROVIDERS_ROUTES)
+              import('./features/admin/pages/providers/providers.routes').then(
+                (m) => m.PROVIDERS_ROUTES,
+              ),
           },
           {
             path: 'channels',
             loadChildren: () =>
-              import('./features/admin/pages/channels/channels.routes').then(m => m.CHANNELS_ROUTES)
+              import('./features/admin/pages/channels/channels.routes').then(
+                (m) => m.CHANNELS_ROUTES,
+              ),
           },
           {
             path: 'logs',
             loadChildren: () =>
-              import('./features/admin/pages/logs/logs.routes').then(m => m.LOGS_ROUTES)
+              import('./features/admin/pages/logs/logs.routes').then(
+                (m) => m.LOGS_ROUTES,
+              ),
           },
           {
             path: 'usage',
             loadChildren: () =>
-              import('./features/admin/pages/usage/usage.routes').then(m => m.USAGE_ROUTES)
+              import('./features/admin/pages/usage/usage.routes').then(
+                (m) => m.USAGE_ROUTES,
+              ),
           },
           {
             path: 'settings',
             loadChildren: () =>
-              import('./features/admin/pages/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
+              import('./features/admin/pages/settings/settings.routes').then(
+                (m) => m.SETTINGS_ROUTES,
+              ),
           },
           // UPDATED: Admin Notification Management route
           {
             path: 'notifications',
             loadChildren: () =>
-              import('./features/admin/pages/notifications/notifications.routes').then(m => m.ADMIN_NOTIFICATIONS_ROUTES)
+              import('./features/admin/pages/notifications/notifications.routes').then(
+                (m) => m.ADMIN_NOTIFICATIONS_ROUTES,
+              ),
           },
           // UPDATED: Admin Email Templates route
           {
             path: 'templates',
             loadChildren: () =>
-              import('./features/admin/pages/templates/templates.routes').then(m => m.ADMIN_TEMPLATES_ROUTES)
+              import('./features/admin/pages/templates/templates.routes').then(
+                (m) => m.ADMIN_TEMPLATES_ROUTES,
+              ),
           },
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-        ]
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+        ],
       },
 
       // ── Shared authenticated features ─────────────────────────
       {
         path: 'templates',
         loadChildren: () =>
-          import('./features/admin/pages/templates/templates.routes').then(m => m.TEMPLATES_ROUTES)
+          import('./features/admin/pages/templates/templates.routes').then(
+            (m) => m.TEMPLATES_ROUTES,
+          ),
       },
       {
         path: 'notifications',
         loadChildren: () =>
-          import('./features/notifications/notifications.routes').then(m => m.NOTIFICATIONS_ROUTES)
+          import('./features/notifications/notifications.routes').then(
+            (m) => m.NOTIFICATIONS_ROUTES,
+          ),
       },
 
-      { path: '', redirectTo: 'user/dashboard', pathMatch: 'full' }
-    ]
+      { path: '', redirectTo: 'user/dashboard', pathMatch: 'full' },
+    ],
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -146,9 +187,11 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./layout/auth-layout/auth-layout.component').then(m => m.AuthLayoutComponent),
+      import('./layout/auth-layout/auth-layout.component').then(
+        (m) => m.AuthLayoutComponent,
+      ),
     loadChildren: () =>
-      import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
+      import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -161,13 +204,14 @@ export const routes: Routes = [
   {
     path: 'auth/google/callback',
     loadComponent: () =>
-      import('./features/auth/oauth-callback/oauth-callback.component')
-        .then(m => m.OAuthCallbackComponent)
+      import('./features/auth/oauth-callback/oauth-callback.component').then(
+        (m) => m.OAuthCallbackComponent,
+      ),
   },
 
   // ══════════════════════════════════════════════════════════════
   // WILDCARD — unknown URLs show the landing page
   // ══════════════════════════════════════════════════════════════
 
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

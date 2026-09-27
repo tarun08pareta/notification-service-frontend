@@ -1,52 +1,356 @@
-<div class="dashboard-container">
-  <!-- Header -->
-  <header class="dashboard-header">
-    <div class="header-titles">
-      <h1>Developer Dashboard</h1>
-      <p>Welcome to the Notification Engine. Manage your integration, API tokens, and test notifications.</p>
+<div class="min-h-screen p-6 font-sans text-slate-800 dark:text-slate-200">
+  <div class="mx-auto max-w-[1400px] space-y-6">
+    <!-- Header Section -->
+    <div
+      class="flex flex-col justify-between gap-4 md:flex-row md:items-center"
+    >
+      <div>
+        <h1
+          class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100"
+        >
+          Welcome back, {{ userName() }}
+        </h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Monitor your notification activity and manage your notification tools.
+        </p>
+      </div>
+      <div
+        class="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] px-4 py-2.5 shadow-sm"
+      >
+        <mat-icon
+          class="text-slate-400 dark:text-slate-500 !text-[20px] !w-[20px] !h-[20px]"
+          >calendar_today</mat-icon
+        >
+        <div class="flex flex-col">
+          <span
+            class="text-sm font-medium text-slate-700 dark:text-slate-300"
+            >{{ currentDate | date: "fullDate" }}</span
+          >
+          <span class="text-xs text-slate-500 dark:text-slate-400"
+            >Here's what's happening with your notifications today.</span
+          >
+        </div>
+      </div>
     </div>
-  </header>
 
-  <!-- Overview Grid -->
-  <div class="dashboard-grid">
-    
-    <!-- API Tokens Card -->
-    <mat-card class="overview-card">
-      <mat-card-header>
-        <div mat-card-avatar class="card-icon api-icon">
-          <mat-icon>vpn_key</mat-icon>
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      @for (stat of stats(); track stat.title) {
+        <div
+          class="flex flex-col rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-5 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-lg {{
+                  stat.iconBg
+                }}"
+              >
+                <mat-icon
+                  class="{{ stat.iconColor }} !text-[20px] !w-[20px] !h-[20px]"
+                  >{{ stat.icon }}</mat-icon
+                >
+              </div>
+              <span
+                class="text-sm font-medium text-slate-600 dark:text-slate-400"
+                >{{ stat.title }}</span
+              >
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-end justify-between">
+            <div class="flex flex-col">
+              <span
+                class="text-3xl font-bold text-slate-900 dark:text-slate-100"
+                >{{ stat.value }}</span
+              >
+            </div>
+
+            <!-- Mini Bar Chart -->
+            <div class="flex h-8 items-end gap-1">
+              @for (bar of stat.chartData; track $index) {
+                <div
+                  class="w-1.5 rounded-t-sm {{ stat.chartColor }}"
+                  [style.height.%]="bar"
+                ></div>
+              }
+            </div>
+          </div>
+
+          <div class="mt-3 flex items-center gap-1 text-xs">
+            @if (stat.trendType === "up") {
+              <mat-icon
+                class="text-emerald-500 !text-[14px] !w-[14px] !h-[14px]"
+                >arrow_upward</mat-icon
+              >
+              <span
+                class="font-medium text-emerald-600 dark:text-emerald-400"
+                >{{ stat.trendValue }}</span
+              >
+            } @else if (stat.trendType === "down") {
+              <mat-icon class="text-rose-500 !text-[14px] !w-[14px] !h-[14px]"
+                >arrow_upward</mat-icon
+              >
+              <span class="font-medium text-rose-600 dark:text-rose-400">{{
+                stat.trendValue
+              }}</span>
+            } @else {
+              <mat-icon
+                class="text-slate-400 dark:text-slate-500 !text-[14px] !w-[14px] !h-[14px]"
+                >arrow_forward</mat-icon
+              >
+              <span class="font-medium text-slate-500 dark:text-slate-400">{{
+                stat.trendValue
+              }}</span>
+            }
+            <span class="text-slate-500 dark:text-slate-400">{{
+              stat.trendText
+            }}</span>
+          </div>
         </div>
-        <mat-card-title>API Tokens</mat-card-title>
-        <mat-card-subtitle>Manage authentication credentials</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Generate and manage API tokens to authenticate your backend services and securely dispatch notifications.
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" routerLink="/user/api-tokens">Manage Tokens</button>
-      </mat-card-actions>
-    </mat-card>
+      }
+    </div>
 
-    <!-- Playground Card -->
-    <mat-card class="overview-card">
-      <mat-card-header>
-        <div mat-card-avatar class="card-icon playground-icon">
-          <mat-icon>science</mat-icon>
+    <!-- Middle Section: Channels & Quick Actions -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <!-- Notification Channels -->
+      <div
+        class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-6 shadow-sm"
+      >
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Notification Channels
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          Distribution of notifications by channel.
+        </p>
+
+        <div class="mt-6 space-y-5">
+          @for (channel of channels(); track channel.name) {
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg {{
+                  channel.iconBg
+                }}"
+              >
+                <mat-icon class="{{ channel.iconColor }}">{{
+                  channel.icon
+                }}</mat-icon>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span
+                    class="text-sm font-medium text-slate-700 dark:text-slate-300"
+                    >{{ channel.name }}</span
+                  >
+                  <span
+                    class="text-sm font-semibold text-slate-900 dark:text-slate-100"
+                    >{{ channel.percentage }}%</span
+                  >
+                </div>
+                <div
+                  class="mt-1 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400"
+                >
+                  <span>{{ channel.count }} notifications</span>
+                </div>
+                <div
+                  class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700"
+                >
+                  <div
+                    class="h-full rounded-full {{ channel.barColor }}"
+                    [style.width.%]="channel.percentage"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
-        <mat-card-title>Playground</mat-card-title>
-        <mat-card-subtitle>Test and debug integration</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Use the interactive developer playground to build payloads, test API tokens, and inspect real-time delivery status.
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" routerLink="/user/playground">Open Playground</button>
-      </mat-card-actions>
-    </mat-card>
+      </div>
 
+      <!-- Quick Actions -->
+      <div
+        class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-6 shadow-sm"
+      >
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Quick Actions
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          Use these tools to get started quickly.
+        </p>
+
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <!-- Playground Card -->
+          <div
+            class="flex flex-col rounded-xl border border-blue-100 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20 p-5"
+          >
+            <div
+              class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400"
+            >
+              <mat-icon>code</mat-icon>
+            </div>
+            <h3
+              class="text-base font-semibold text-slate-900 dark:text-slate-100"
+            >
+              Playground
+            </h3>
+            <p class="mt-1 flex-1 text-xs text-slate-500 dark:text-slate-400">
+              Test and send notifications using the notification playground.
+            </p>
+            <button
+              mat-flat-button
+              color="primary"
+              class="mt-4 w-full !rounded-lg !bg-blue-600 dark:!bg-blue-700 !text-white"
+              (click)="navigateTo('/user/playground')"
+            >
+              Open Playground
+              <mat-icon class="ml-2 !text-[18px] !w-[18px] !h-[18px]"
+                >arrow_forward</mat-icon
+              >
+            </button>
+          </div>
+
+          <!-- Create API Token Card -->
+          <div
+            class="flex flex-col rounded-xl border border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-900/20 p-5"
+          >
+            <div
+              class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400"
+            >
+              <mat-icon>vpn_key</mat-icon>
+            </div>
+            <h3
+              class="text-base font-semibold text-slate-900 dark:text-slate-100"
+            >
+              Create API Token
+            </h3>
+            <p class="mt-1 flex-1 text-xs text-slate-500 dark:text-slate-400">
+              Generate an API token for programmatic notification access.
+            </p>
+            <button
+              mat-flat-button
+              class="mt-4 w-full !rounded-lg !bg-emerald-600 dark:!bg-emerald-700 !text-white"
+              (click)="navigateTo('/user/api-tokens')"
+            >
+              Create Token
+              <mat-icon class="ml-2 !text-[18px] !w-[18px] !h-[18px]"
+                >arrow_forward</mat-icon
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Notifications Table -->
+    <div
+      class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] shadow-sm"
+    >
+      <div
+        class="flex flex-col justify-between gap-4 border-b border-slate-200 dark:border-slate-700 p-6 sm:flex-row sm:items-center"
+      >
+        <div>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            Recent Notifications
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">
+            Latest 5 notifications from your account.
+          </p>
+        </div>
+        <button
+          mat-stroked-button
+          class="!rounded-lg !border-slate-200 dark:!border-slate-700 !text-slate-700 dark:!text-slate-300"
+          (click)="viewAllNotifications()"
+        >
+          View All
+          <mat-icon class="ml-2 !text-[18px] !w-[18px] !h-[18px]"
+            >arrow_forward</mat-icon
+          >
+        </button>
+      </div>
+
+      @if (recentNotifications().length === 0 && !isLoading()) {
+        <app-empty-state
+          icon="notifications_none"
+          title="No recent notifications"
+          description="You haven't sent any notifications recently."
+        >
+        </app-empty-state>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="w-full whitespace-nowrap text-left text-sm">
+            <thead
+              class=" dark:bg-[rgb(30_41_59_/45%)]/50 text-xs uppercase text-slate-500 dark:text-slate-400"
+            >
+              <tr>
+                <th class="px-6 py-4 font-medium">Template</th>
+                <th class="px-6 py-4 font-medium">Channel</th>
+                <th class="px-6 py-4 font-medium">Recipient</th>
+                <th class="px-6 py-4 font-medium">Status</th>
+                <th class="px-6 py-4 font-medium">Created At</th>
+                <th class="px-6 py-4 text-center font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+              @for (row of recentNotifications(); track row.template) {
+                <tr
+                  class="transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-700/50"
+                >
+                  <td
+                    class="px-6 py-4 font-medium text-slate-800 dark:text-slate-200"
+                  >
+                    {{ row.template }}
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                      @if (row.channel === "EMAIL") {
+                        <mat-icon
+                          class="text-blue-500 !text-[16px] !w-[16px] !h-[16px]"
+                          >email</mat-icon
+                        >
+                      } @else {
+                        <mat-icon
+                          class="text-emerald-500 !text-[16px] !w-[16px] !h-[16px]"
+                          >chat</mat-icon
+                        >
+                      }
+                      <span class="text-slate-600 dark:text-slate-400">{{
+                        row.channel
+                      }}</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-slate-600 dark:text-slate-400">
+                    {{ row.recipient }}
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium"
+                      [ngClass]="getStatusClasses(row.status)"
+                    >
+                      <span
+                        class="h-1.5 w-1.5 rounded-full"
+                        [ngClass]="getStatusDotClasses(row.status)"
+                      ></span>
+                      {{ row.status }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 dark:text-slate-400">
+                    {{ row.createdAt | date: "medium" }}
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <button
+                      mat-icon-button
+                      class="!text-slate-400 hover:!text-blue-600 dark:hover:!text-blue-400"
+                      matTooltip="View Details"
+                      (click)="openNotificationDetail(row.id)"
+                    >
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
   </div>
 </div>
