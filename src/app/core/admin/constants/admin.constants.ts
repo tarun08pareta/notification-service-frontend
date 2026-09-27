@@ -30,6 +30,9 @@ export const API_ENDPOINTS = {
         `/api/v1/admin/providers/${encodeURIComponent(providerName)}/enabled`,
       PRIORITY: (providerName: string): string =>
         `/api/v1/admin/providers/${encodeURIComponent(providerName)}/priority`
+    },
+    DASHBOARD: {
+      BASE: '/api/v1/admin/dashboard'
     }
   }
 } as const;

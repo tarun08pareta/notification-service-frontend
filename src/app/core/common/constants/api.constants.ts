@@ -44,10 +44,14 @@ export const API_ENDPOINTS = {
     // UPDATED: Admin email template endpoints
     EMAIL_TEMPLATES: {
       BASE: '/api/v1/admin/email-templates'
-    }
+    },
+    
   },
   // UPDATED: User-facing email templates (active templates only)
   EMAIL_TEMPLATES: {
     BASE: '/api/v1/email-templates'
+  },
+  DASHBOARD: {
+    BASE: '/api/v1/dashboard'
   }
 } as const;

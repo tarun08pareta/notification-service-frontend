@@ -1,0 +1,151 @@
+<div class="detail-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">Notification Details</h2>
+    <button mat-icon-button class="close-btn" (click)="close()" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Loading state for detail -->
+  <div *ngIf="isLoadingDetail()" class="dialog-loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="dialog-loading-text">Loading notification details…</p>
+  </div>
+
+  <!-- Detail content -->
+  <div *ngIf="!isLoadingDetail() && selectedDetail() as detail" class="dialog-body">
+
+    <!-- ── Notification Information ──────────────────────────────── -->
+    <section class="detail-section">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">notifications</mat-icon>
+        Notification Information
+      </h3>
+      <div class="detail-grid">
+        <div class="detail-row">
+          <span class="detail-label">Notification ID</span>
+          <span class="detail-value mono">{{ detail.id }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Channel</span>
+          <span class="detail-value channel-cell">
+            <mat-icon class="channel-icon">{{ channelIcon(detail.channel) }}</mat-icon>
+            {{ detail.channel }}
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Recipient</span>
+          <span class="detail-value">{{ detail.recipient }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Template</span>
+          <span class="detail-value"><code class="template-badge">{{ detail.template }}</code></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status</span>
+          <span class="detail-value">
+            <app-status-chip
+              [label]="statusLabel(detail.status)"
+              [variant]="statusVariant(detail.status)">
+            </app-status-chip>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Retry Count</span>
+          <span class="detail-value" [class.retry-warning]="detail.retryCount > 0">{{ detail.retryCount }}</span>
+        </div>
+        <div class="detail-row" *ngIf="detail.nextRetryAt">
+          <span class="detail-label">Next Retry At</span>
+          <span class="detail-value">{{ formatDate(detail.nextRetryAt) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Created At</span>
+          <span class="detail-value">{{ formatDate(detail.createdAt) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Updated At</span>
+          <span class="detail-value">{{ formatDate(detail.updatedAt) }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-section" *ngIf="variableEntries(detail.variables).length > 0">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">data_object</mat-icon>
+        Variables
+      </h3>
+      <div class="variables-grid">
+        <div class="variable-row" *ngFor="let v of variableEntries(detail.variables)">
+          <span class="variable-key">{{ v.key }}</span>
+          <span class="variable-sep">:</span>
+          <span class="variable-value">{{ v.value }}</span>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- ── Delivery Attempts ──────────────────────────────────────── -->
+    <section class="detail-section">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">history</mat-icon>
+        Delivery Attempts
+      </h3>
+
+      <!-- Attempts loading -->
+      <div *ngIf="isLoadingAttempts()" class="attempts-loading">
+        <mat-spinner diameter="24"></mat-spinner>
+        <span class="attempts-loading-text">Loading attempts…</span>
+      </div>
+
+      <!-- Empty attempts -->
+      <p *ngIf="!isLoadingAttempts() && deliveryAttempts().length === 0"
+         class="no-attempts-text">
+        No delivery attempts found.
+      </p>
+
+      <!-- Attempts list -->
+      <div *ngIf="!isLoadingAttempts() && deliveryAttempts().length > 0"
+           class="attempts-list">
+        <div class="attempt-card" *ngFor="let attempt of deliveryAttempts(); let i = index">
+          <div class="attempt-header">
+            <span class="attempt-number">Attempt {{ i + 1 }}</span>
+            <span class="attempt-status" [class.attempt-success]="attempt.status === 'SUCCESS'"
+                  [class.attempt-failed]="attempt.status !== 'SUCCESS'">
+              <mat-icon class="attempt-status-icon">{{ attemptStatusIcon(attempt.status) }}</mat-icon>
+              {{ attempt.status }}
+            </span>
+          </div>
+          <div class="attempt-detail-grid">
+            <div class="detail-row">
+              <span class="detail-label">Provider</span>
+              <span class="detail-value">{{ attempt.provider }}</span>
+            </div>
+            <div class="detail-row" *ngIf="attempt.providerMessageId">
+              <span class="detail-label">Provider Msg ID</span>
+              <span class="detail-value mono">{{ attempt.providerMessageId }}</span>
+            </div>
+            <div class="detail-row" *ngIf="attempt.errorCode">
+              <span class="detail-label">Error Code</span>
+              <span class="detail-value error-text">{{ attempt.errorCode }}</span>
+            </div>
+            <div class="detail-row" *ngIf="attempt.errorMessage">
+              <span class="detail-label">Error Message</span>
+              <span class="detail-value error-text">{{ attempt.errorMessage }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Started At</span>
+              <span class="detail-value">{{ formatDate(attempt.startedAt) }}</span>
+            </div>
+            <div class="detail-row" *ngIf="attempt.completedAt">
+              <span class="detail-label">Completed At</span>
+              <span class="detail-value">{{ formatDate(attempt.completedAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /dialog-body -->
+</div><!-- /detail-dialog -->

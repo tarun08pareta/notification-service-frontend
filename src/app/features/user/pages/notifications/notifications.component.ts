@@ -28,6 +28,7 @@ import { MatCardModule }           from '@angular/material/card';
 import { PageHeaderComponent }  from '../../../../shared/ui/page-header/page-header.component';
 import { EmptyStateComponent }  from '../../../../shared/ui/empty-state/empty-state.component';
 import { StatusChipComponent, StatusVariant }  from '../../../../shared/ui/status-chip/status-chip.component';
+import { UserNotificationModalComponent } from './user-notification-modal/user-notification-modal.component';
 
 // Core
 import { NotificationService }  from '../../../../core/common/notifications/notification.service';
@@ -186,45 +187,14 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   openDetail(notification: UserNotification): void {
-    this.selectedDetail.set(null);
-    this.deliveryAttempts.set([]);
-    this.isLoadingDetail.set(true);
-    this.isLoadingAttempts.set(true);
-
-    this.dialogRef = this.dialog.open(this.detailDialog, {
+    this.dialog.open(UserNotificationModalComponent, {
       width: '680px',
       maxWidth: '95vw',
       maxHeight: '90vh',
       panelClass: 'user-notification-dialog',
       autoFocus: false,
+      data: { id: notification.id },
     });
-
-    this.notificationService
-      .getNotification(notification.id)
-      .pipe(takeUntil(this.destroy$), finalize(() => this.isLoadingDetail.set(false)))
-      .subscribe({
-        next: (detail) => this.selectedDetail.set(detail),
-        error: () => {
-          this.toastr.error('Failed to load notification details.');
-          this.dialogRef?.close();
-        },
-      });
-
-    this.notificationService
-      .getUserNotificationAttempts(notification.id)
-      .pipe(takeUntil(this.destroy$), finalize(() => this.isLoadingAttempts.set(false)))
-      .subscribe({
-        next: (attempts) => this.deliveryAttempts.set(attempts),
-        error: () => {
-          this.toastr.error('Failed to load delivery attempts.');
-          this.deliveryAttempts.set([]);
-        },
-      });
-  }
-
-  closeDetail(): void {
-    this.dialogRef?.close();
-    this.dialogRef = null;
   }
 
   shortId(id: string): string {

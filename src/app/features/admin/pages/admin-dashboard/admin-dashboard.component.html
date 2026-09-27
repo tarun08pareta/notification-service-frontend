@@ -1,1 +1,257 @@
-<p>admin-dashboard works!</p>
+<div class="min-h-screen  p-6 font-sans text-slate-800 dark:text-slate-200">
+  <div class="mx-auto max-w-[1600px] space-y-6">
+
+    <!-- Header Section -->
+    <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Admin Dashboard</h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Monitor users, notifications, delivery status, and provider health.</p>
+      </div>
+      <div class="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] px-4 py-2.5 shadow-sm">
+        <mat-icon class="text-slate-400 dark:text-slate-500 !text-[20px] !w-[20px] !h-[20px]">calendar_today</mat-icon>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ currentDate | date:'fullDate' }}</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">Real-time overview of your notification system.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      @for (stat of stats(); track stat.title) {
+        <div class="flex flex-col rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-5 shadow-sm transition-shadow hover:shadow-md">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-lg {{stat.iconBg}}">
+                <mat-icon class="{{stat.iconColor}} !text-[20px] !w-[20px] !h-[20px]">{{stat.icon}}</mat-icon>
+              </div>
+              <span class="text-sm font-medium text-slate-600 dark:text-slate-400">{{stat.title}}</span>
+            </div>
+          </div>
+          
+          <div class="mt-4 flex items-end justify-between">
+            <div class="flex flex-col">
+              <span class="text-3xl font-bold text-slate-900 dark:text-slate-100">{{stat.value}}</span>
+            </div>
+            
+            <!-- Mini Bar Chart -->
+            @if (stat.chartData) {
+              <div class="flex h-8 items-end gap-1">
+                @for (bar of stat.chartData; track $index) {
+                  <div class="w-1.5 rounded-t-sm {{stat.chartColor}}" [style.height.%]="bar"></div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="mt-3 text-xs font-medium {{stat.subtitleColor}}">
+            {{stat.subtitle}}
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Middle Section: Channels, Activity, Provider Health -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      
+      <!-- Notification Channels -->
+      <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Notification Channels</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Distribution of notifications by channel.</p>
+        
+        <div class="mt-6 space-y-6">
+          @for (channel of channels(); track channel.name) {
+            <div class="flex items-center gap-4">
+              <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg {{channel.iconBg}}">
+                <mat-icon class="{{channel.iconColor}}">{{channel.icon}}</mat-icon>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{channel.name}}</span>
+                  <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{channel.percentage}}%</span>
+                </div>
+                <div class="mt-1 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <span>{{channel.count}} notifications</span>
+                </div>
+                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+                  <div class="h-full rounded-full {{channel.barColor}}" [style.width.%]="channel.percentage"></div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Notification Activity (Donut Chart) -->
+      <div class="flex flex-col items-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-6 shadow-sm">
+        <div class="w-full text-left">
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Notification Activity</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Overview of notification status distribution.</p>
+        </div>
+        
+        <div class="mt-6 flex w-full items-center justify-center gap-8">
+          <!-- Donut Chart Representation -->
+          <div class="donut-chart relative flex h-32 w-32 items-center justify-center rounded-full">
+            <div class="absolute inset-0 m-auto flex h-20 w-20 flex-col items-center justify-center rounded-full bg-white dark:bg-[rgb(30_41_59_/45%)]">
+              <span class="text-xl font-bold text-slate-900 dark:text-slate-100">{{ getTotalNotificationsCount() }}</span>
+              <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Total</span>
+            </div>
+          </div>
+          
+          <!-- Legend -->
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+              <span class="text-slate-600 dark:text-slate-400">Sent</span>
+              <span class="font-medium text-slate-900 dark:text-slate-100 ml-auto">{{ stats().length > 2 ? stats()[2].value : 0 }} <span class="text-slate-400 dark:text-slate-500 font-normal">({{ stats().length > 2 ? stats()[2].subtitle.split(' ')[0] : '0%' }})</span></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>
+              <span class="text-slate-600 dark:text-slate-400">Failed</span>
+              <span class="font-medium text-slate-900 dark:text-slate-100 ml-auto">{{ stats().length > 3 ? stats()[3].value : 0 }} <span class="text-slate-400 dark:text-slate-500 font-normal">({{ stats().length > 3 ? stats()[3].subtitle.split(' ')[0] : '0%' }})</span></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+              <span class="text-slate-600 dark:text-slate-400">Queued</span>
+              <span class="font-medium text-slate-900 dark:text-slate-100 ml-auto">{{ stats().length > 4 ? stats()[4].value : 0 }} <span class="text-slate-400 dark:text-slate-500 font-normal">({{ stats().length > 4 ? stats()[4].subtitle.split(' ')[0] : '0%' }})</span></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-purple-500"></span>
+              <span class="text-slate-600 dark:text-slate-400">Retry Scheduled</span>
+              <span class="font-medium text-slate-900 dark:text-slate-100 ml-auto">{{ stats().length > 5 ? stats()[5].value : 0 }} <span class="text-slate-400 dark:text-slate-500 font-normal">({{ stats().length > 5 ? stats()[5].subtitle.split(' ')[0] : '0%' }})</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provider Health -->
+      <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] p-6 shadow-sm flex flex-col">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Provider Health</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Status of configured notification providers.</p>
+          </div>
+        </div>
+        
+        <div class="mt-4 flex-1 space-y-4">
+          @if (providers().length === 0 && !isLoading()) {
+            <app-empty-state
+              icon="settings"
+              title="No providers configured"
+              description="You have no notification providers configured.">
+            </app-empty-state>
+          } @else {
+            @for (provider of providers(); track provider.name) {
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3 last:border-0 last:pb-0">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-700">
+                  <mat-icon class="text-slate-500 dark:text-slate-400 !text-[20px] !w-[20px] !h-[20px]">{{provider.icon}}</mat-icon>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-slate-800 dark:text-slate-200">{{provider.name}}</span>
+                  <div class="flex items-center gap-1.5 mt-0.5">
+                    <span class="h-1.5 w-1.5 rounded-full" 
+                          [ngClass]="provider.status === 'Enabled' ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+                    <span class="text-xs font-medium" 
+                          [ngClass]="provider.status === 'Enabled' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'">
+                      {{provider.status}}
+                    </span>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 ml-1">Priority: {{provider.priority}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="flex flex-col text-right">
+                  <span class="text-xs text-slate-500 dark:text-slate-400">{{provider.lastEvent}}</span>
+                  <span class="text-xs font-medium" 
+                        [ngClass]="provider.lastEventType === 'success' ? 'text-slate-700 dark:text-slate-300' : 'text-rose-600 dark:text-rose-400'">
+                    {{provider.lastEventTime}}
+                  </span>
+                </div>
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="!text-slate-400 hover:!text-slate-600 dark:hover:!text-slate-300">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>Edit</button>
+                  <button mat-menu-item>Disable</button>
+                </mat-menu>
+              </div>
+            </div>
+          }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Failed Notifications Table -->
+    <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[rgb(30_41_59_/45%)] shadow-sm">
+      <div class="flex flex-col justify-between gap-4 border-b border-slate-200 dark:border-slate-700 p-6 sm:flex-row sm:items-center">
+        <div>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Recent Failed Notifications</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Latest failed notifications from the system.</p>
+        </div>
+        <button mat-stroked-button class="!rounded-lg !border-slate-200 dark:!border-slate-700 !text-slate-700 dark:!text-slate-300"
+                (click)="viewAllFailedNotifications()">
+          View All
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        @if (recentFailedNotifications().length === 0 && !isLoading()) {
+          <app-empty-state
+            icon="check_circle"
+            title="No recent failures"
+            description="All notifications are being sent successfully.">
+          </app-empty-state>
+        } @else {
+        <table class="w-full whitespace-nowrap text-left text-sm">
+          <thead class=" dark:bg-[rgb(30_41_59_/45%)]/50 text-xs uppercase text-slate-500 dark:text-slate-400">
+            <tr>
+              <th class="px-6 py-4 font-medium">Template</th>
+              <th class="px-6 py-4 font-medium">Channel</th>
+              <th class="px-6 py-4 font-medium">Recipient</th>
+              <th class="px-6 py-4 font-medium">Status</th>
+              <th class="px-6 py-4 font-medium">Retry Count</th>
+              <th class="px-6 py-4 font-medium">Created At</th>
+              <th class="px-6 py-4 text-center font-medium">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+            @for (row of recentFailedNotifications(); track row.template) {
+              <tr class="transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-700/50">
+                <td class="px-6 py-4 font-medium text-slate-800 dark:text-slate-200">{{row.template}}</td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    @if (row.channel === 'EMAIL') {
+                      <mat-icon class="text-blue-500 !text-[16px] !w-[16px] !h-[16px]">email</mat-icon>
+                    } @else {
+                      <mat-icon class="text-emerald-500 !text-[16px] !w-[16px] !h-[16px]">chat</mat-icon>
+                    }
+                    <span class="text-slate-600 dark:text-slate-400">{{row.channel}}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{row.recipient}}</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center gap-1.5 rounded-full border border-rose-200 dark:border-rose-900/50 bg-rose-50 dark:bg-rose-900/20 px-2.5 py-1 text-xs font-medium text-rose-700 dark:text-rose-400">
+                    <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                    {{row.status}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{row.retryCount}}</td>
+                <td class="px-6 py-4 text-slate-500 dark:text-slate-400">{{row.createdAt | date:'medium'}}</td>
+                <td class="px-6 py-4 text-center">
+                  <button mat-icon-button class="!text-slate-400 hover:!text-blue-600 dark:hover:!text-blue-400" matTooltip="View Details"
+                          (click)="openNotificationDetail(row.id)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

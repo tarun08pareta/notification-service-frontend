@@ -1,0 +1,78 @@
+// Custom Donut Chart implementation using CSS Conic Gradient
+.donut-chart {
+  background: conic-gradient(
+    #10b981 0% 83.3%,   // Emerald 500 (Sent)
+    #ef4444 83.3% 90%,  // Rose 500 (Failed)
+    #f59e0b 90% 95.8%,  // Amber 500 (Queued)
+    #8b5cf6 95.8% 100%  // Purple 500 (Retry Scheduled)
+  );
+  // Add a slight rotation to match the start point in the image
+  transform: rotate(-90deg);
+}
+
+// Custom overrides for Angular Material components to match the Tailwind design language
+::ng-deep {
+  .mat-mdc-button-base {
+    font-family: inherit;
+    letter-spacing: normal;
+  }
+
+  .mat-mdc-flat-button {
+    padding: 0 16px;
+    height: 40px;
+    font-weight: 500;
+  }
+
+  .mat-mdc-stroked-button {
+    padding: 0 16px;
+    height: 40px;
+    font-weight: 500;
+    border-color: #e2e8f0; // Tailwind slate-200
+    color: #334155; // Tailwind slate-700
+    
+    .dark-theme & {
+      border-color: #334155; // Tailwind slate-700
+      color: #cbd5e1; // Tailwind slate-300
+    }
+  }
+
+  .mat-mdc-icon-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .mat-mdc-menu-panel {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border: 1px solid #e2e8f0;
+
+    .dark-theme & {
+      background-color: #1e293b; // Tailwind slate-800
+      border-color: #334155; // Tailwind slate-700
+      .mat-mdc-menu-item {
+        color: #e2e8f0; // Tailwind slate-200
+        &:hover {
+          background-color: #334155; // Tailwind slate-700
+        }
+      }
+    }
+  }
+}
+
+// Ensure table header text is properly aligned and styled
+th {
+  text-align: left;
+  font-weight: 500;
+}
+
+// Smooth transition for progress bars
+.h-full.rounded-full {
+  transition: width 0.5s ease-in-out;
+}

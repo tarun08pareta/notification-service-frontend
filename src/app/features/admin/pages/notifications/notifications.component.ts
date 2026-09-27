@@ -28,6 +28,8 @@ import { PageHeaderComponent }  from '../../../../shared/ui/page-header/page-hea
 import { EmptyStateComponent }  from '../../../../shared/ui/empty-state/empty-state.component';
 import { StatusChipComponent }  from '../../../../shared/ui/status-chip/status-chip.component';
 import { StatusVariant }        from '../../../../shared/ui/status-chip/status-chip.component';
+import { ActivatedRoute }       from '@angular/router';
+import { AdminNotificationModalComponent } from './admin-notification-modal/admin-notification-modal.component';
 
 // Core
 import { AdminNotificationService, ADMIN_NOTIFICATIONS_DEFAULT_PAGE_SIZE, ADMIN_NOTIFICATIONS_PAGE_SIZE_OPTIONS } from '../../../../core/admin/services/admin-notification.service';
@@ -129,21 +131,19 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
   filters: NotificationFilters = { status: null, channel: null };
 
-  // ---------------------------------------------------------------------------
-  // Detail modal state
-  // ---------------------------------------------------------------------------
-  selectedDetail    = signal<AdminNotificationDetail | null>(null);
-  deliveryAttempts  = signal<AdminNotificationAttempt[]>([]);
-  isLoadingDetail   = signal<boolean>(false);
-  isLoadingAttempts = signal<boolean>(false);
-  private dialogRef: MatDialogRef<unknown> | null = null;
+  private readonly route = inject(ActivatedRoute);
 
   // ---------------------------------------------------------------------------
   // Lifecycle
   // ---------------------------------------------------------------------------
 
   ngOnInit(): void {
-    this.loadNotifications();
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params: any) => {
+      if (params['status']) {
+        this.filters.status = params['status'].toUpperCase() as any; 
+      }
+      this.loadNotifications();
+    });
   }
 
   ngOnDestroy(): void {
@@ -230,48 +230,14 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------------------------
 
   openDetail(notification: AdminNotification): void {
-    this.selectedDetail.set(null);
-    this.deliveryAttempts.set([]);
-    this.isLoadingDetail.set(true);
-    this.isLoadingAttempts.set(true);
-
-    // Open the dialog immediately — loading state is shown inside
-    this.dialogRef = this.dialog.open(this.detailDialog, {
+    this.dialog.open(AdminNotificationModalComponent, {
       width: '680px',
       maxWidth: '95vw',
       maxHeight: '90vh',
       panelClass: 'admin-notification-dialog',
       autoFocus: false,
+      data: { id: notification.id }
     });
-
-    // Load notification detail
-    this.adminNotificationService
-      .getNotification(notification.id)
-      .pipe(takeUntil(this.destroy$), finalize(() => this.isLoadingDetail.set(false)))
-      .subscribe({
-        next: (detail) => this.selectedDetail.set(detail),
-        error: () => {
-          this.toastr.error('Failed to load notification details.');
-          this.dialogRef?.close();
-        },
-      });
-
-    // Load delivery attempts independently
-    this.adminNotificationService
-      .getNotificationAttempts(notification.id)
-      .pipe(takeUntil(this.destroy$), finalize(() => this.isLoadingAttempts.set(false)))
-      .subscribe({
-        next: (attempts) => this.deliveryAttempts.set(attempts),
-        error: () => {
-          this.toastr.error('Failed to load delivery attempts.');
-          this.deliveryAttempts.set([]);
-        },
-      });
-  }
-
-  closeDetail(): void {
-    this.dialogRef?.close();
-    this.dialogRef = null;
   }
 
   // ---------------------------------------------------------------------------

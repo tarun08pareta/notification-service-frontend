@@ -1,0 +1,250 @@
+// The dialog panel background is set by Material theming automatically.
+// We only need to manage the internal layout.
+
+::ng-deep .user-notification-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.detail-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  background-color: var(--app-surface);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--app-divider);
+  flex-shrink: 0;
+  background-color: var(--app-surface);
+}
+
+.dialog-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+}
+
+.close-btn {
+  color: var(--app-on-surface-variant);
+}
+
+.dialog-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+}
+
+.dialog-loading-text {
+  color: var(--app-on-surface-variant);
+  font-size: 0.9rem;
+}
+
+.dialog-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: var(--app-surface);
+}
+
+// ── Detail Sections ──────────────────────────────────────────────────────────
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.section-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: var(--app-primary);
+}
+
+// ── Detail Grid ──────────────────────────────────────────────────────────────
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--app-divider);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--app-on-surface-variant);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--app-on-surface);
+  word-break: break-all;
+
+  &.mono {
+    font-family: var(--app-font-family-technical);
+    font-size: 0.78rem;
+    color: var(--app-on-surface-variant);
+  }
+}
+
+.error-text {
+  color: var(--app-error);
+  font-size: 0.82rem;
+}
+
+// ── Variables ────────────────────────────────────────────────────────────────
+
+.variables-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: var(--app-surface-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--app-outline-variant);
+}
+
+.variable-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--app-divider);
+  font-size: 0.85rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.variable-key {
+  font-family: var(--app-font-family-technical);
+  color: var(--app-primary);
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.variable-sep {
+  color: var(--app-on-surface-variant);
+}
+
+.variable-value {
+  color: var(--app-on-surface);
+  word-break: break-all;
+}
+
+// ── Delivery Attempts ────────────────────────────────────────────────────────
+
+.attempts-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.attempts-loading-text {
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+}
+
+.no-attempts-text {
+  font-size: 0.875rem;
+  color: var(--app-on-surface-variant);
+  font-style: italic;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.attempts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attempt-card {
+  border: 1px solid var(--app-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.attempt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: var(--app-surface-variant);
+  border-bottom: 1px solid var(--app-divider);
+}
+
+.attempt-number {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--app-on-surface);
+}
+
+.attempt-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: var(--app-radius-full);
+  padding: 2px 10px;
+
+  &.attempt-success {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: var(--app-success);
+  }
+
+  &.attempt-failed {
+    background-color: rgba(186, 26, 26, 0.12);
+    color: var(--app-error);
+  }
+}
+
+.attempt-status-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+}
+
+.attempt-detail-grid {
+  padding: 4px 14px;
+}
