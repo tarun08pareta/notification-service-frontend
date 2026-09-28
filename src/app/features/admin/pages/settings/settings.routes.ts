@@ -3,7 +3,16 @@ import { Routes } from '@angular/router';
 export const SETTINGS_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./settings.component').then(m => m.SettingsComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./settings.component').then(m => m.SettingsComponent)
+      },
+      {
+        path: 'change-password',
+        loadComponent: () => import('./change-password/change-password.component').then(m => m.ChangePasswordComponent)
+      }
+    ]
   }
 ];
 

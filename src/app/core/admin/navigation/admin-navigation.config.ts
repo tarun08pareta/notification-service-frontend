@@ -12,6 +12,7 @@ export const ADMIN_NAVIGATION_ITEMS: NavigationItem[] = [
     // UPDATED: Added Notifications management link
     // { label: 'Delivery Logs', icon: 'receipt_long', route: '/admin/logs' },
     // { label: 'Usage', icon: 'bar_chart', route: '/admin/usage' },
-    // { label: 'Settings', icon: 'settings', route: '/admin/settings' }
+    // { label: 'Settings', icon: 'settings', route: '/admin/settings' },
+    { label: 'Change Password', icon: 'lock', route: '/admin/settings/change-password' }
 ];
 

@@ -76,6 +76,13 @@ export const routes: Routes = [
                 (m) => m.USER_NOTIFICATIONS_ROUTES,
               ),
           },
+          {
+            path: 'settings/change-password',
+            loadComponent: () =>
+              import('./features/user/pages/settings/change-password/change-password.component').then(
+                (m) => m.ChangePasswordComponent
+              )
+          }
         ],
       },
 
