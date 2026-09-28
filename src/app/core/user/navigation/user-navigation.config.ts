@@ -9,6 +9,7 @@ export const USER_NAVIGATION_ITEMS: NavigationItem[] = [
     // UPDATED: Fixed Notifications route to /user/notifications
     { label: 'My Notifications', icon: 'notifications', route: '/user/notifications' },
     // UPDATED: Fixed Templates route to /user/templates
-    { label: 'Templates', icon: 'description', route: '/user/templates' }
+    { label: 'Templates', icon: 'description', route: '/user/templates' },
+    { label: 'Change Password', icon: 'lock', route: '/user/settings/change-password' }
 ];
 

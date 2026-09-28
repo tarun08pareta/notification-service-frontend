@@ -1,7 +1,7 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { User, LoginResponse, LoginRequest, SignupRequest } from './auth.models';
+import { User, LoginResponse, LoginRequest, SignupRequest, ChangePasswordRequest } from './auth.models';
 import { Router } from '@angular/router';
 import { API_ENDPOINTS } from '../constants/api.constants';
 import { apiUrl } from '../constants/api-url';
@@ -64,5 +64,9 @@ export class AuthService {
     getToken(): string | null {
         // Read directly from synchronous signal (NgRx state)
         return this.currentToken() || null;
+    }
+
+    changePassword(request: ChangePasswordRequest): Observable<void> {
+        return this.http.post<void>(apiUrl(API_ENDPOINTS.AUTH.CHANGE_PASSWORD), request);
     }
 }

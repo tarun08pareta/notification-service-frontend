@@ -8,7 +8,8 @@ export const API_ENDPOINTS = {
      * for the full LoginResponse (user + application JWT).
      * The code is opaque, single-use, and expires in ~60 seconds.
      */
-    OAUTH2_EXCHANGE: '/api/v1/auth/google/login'
+    OAUTH2_EXCHANGE: '/api/v1/auth/google/login',
+    CHANGE_PASSWORD: '/api/v1/auth/change-password'
   },
   USERS: {
     BASE: '/api/v1/users'
